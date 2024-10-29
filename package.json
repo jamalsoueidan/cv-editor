@@ -11,7 +11,8 @@
     "dev:backend": "convex dev",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "start": "remix-serve ./build/server/index.js",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@mantine/core": "^7.13.4",
@@ -24,6 +25,7 @@
     "@remix-run/serve": "^2.13.1",
     "convex": "^1.17.0",
     "isbot": "^4.1.0",
+    "patch-package": "^8.0.0",
     "react": "^18.2.0",
     "react-async": "^10.0.1",
     "react-dom": "^18.2.0",

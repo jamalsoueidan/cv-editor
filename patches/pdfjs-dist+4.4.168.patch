@@ -1,0 +1,23 @@
+diff --git a/node_modules/pdfjs-dist/build/pdf.mjs b/node_modules/pdfjs-dist/build/pdf.mjs
+index 7906d1a..63be8c5 100644
+--- a/node_modules/pdfjs-dist/build/pdf.mjs
++++ b/node_modules/pdfjs-dist/build/pdf.mjs
+@@ -5443,8 +5443,18 @@ class FontFaceObject {
+ 
+ ;// CONCATENATED MODULE: ./src/display/node_utils.js
+ 
++Promise.withResolvers = function () {
++  console.log("Polyfill within pdfjs-dist");
++  let resolve, reject;
++  const promise = new Promise((res, rej) => {
++    resolve = res;
++    reject = rej;
++  });
++  return { promise, resolve, reject };
++};
+ 
+ if (isNodeJS) {
++  console.log('Calling Promise.withResolvers in pdf.mjs');
+   var packageCapability = Promise.withResolvers();
+   var packageMap = null;
+   const loadPackages = async () => {
