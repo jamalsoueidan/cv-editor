@@ -8,6 +8,7 @@ export const create = mutationWithUser({
   handler: async (ctx, args) => {
     return ctx.db.insert("resumes", {
       title: args.title,
+      _updatedTime: Date.now(),
       userId: ctx.user,
     });
   },
@@ -55,6 +56,15 @@ export const update = mutationWithUser({
     }
 
     const { id, ...rest } = args;
-    return ctx.db.patch(id, rest);
+    return ctx.db.patch(id, { ...rest, _updatedTime: Date.now() });
+  },
+});
+
+export const list = queryWithUser({
+  handler: async (ctx) => {
+    return ctx.db
+      .query("resumes")
+      .withIndex("byUserId", (q) => q.eq("userId", ctx.user))
+      .collect();
   },
 });

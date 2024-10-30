@@ -3,5 +3,13 @@ import { v } from "convex/values";
 
 export const Resume = Table("resumes", {
   title: v.string(),
+  position: v.optional(v.string()),
+  firstname: v.optional(v.string()),
+  lastname: v.optional(v.string()),
+  email: v.optional(v.string()),
+  phone: v.optional(v.string()),
+  country: v.optional(v.string()),
+  city: v.optional(v.string()),
+  _updatedTime: v.number(),
   userId: v.id("users"),
 });
