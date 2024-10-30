@@ -1,4 +1,6 @@
 import { useAuthActions } from "@convex-dev/auth/react";
+import { Button } from "@mantine/core";
+import { Link } from "@remix-run/react";
 import { Authenticated, Unauthenticated } from "convex/react";
 import { SignOut } from "~/components/Signout";
 
@@ -10,14 +12,16 @@ export default function Index() {
       <Authenticated>
         <SignOut />
         Logged in
+        <br />
+        <Link to="/reader">Reader</Link>
+        <br />
+        <Link to="/test">Test</Link>
       </Authenticated>
 
       <Unauthenticated>
-        <div>
-          <button onClick={() => void signIn("linkedin")}>
-            Sign in with GitHub
-          </button>
-        </div>
+        <Button onClick={() => void signIn("linkedin")}>
+          Sign in with Linkedin
+        </Button>
       </Unauthenticated>
     </div>
   );

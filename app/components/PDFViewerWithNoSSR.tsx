@@ -2,7 +2,7 @@ import { usePDF } from "@react-pdf/renderer";
 
 import { Document, Page, pdfjs } from "react-pdf";
 
-import { Button, Card, Flex, Group, Text } from "@mantine/core";
+import { Button, Card, Flex, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { DocumentCallback } from "react-pdf/dist/esm/shared/types.js";
 import "react-pdf/dist/Page/AnnotationLayer.css";
@@ -18,7 +18,7 @@ export const PDFViewerWithNoSSR = ({
 }) => {
   const [numPages, setNumPages] = useState<null | number>(null);
   const [instance, updateInstance] = usePDF({
-    document: <MyDocument text={text} />,
+    document: <MyDocument />,
   });
   const [pageNumber, setPageNumber] = useState(1);
   const [renderedPageNumber, setRenderedPageNumber] = useState<null | number>(
@@ -26,7 +26,7 @@ export const PDFViewerWithNoSSR = ({
   );
 
   useEffect(() => {
-    updateInstance(<MyDocument text={text} />);
+    updateInstance(<MyDocument />);
   }, [text, updateInstance]);
 
   const onDocumentLoadSuccess = (document: DocumentCallback) => {
@@ -56,6 +56,10 @@ export const PDFViewerWithNoSSR = ({
       w="100%"
       h="100%"
     >
+      <Button href={instance.url || ""} component="a" download="cv.pdf">
+        Download (PDF)
+      </Button>
+
       <Card withBorder shadow="sm">
         <Document file={instance.url} onLoadSuccess={onDocumentLoadSuccess}>
           {isLoading && renderedPageNumber ? (
@@ -63,41 +67,39 @@ export const PDFViewerWithNoSSR = ({
               key={renderedPageNumber}
               className="prevPage"
               pageNumber={renderedPageNumber}
-              width={400}
+              width={500}
             />
           ) : null}
           <Page
             key={pageNumber}
             pageNumber={pageNumber}
             onRenderSuccess={() => setRenderedPageNumber(pageNumber)}
-            width={400}
+            width={500}
           />
         </Document>
       </Card>
 
       {pageNumber && numPages ? (
-        <Flex direction="column" gap="sm">
+        <Flex direction="row" gap="sm">
+          <Button
+            type="button"
+            disabled={pageNumber <= 1}
+            onClick={previousPage}
+            size="compact-md"
+          >
+            L
+          </Button>
           <Text ta="center">
-            Page {pageNumber || (numPages ? 1 : "--")} of {numPages || "--"}
+            {pageNumber || (numPages ? 1 : "--")} / {numPages || "--"}
           </Text>
-          <Group>
-            <Button
-              type="button"
-              disabled={pageNumber <= 1}
-              onClick={previousPage}
-              size="compact-md"
-            >
-              Previous
-            </Button>{" "}
-            <Button
-              type="button"
-              disabled={pageNumber >= numPages}
-              onClick={nextPage}
-              size="compact-md"
-            >
-              Next
-            </Button>
-          </Group>
+          <Button
+            type="button"
+            disabled={pageNumber >= numPages}
+            onClick={nextPage}
+            size="compact-md"
+          >
+            R
+          </Button>
         </Flex>
       ) : null}
     </Flex>
