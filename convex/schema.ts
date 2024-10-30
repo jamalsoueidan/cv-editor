@@ -1,10 +1,8 @@
 import { authTables } from "@convex-dev/auth/server";
-import { defineSchema, defineTable } from "convex/server";
-import { v } from "convex/values";
+import { defineSchema } from "convex/server";
+import { Resume } from "./tables/resume";
 
 export default defineSchema({
   ...authTables,
-  text: defineTable({
-    body: v.string(),
-  }),
+  resumes: Resume.table.index("byUserId", ["userId"]),
 });

@@ -22,7 +22,6 @@ const styles = StyleSheet.create({
     width: 180,
     height: 140,
   },
-
   title: {
     fontSize: 14,
   },

@@ -11,11 +11,7 @@ import { MyDocument } from "./MyDocument";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.mjs`;
 
-export const PDFViewerWithNoSSR = ({
-  text,
-}: {
-  text: Array<any> | undefined;
-}) => {
+export const PDFViewerWithNoSSR = () => {
   const [numPages, setNumPages] = useState<null | number>(null);
   const [instance, updateInstance] = usePDF({
     document: <MyDocument />,
@@ -27,7 +23,7 @@ export const PDFViewerWithNoSSR = ({
 
   useEffect(() => {
     updateInstance(<MyDocument />);
-  }, [text, updateInstance]);
+  }, [updateInstance]);
 
   const onDocumentLoadSuccess = (document: DocumentCallback) => {
     setNumPages(document.numPages);
