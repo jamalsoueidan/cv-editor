@@ -9,9 +9,10 @@ import {
   useLoaderData,
 } from "@remix-run/react";
 
+import { ConvexAuthProvider } from "@convex-dev/auth/react";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
-import { ConvexProvider, ConvexReactClient } from "convex/react";
+import { ConvexReactClient } from "convex/react";
 import { useState } from "react";
 
 export const links: LinksFunction = () => [];
@@ -36,7 +37,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <MantineProvider>
-          <ConvexProvider client={convex}>{children}</ConvexProvider>
+          <ConvexAuthProvider client={convex}>{children}</ConvexAuthProvider>
         </MantineProvider>
         <ScrollRestoration />
         <Scripts />
