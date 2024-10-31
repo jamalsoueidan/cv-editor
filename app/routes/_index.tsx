@@ -12,14 +12,14 @@ import {
 import { Authenticated, Unauthenticated } from "convex/react";
 import { GiPapers } from "react-icons/gi";
 import { GoPlus } from "react-icons/go";
-import { HeaderSimple } from "~/components/HeaderSimple";
+import { Header } from "~/components/Header";
 import { ResumesList } from "~/components/ResumesList";
 export default function Index() {
   const { signIn } = useAuthActions();
 
   return (
     <>
-      <HeaderSimple />
+      <Header />
       <Container>
         <Authenticated>
           <Card bg="blue.1" radius="lg" my="xl">

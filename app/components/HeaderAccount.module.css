@@ -1,11 +1,3 @@
-.header {
-  padding-top: var(--mantine-spacing-sm);
-  padding-bottom: var(--mantine-spacing-sm);
-  border-bottom: rem(1px) solid
-    light-dark(var(--mantine-color-gray-2), transparent);
-  margin-bottom: var(--mantine-spacing-lg);
-}
-
 .user {
   color: light-dark(var(--mantine-color-black), var(--mantine-color-dark-0));
   padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
