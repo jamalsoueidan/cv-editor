@@ -21,7 +21,7 @@ export default function Index() {
             <Grid.Col span={6}></Grid.Col>
             <Grid.Col span={6} h="100vh">
               <PDFViewer height="100%" width="100%" showToolbar={false}>
-                <MyDocument />
+                <MyDocument data={{} as any} />
               </PDFViewer>
             </Grid.Col>
           </Grid>

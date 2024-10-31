@@ -3,6 +3,8 @@ import { usePDF } from "@react-pdf/renderer";
 import { Document, Page, pdfjs } from "react-pdf";
 
 import { Button, Card, Flex, Text } from "@mantine/core";
+import { api } from "convex/_generated/api";
+import { FunctionReturnType } from "convex/server";
 import { useEffect, useState } from "react";
 import { DocumentCallback } from "react-pdf/dist/esm/shared/types.js";
 import "react-pdf/dist/Page/AnnotationLayer.css";
@@ -11,10 +13,15 @@ import { MyDocument } from "./MyDocument";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.mjs`;
 
-export const PDFViewerWithNoSSR = () => {
+export const PDFViewerWithNoSSR = ({
+  data,
+}: {
+  data: FunctionReturnType<typeof api.resumes.get>;
+}) => {
+  console.log(data);
   const [numPages, setNumPages] = useState<null | number>(null);
   const [instance, updateInstance] = usePDF({
-    document: <MyDocument />,
+    document: <MyDocument data={data} />,
   });
   const [pageNumber, setPageNumber] = useState(1);
   const [renderedPageNumber, setRenderedPageNumber] = useState<null | number>(
@@ -22,8 +29,8 @@ export const PDFViewerWithNoSSR = () => {
   );
 
   useEffect(() => {
-    updateInstance(<MyDocument />);
-  }, [updateInstance]);
+    updateInstance(<MyDocument data={data} />);
+  }, [data, updateInstance]);
 
   const onDocumentLoadSuccess = (document: DocumentCallback) => {
     setNumPages(document.numPages);

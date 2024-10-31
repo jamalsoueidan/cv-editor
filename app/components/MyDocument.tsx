@@ -7,6 +7,8 @@ import {
   Text,
   View,
 } from "@react-pdf/renderer";
+import { api } from "convex/_generated/api";
+import { FunctionReturnType } from "convex/server";
 
 Font.register({
   family: "Oswald",
@@ -31,7 +33,12 @@ const styles = StyleSheet.create({
 });
 
 // Create Document Component
-export const MyDocument = () => {
+export const MyDocument = ({
+  data,
+}: {
+  data: FunctionReturnType<typeof api.resumes.get>;
+}) => {
+  console.log(data);
   return (
     <Document style={{ padding: 0, margin: 0 }}>
       <Page size="A4" style={styles.page}>
@@ -54,14 +61,14 @@ export const MyDocument = () => {
                   lineHeight: 1.2,
                 }}
               >
-                JAMAL
+                {data.firstname}
               </Text>
               <Text
                 style={{
                   fontSize: 32,
                 }}
               >
-                SOUEIDAN
+                {data.lastname}
               </Text>
               <Text style={styles.title}>Front-end React Developer</Text>
               <Text style={styles.link}>

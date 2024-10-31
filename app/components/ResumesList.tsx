@@ -23,7 +23,7 @@ export const ResumesList = () => {
           <Grid.Col span={6} key={resume._id}>
             <Flex direction="row" align="flex-start" gap="xs">
               <UnstyledButton component={Link} to={`/resumes/${resume._id}`}>
-                <ClientOnly>{() => <PDFRender />}</ClientOnly>
+                <ClientOnly>{() => <PDFRender data={resume} />}</ClientOnly>
               </UnstyledButton>
               <Stack gap={em(2)} flex={1}>
                 <Title order={3}>{resume.title}</Title>

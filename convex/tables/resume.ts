@@ -10,6 +10,6 @@ export const Resume = Table("resumes", {
   phone: v.optional(v.string()),
   country: v.optional(v.string()),
   city: v.optional(v.string()),
-  _updatedTime: v.number(),
+  updatedTime: v.number(),
   userId: v.id("users"),
 });
