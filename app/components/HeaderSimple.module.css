@@ -1,37 +1,28 @@
 .header {
-  height: rem(56px);
-  margin-bottom: rem(30px);
-  background-color: var(--mantine-color-body);
+  padding-top: var(--mantine-spacing-sm);
+  padding-bottom: var(--mantine-spacing-sm);
   border-bottom: rem(1px) solid
-    light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+    light-dark(var(--mantine-color-gray-2), transparent);
+  margin-bottom: var(--mantine-spacing-lg);
 }
 
-.inner {
-  height: rem(56px);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.link {
-  display: block;
-  line-height: 1;
-  padding: rem(8px) rem(12px);
+.user {
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-dark-0));
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
   border-radius: var(--mantine-radius-sm);
-  text-decoration: none;
-  color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-0));
-  font-size: var(--mantine-font-size-sm);
-  font-weight: 500;
+  transition: background-color 100ms ease;
 
-  @mixin hover {
+  &:hover {
     background-color: light-dark(
-      var(--mantine-color-gray-0),
-      var(--mantine-color-dark-6)
+      var(--mantine-color-white),
+      var(--mantine-color-dark-8)
     );
   }
+}
 
-  [data-mantine-color-scheme] &[data-active] {
-    background-color: var(--mantine-color-blue-filled);
-    color: var(--mantine-color-white);
-  }
+.userActive {
+  background-color: light-dark(
+    var(--mantine-color-white),
+    var(--mantine-color-dark-8)
+  );
 }
