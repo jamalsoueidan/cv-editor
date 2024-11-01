@@ -9,6 +9,8 @@ import {
 } from "@react-pdf/renderer";
 import { api } from "convex/_generated/api";
 import { FunctionReturnType } from "convex/server";
+import { HtmlElement } from "node_modules/react-pdf-html/dist/types/parse";
+import Html from "react-pdf-html";
 
 Font.register({
   family: "Oswald",
@@ -121,23 +123,44 @@ export const MyDocument = ({
                 PROFILE
               </Text>
             </View>
-            <Text>
-              Casi todo aquel día caminó sin acontecerle cosa que de contar
-              fuese, de lo cual se desesperaba, porque quisiera topar luego
-              luego con quien hacer experiencia del valor de su fuerte brazo.
-              Autores hay que dicen que la primera aventura que le avino fue la
-              del Puerto Lápice, otros dicen que la de los molinos de viento;
-              pero lo que yo he podido averiguar en este caso, y lo que he
-              hallado escrito en los anales de la Mancha, es que él anduvo todo
-              aquel día, y, al anochecer, su rocín y él se hallaron cansados y
-              muertos de hambre, y que, mirando a todas partes por ver si
-              descubriría algún castillo o alguna majada de pastores donde
-              recogerse y adonde pudiese remediar su mucha hambre y necesidad,
-              vio, no lejos del camino por donde iba, una venta,que fue como si
-              viera una estrella que, no a los portales, sino a los alcázares de
-              su redención le encaminaba. Diose priesa a caminar, y llegó a ella
-              a tiempo que anochecía.
-            </Text>
+
+            {data.content ? (
+              <Html
+                resetStyles
+                renderers={{
+                  //https://github.com/danomatic/react-pdf-html/issues/51#issuecomment-2173007044
+                  li: ({ element, style, children }) => {
+                    const list = element.closest("ol, ul") as HtmlElement;
+                    const isOrderedList =
+                      list?.tag === "ol" || element.parentNode.tag === "ol";
+
+                    return (
+                      <View
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                        }}
+                      >
+                        <View>
+                          <Text>
+                            {isOrderedList
+                              ? `${element.indexOfType + 1}. `
+                              : "• "}
+                          </Text>
+                        </View>
+                        <View>
+                          <Text>{children}</Text>
+                        </View>
+                      </View>
+                    );
+                  },
+                }}
+              >
+                {`<html><body><style>ul,ol { margin: 12px; }</style>` +
+                  data.content +
+                  "</body></html>"}
+              </Html>
+            ) : null}
           </View>
         </View>
       </Page>

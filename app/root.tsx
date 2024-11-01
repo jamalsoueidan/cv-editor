@@ -12,6 +12,7 @@ import {
 import { ConvexAuthProvider } from "@convex-dev/auth/react";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
+import "@mantine/tiptap/styles.css";
 import { ConvexReactClient } from "convex/react";
 import { useState } from "react";
 
