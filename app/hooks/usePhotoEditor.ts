@@ -141,19 +141,18 @@ export const usePhotoEditor = ({
 
     imgElement.onload = () => {
       if (canvas && context) {
-        const zoomedWidth = imgElement.width * zoom;
-        const zoomedHeight = imgElement.height * zoom;
-        const translateX = (imgElement.width - zoomedWidth) / 2;
-        const translateY = (imgElement.height - zoomedHeight) / 2;
-
-        // Set canvas dimensions to match the image.
         const targetHeight = 300;
         const aspectRatio = imgElement.width / imgElement.height;
         const targetWidth = targetHeight * aspectRatio;
 
+        const zoomedWidth = targetWidth * zoom;
+        const zoomedHeight = targetHeight * zoom;
+        const translateX = (targetWidth - zoomedWidth) / 2;
+        const translateY = (targetHeight - zoomedHeight) / 2;
+
         // Set canvas dimensions to the target size
-        canvas.width = targetWidth;
-        canvas.height = targetHeight;
+        canvas.width = zoomedWidth;
+        canvas.height = zoomedHeight;
 
         // Clear the canvas before drawing the updated image.
         context.clearRect(0, 0, canvas.width, canvas.height);
@@ -316,6 +315,7 @@ export const usePhotoEditor = ({
     setOffsetY(0);
     setPanStart(null);
     setIsDragging(false);
+    applyFilter();
   };
 
   // Expose the necessary state and handlers for external use.

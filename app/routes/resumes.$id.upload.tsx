@@ -18,6 +18,7 @@ export default function Upload() {
 
   const setFileData = (e: React.ChangeEvent<HTMLInputElement> | null) => {
     if (e?.target?.files && e.target.files.length > 0) {
+      resetFilters();
       setFile(e.target.files[0]);
     }
   };
@@ -120,13 +121,13 @@ export default function Upload() {
         <Slider
           label="Zoom"
           value={zoom}
-          min={0.1}
+          min={1}
           max={3}
           step={0.1}
           marks={[
-            { value: 0, label: "0%" },
-            { value: 1.5, label: "50%" },
-            { value: 3, label: "100%" },
+            { value: 0, label: "100%" },
+            { value: 1.5, label: "150%" },
+            { value: 3, label: "300%" },
           ]}
           onChange={(e) => setZoom(e)}
         />

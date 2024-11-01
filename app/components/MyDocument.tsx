@@ -21,8 +21,7 @@ const styles = StyleSheet.create({
     backgroundColor: "tomato",
   },
   headerImage: {
-    width: 180,
-    height: 140,
+    height: 150,
   },
   title: {
     fontSize: 14,
