@@ -41,14 +41,14 @@ export const PDFRender = ({
             key={renderedPageNumber}
             className="prevPage"
             pageNumber={renderedPageNumber}
-            width={150}
+            width={250}
           />
         ) : null}
         <Page
           key={pageNumber}
           pageNumber={pageNumber}
           onRenderSuccess={() => setRenderedPageNumber(pageNumber)}
-          width={150}
+          width={250}
         />
       </Document>
     </Card>

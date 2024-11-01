@@ -13,12 +13,20 @@ import { HtmlElement } from "node_modules/react-pdf-html/dist/types/parse";
 import Html from "react-pdf-html";
 
 Font.register({
-  family: "Oswald",
-  src: "https://fonts.gstatic.com/s/oswald/v13/Y_TKV6o8WovbUd3m_X9aAA.ttf",
+  family: "Open Sans",
+  fonts: [
+    {
+      src: "https://cdn.jsdelivr.net/npm/open-sans-all@0.1.3/fonts/open-sans-regular.ttf",
+    },
+    {
+      src: "https://cdn.jsdelivr.net/npm/open-sans-all@0.1.3/fonts/open-sans-600.ttf",
+      fontWeight: 600,
+    },
+  ],
 });
 
 const styles = StyleSheet.create({
-  page: { fontFamily: "Oswald" },
+  page: { fontFamily: "Open Sans" },
   section: {
     backgroundColor: "tomato",
   },
@@ -129,7 +137,7 @@ export const MyDocument = ({
                 resetStyles
                 renderers={{
                   //https://github.com/danomatic/react-pdf-html/issues/51#issuecomment-2173007044
-                  li: ({ element, style, children }) => {
+                  li: ({ element, children }) => {
                     const list = element.closest("ol, ul") as HtmlElement;
                     const isOrderedList =
                       list?.tag === "ol" || element.parentNode.tag === "ol";
@@ -154,9 +162,18 @@ export const MyDocument = ({
                       </View>
                     );
                   },
+                  strong: ({ children }) => {
+                    return (
+                      <Text
+                        style={{ fontFamily: "Open Sans", fontWeight: "bold" }}
+                      >
+                        {children}
+                      </Text>
+                    );
+                  },
                 }}
               >
-                {`<html><body><style>ul,ol { margin: 12px; }</style>` +
+                {`<html><body><style>body { font-size: 14px; } ul,ol { margin: 12px; } </style>` +
                   data.content +
                   "</body></html>"}
               </Html>

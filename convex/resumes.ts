@@ -1,4 +1,4 @@
-import { omit } from "convex-helpers";
+import { asyncMap, omit } from "convex-helpers";
 import { ConvexError, v } from "convex/values";
 import { mutationWithUser, queryWithUser } from "./auth";
 import { Resume } from "./tables/resume";
@@ -74,10 +74,19 @@ export const update = mutationWithUser({
 
 export const list = queryWithUser({
   handler: async (ctx) => {
-    return ctx.db
+    const resumes = await ctx.db
       .query("resumes")
       .withIndex("byUserId", (q) => q.eq("userId", ctx.user))
       .collect();
+
+    return asyncMap(resumes, async (data) => {
+      return {
+        ...data,
+        ...(data.photo
+          ? { photoUrl: await ctx.storage.getUrl(data.photo) }
+          : {}),
+      };
+    });
   },
 });
 
