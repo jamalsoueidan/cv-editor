@@ -18,7 +18,6 @@ export const PDFRender = ({
 }: {
   data: FunctionReturnType<typeof api.resumes.get>;
 }) => {
-  console.log(data);
   const [, setNumPages] = useState<null | number>(null);
   const [instance] = usePDF({
     document: <MyDocument data={data} />,
@@ -35,7 +34,7 @@ export const PDFRender = ({
   const isLoading = renderedPageNumber !== pageNumber;
 
   return (
-    <Card withBorder shadow="sm">
+    <Card withBorder shadow="sm" p="0">
       <Document file={instance.url} onLoadSuccess={onDocumentLoadSuccess}>
         {isLoading && renderedPageNumber ? (
           <Page

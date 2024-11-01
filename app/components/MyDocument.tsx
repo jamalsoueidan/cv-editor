@@ -38,7 +38,6 @@ export const MyDocument = ({
 }: {
   data: FunctionReturnType<typeof api.resumes.get>;
 }) => {
-  console.log(data);
   return (
     <Document style={{ padding: 0, margin: 0 }}>
       <Page size="A4" style={styles.page}>
@@ -47,10 +46,9 @@ export const MyDocument = ({
             flexDirection: "row",
           }}
         >
-          <Image
-            src="https://media.licdn.com/dms/image/v2/C4D03AQGh3WpCdvaofw/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1635151027047?e=1735776000&v=beta&t=VtOcMY2X2MObmQBADmJPrikVyiRo2Zdsnx-9riRmMl8"
-            style={styles.headerImage}
-          />
+          {data.photoUrl ? (
+            <Image src={data.photoUrl} style={styles.headerImage} />
+          ) : null}
           <View
             style={{ marginLeft: 4, backgroundColor: "orange", width: "100%" }}
           >
@@ -61,16 +59,18 @@ export const MyDocument = ({
                   lineHeight: 1.2,
                 }}
               >
-                {data.firstname}
+                {data.firstname?.toUpperCase() || "Firstname"}
               </Text>
               <Text
                 style={{
                   fontSize: 32,
                 }}
               >
-                {data.lastname}
+                {data.lastname?.toUpperCase() || "Lastname"}
               </Text>
-              <Text style={styles.title}>Front-end React Developer</Text>
+              <Text style={styles.title}>
+                {data.position || "Frontend Developer"}
+              </Text>
               <Text style={styles.link}>
                 https://www.medium.com/@jamalsoueidan
               </Text>

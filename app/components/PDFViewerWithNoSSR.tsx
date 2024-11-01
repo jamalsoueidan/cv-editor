@@ -18,7 +18,6 @@ export const PDFViewerWithNoSSR = ({
 }: {
   data: FunctionReturnType<typeof api.resumes.get>;
 }) => {
-  console.log(data);
   const [numPages, setNumPages] = useState<null | number>(null);
   const [instance, updateInstance] = usePDF({
     document: <MyDocument data={data} />,
@@ -63,7 +62,7 @@ export const PDFViewerWithNoSSR = ({
         Download (PDF)
       </Button>
 
-      <Card withBorder shadow="sm">
+      <Card withBorder shadow="sm" p="0">
         <Document file={instance.url} onLoadSuccess={onDocumentLoadSuccess}>
           {isLoading && renderedPageNumber ? (
             <Page

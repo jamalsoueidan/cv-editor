@@ -1,6 +1,6 @@
 import { omit } from "convex-helpers";
 import { ConvexError, v } from "convex/values";
-import { mutationWithUser, queryWithUser } from "./auth.js";
+import { mutationWithUser, queryWithUser } from "./auth";
 import { Resume } from "./tables/resume";
 
 export const create = mutationWithUser({
@@ -25,7 +25,11 @@ export const get = queryWithUser({
     if (!data) {
       throw new ConvexError("not found");
     }
-    return data;
+
+    return {
+      ...data,
+      ...(data.photo ? { photoUrl: await ctx.storage.getUrl(data.photo) } : {}),
+    };
   },
 });
 
@@ -74,5 +78,18 @@ export const list = queryWithUser({
       .query("resumes")
       .withIndex("byUserId", (q) => q.eq("userId", ctx.user))
       .collect();
+  },
+});
+
+export const generateUploadUrl = mutationWithUser(async (ctx) => {
+  return await ctx.storage.generateUploadUrl();
+});
+
+export const sendImage = mutationWithUser({
+  args: { storageId: v.id("_storage"), id: v.id("resumes") },
+  handler: async (ctx, args) => {
+    await ctx.db.patch(args.id, {
+      photo: args.storageId,
+    });
   },
 });
