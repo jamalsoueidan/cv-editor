@@ -147,8 +147,13 @@ export const usePhotoEditor = ({
         const translateY = (imgElement.height - zoomedHeight) / 2;
 
         // Set canvas dimensions to match the image.
-        canvas.width = imgElement.width;
-        canvas.height = imgElement.height;
+        const targetHeight = 300;
+        const aspectRatio = imgElement.width / imgElement.height;
+        const targetWidth = targetHeight * aspectRatio;
+
+        // Set canvas dimensions to the target size
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
 
         // Clear the canvas before drawing the updated image.
         context.clearRect(0, 0, canvas.width, canvas.height);
