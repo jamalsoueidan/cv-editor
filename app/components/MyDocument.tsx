@@ -26,7 +26,7 @@ Font.register({
 });
 
 const styles = StyleSheet.create({
-  page: { fontFamily: "Open Sans" },
+  page: { fontFamily: "Open Sans", fontSize: 12 },
   section: {
     backgroundColor: "tomato",
   },
@@ -169,7 +169,7 @@ export const MyDocument = ({
                 </Text>
               </View>
               {data.workExperiences.map((workExperience, index) => (
-                <View key={index} style={{ marginTop: 12 }}>
+                <View key={index}>
                   <Text style={{ fontFamily: "Open Sans", fontWeight: "bold" }}>
                     {workExperience.position}
                     {workExperience.position && workExperience.company
@@ -183,7 +183,7 @@ export const MyDocument = ({
                   </Text>
 
                   {workExperience.startDate || workExperience.endDate ? (
-                    <Text style={{ color: "#666" }}>
+                    <Text style={{ color: "#666", fontSize: 10 }}>
                       {workExperience.startDate
                         ? dayjs(workExperience.startDate).format("MMM YYYY")
                         : null}
@@ -197,7 +197,9 @@ export const MyDocument = ({
                     </Text>
                   ) : null}
                   {workExperience.description ? (
-                    <EditorHTML content={workExperience.description} />
+                    <View style={{ marginTop: 4 }}>
+                      <EditorHTML content={workExperience.description} />
+                    </View>
                   ) : null}
                 </View>
               ))}

@@ -40,7 +40,7 @@ export function EditorHTML({ content }: { content: string }) {
         },
       }}
     >
-      {`<html><body><style>body { font-size: 14px; } ul,ol { margin: 12px; } </style>` +
+      {`<html><body><style>body { font-size: 12px; } ul,ol { margin: 12px; } </style>` +
         content +
         "</body></html>"}
     </Html>
