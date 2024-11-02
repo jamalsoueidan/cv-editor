@@ -27,8 +27,8 @@ export const PDFViewer = ({
 }: {
   data: FunctionReturnType<typeof api.resumes.get>;
 }) => {
-  const { width, height } = useViewportSize();
-  console.log(height);
+  const { height } = useViewportSize();
+
   const [numPages, setNumPages] = useState<number | null>(null);
 
   const [currentPage, setCurrentPage] = useState(1);
