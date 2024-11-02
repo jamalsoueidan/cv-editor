@@ -8,7 +8,7 @@ import {
   Title,
   UnstyledButton,
 } from "@mantine/core";
-import { Link } from "@remix-run/react";
+import { Link, useNavigate } from "@remix-run/react";
 import { api } from "convex/_generated/api";
 import { useMutation, useQuery } from "convex/react";
 import { useState } from "react";
@@ -19,12 +19,12 @@ export function FrontPage() {
   const resumes = useQuery(api.resumes.list);
   const create = useMutation(api.resumes.create);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const onCreate = async () => {
     setLoading(true);
     const response = await create({ title: "Untitled" });
-    console.log(response);
-    setLoading(false);
+    navigate(`/resumes/${response}`);
   };
 
   const resumeMarkup = resumes?.map((resume) => (
@@ -45,15 +45,15 @@ export function FrontPage() {
   return (
     <Stack gap="xl">
       <Stack>
-        <Title ta="center">Vælg din CV</Title>
+        <Title ta="center">Vælg dit CV</Title>
 
         <Flex justify="center">
           <Group>
             <Text ta="center" c="gray.6">
-              Du kan også vælge at oprette en ny.
+              Du kan også vælge at ...
             </Text>
             <Button size="xs" onClick={onCreate} loading={loading}>
-              Opret ny
+              Opret ny cv!
             </Button>
           </Group>
         </Flex>

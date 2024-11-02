@@ -61,7 +61,11 @@ export const MyDocument = ({
             <Image src={data.photoUrl} style={styles.headerImage} />
           ) : null}
           <View
-            style={{ marginLeft: 4, backgroundColor: "orange", width: "100%" }}
+            style={{
+              backgroundColor: "orange",
+              width: "100%",
+              ...(data.photoUrl ? { marginLeft: 4 } : {}),
+            }}
           >
             <View style={{ marginLeft: 20, marginTop: 5, marginBottom: 10 }}>
               {data.firstname ? (
