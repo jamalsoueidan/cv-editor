@@ -11,6 +11,7 @@ export const Resume = Table("resumes", {
   country: v.optional(v.string()),
   city: v.optional(v.string()),
   content: v.optional(v.string()),
+  hobbies: v.optional(v.string()),
   photo: v.optional(v.id("_storage")),
   workExperiences: v.array(
     v.object({
@@ -23,6 +24,65 @@ export const Resume = Table("resumes", {
       description: v.optional(v.string()),
     })
   ),
+  educations: v.array(
+    v.object({
+      key: v.string(),
+      school: v.optional(v.string()),
+      degree: v.optional(v.string()),
+      startDate: v.optional(v.number()),
+      endDate: v.optional(v.number()),
+      city: v.optional(v.string()),
+      description: v.optional(v.string()),
+    })
+  ),
+  socialProfiles: v.array(
+    v.object({
+      key: v.string(),
+      label: v.string(),
+      url: v.string(),
+    })
+  ),
+  socialProfilesVisible: v.boolean(),
+  languages: v.array(
+    v.object({
+      key: v.string(),
+      language: v.string(),
+      level: v.string(),
+    })
+  ),
+  languagesVisible: v.boolean(),
+  references: v.array(
+    v.object({
+      key: v.string(),
+      fullname: v.string(),
+      company: v.string(),
+      phone: v.string(),
+      email: v.string(),
+    })
+  ),
+  referencesVisible: v.boolean(),
+  courses: v.array(
+    v.object({
+      key: v.string(),
+      institution: v.string(),
+      source: v.string(),
+      startDate: v.optional(v.number()),
+      endDate: v.optional(v.number()),
+    })
+  ),
+  coursesVisible: v.boolean(),
+  internships: v.array(
+    v.object({
+      key: v.string(),
+      position: v.optional(v.string()),
+      company: v.optional(v.string()),
+      startDate: v.optional(v.number()),
+      endDate: v.optional(v.number()),
+      city: v.optional(v.string()),
+      description: v.optional(v.string()),
+    })
+  ),
+  internshipsVisible: v.boolean(),
   updatedTime: v.number(),
   userId: v.id("users"),
 });
