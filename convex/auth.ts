@@ -8,9 +8,20 @@ import {
 } from "convex-helpers/server/customFunctions";
 import { ConvexError } from "convex/values";
 import { action, mutation, query } from "./_generated/server";
+import { MutationCtx } from "./_generated/server.d";
 
 export const { auth, signIn, signOut, store } = convexAuth({
   providers: [Linkedin],
+  callbacks: {
+    async afterUserCreatedOrUpdated(ctx: MutationCtx, { userId }) {
+      await ctx.db.insert("resumes", {
+        userId,
+        title: "Untitled",
+        workExperiences: [],
+        updatedTime: Date.now(),
+      });
+    },
+  },
 });
 
 export const mutationWithUser = customMutation(
