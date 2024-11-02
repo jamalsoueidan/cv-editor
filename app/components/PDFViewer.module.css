@@ -1,0 +1,13 @@
+.previousDocument {
+  canvas {
+    opacity: 0.5;
+  }
+}
+
+.renderingDocument {
+  position: absolute;
+
+  .react-pdf__Page {
+    box-shadow: none;
+  }
+}

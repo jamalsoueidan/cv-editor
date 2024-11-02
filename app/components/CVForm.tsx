@@ -15,7 +15,7 @@ import {
 } from "@mantine/core";
 import { MonthPickerInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
-import { randomId } from "@mantine/hooks";
+import { randomId, useDebouncedCallback } from "@mantine/hooks";
 import { Link } from "@remix-run/react";
 
 import { api } from "convex/_generated/api";
@@ -33,16 +33,21 @@ export function CVForm({
 }) {
   const patch = useMutation(api.resumes.update);
 
+  const save = useDebouncedCallback(
+    async (values: FunctionReturnType<typeof api.resumes.get>) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { _creationTime, userId, updatedTime, photoUrl, ...rest } = values;
+      patch(rest);
+    },
+    500
+  );
+
   const form = useForm({
     mode: "uncontrolled",
     initialValues: data,
     onValuesChange(values) {
       if (data) {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { _creationTime, userId, updatedTime, photoUrl, ...rest } =
-          values;
-
-        patch(rest);
+        save(values);
       }
     },
   });

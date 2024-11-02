@@ -22,6 +22,7 @@ import "@mantine/dates/styles.css";
 import "@mantine/tiptap/styles.css";
 import { ConvexReactClient } from "convex/react";
 import { useState } from "react";
+
 import classes from "./Input.module.css";
 export const links: LinksFunction = () => [];
 

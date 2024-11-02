@@ -6,7 +6,7 @@ import { useQuery } from "convex/react";
 import { FaArrowLeft } from "react-icons/fa";
 import { ClientOnly } from "remix-utils/client-only";
 import { CVForm } from "~/components/CVForm";
-import { PDFViewerWithNoSSR } from "~/components/PDFViewerWithNoSSR";
+import { PDFViewer } from "~/components/PDFViewer";
 
 export default function Test() {
   const params = useParams();
@@ -41,8 +41,9 @@ export default function Test() {
           pos="sticky"
           top="0"
           visibleFrom="md"
+          p="md"
         >
-          <ClientOnly>{() => <PDFViewerWithNoSSR data={data} />}</ClientOnly>
+          <ClientOnly>{() => <PDFViewer data={data} />}</ClientOnly>
         </Grid.Col>
       </Grid>
       <Modal opened={!!outlet} onClose={() => navigate("./")}>

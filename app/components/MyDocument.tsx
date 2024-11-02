@@ -49,7 +49,7 @@ export const MyDocument = ({
 }) => {
   return (
     <Document style={{ padding: 0, margin: 0 }}>
-      <Page size="A4" style={styles.page}>
+      <Page size="A4" style={styles.page} wrap>
         <View
           style={{
             flexDirection: "row",
@@ -169,7 +169,7 @@ export const MyDocument = ({
                 </Text>
               </View>
               {data.workExperiences.map((workExperience, index) => (
-                <View key={index}>
+                <View key={index} style={{ marginBottom: 12 }} wrap>
                   <Text style={{ fontFamily: "Open Sans", fontWeight: "bold" }}>
                     {workExperience.position}
                     {workExperience.position && workExperience.company

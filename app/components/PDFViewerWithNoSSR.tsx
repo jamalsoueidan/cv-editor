@@ -2,10 +2,11 @@ import { usePDF } from "@react-pdf/renderer";
 
 import { Document, Page, pdfjs } from "react-pdf";
 
-import { Button, Card, Flex, Text } from "@mantine/core";
+import { Button, Card, Flex, Group, Text } from "@mantine/core";
 import { api } from "convex/_generated/api";
 import { FunctionReturnType } from "convex/server";
 import { useEffect, useState } from "react";
+import { FaDownload, FaSearchLocation } from "react-icons/fa";
 import { DocumentCallback } from "react-pdf/dist/esm/shared/types.js";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
@@ -58,9 +59,25 @@ export const PDFViewerWithNoSSR = ({
       w="100%"
       h="100%"
     >
-      <Button href={instance.url || ""} component="a" download="cv.pdf">
-        Download (PDF)
-      </Button>
+      <Group justify="space-between" w="100%">
+        <Button
+          variant="transparent"
+          href={instance.url || ""}
+          component="a"
+          download="cv.pdf"
+          leftSection={<FaSearchLocation />}
+        >
+          Skift skabelon
+        </Button>
+        <Button
+          href={instance.url || ""}
+          component="a"
+          download="cv.pdf"
+          leftSection={<FaDownload />}
+        >
+          Download (PDF)
+        </Button>
+      </Group>
 
       <Card withBorder shadow="sm" p="0">
         <Document file={instance.url} onLoadSuccess={onDocumentLoadSuccess}>
