@@ -1,0 +1,11 @@
+.input {
+  border: calc(0.0625rem * var(--mantine-scale)) solid transparent;
+  text-align: center;
+  font-weight: bold;
+  font-size: var(--mantine-h1-font-weight);
+  &[data-floating] {
+    &::placeholder {
+      color: var(--mantine-color-placeholder);
+    }
+  }
+}

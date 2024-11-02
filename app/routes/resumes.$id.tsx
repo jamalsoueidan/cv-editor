@@ -37,7 +37,7 @@ export default function Test() {
         <Grid.Col
           span={6}
           h="100vh"
-          bg="gray.1"
+          bg="gray.6"
           pos="sticky"
           top="0"
           visibleFrom="md"

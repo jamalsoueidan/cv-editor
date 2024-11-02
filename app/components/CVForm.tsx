@@ -21,7 +21,9 @@ import { Link } from "@remix-run/react";
 import { api } from "convex/_generated/api";
 import { useMutation } from "convex/react";
 import { FunctionReturnType } from "convex/server";
-import { FaTrash } from "react-icons/fa";
+import { useState } from "react";
+import { FaEdit, FaTrash } from "react-icons/fa";
+import classes from "./CVForm.module.css";
 import { EditorInput } from "./EditorInput";
 
 export function CVForm({
@@ -146,12 +148,26 @@ export function CVForm({
       );
     });
 
+  const [focused, setFocused] = useState(false);
+
   return (
     <form>
       <Stack gap={rem(50)}>
-        <Title order={3} ta="center" fw="500">
-          {data?.title}
-        </Title>
+        <Flex justify="center">
+          <TextInput
+            classNames={classes}
+            {...form.getInputProps("title")}
+            onFocus={() => setFocused(true)}
+            onBlur={() => setFocused(false)}
+            autoComplete="nope"
+            data-floating={focused}
+            rightSection={<FaEdit />}
+            style={{
+              width: "fit-content",
+              minWidth: `${1.65 * data.title.length}ch`,
+            }}
+          />
+        </Flex>
 
         <Stack>
           <Flex direction="column">

@@ -30,7 +30,7 @@ export function FrontPage() {
   const resumeMarkup = resumes?.map((resume) => (
     <Carousel.Slide key={resume._id}>
       <Flex direction="column" align="center" gap="xs">
-        <Title order={3} c="gray.6" fw="500">
+        <Title order={4} c="gray.6" fw="500">
           {resume.title}
         </Title>
         <UnstyledButton component={Link} to={`/resumes/${resume._id}`}>
