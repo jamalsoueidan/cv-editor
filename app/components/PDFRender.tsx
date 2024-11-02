@@ -19,8 +19,8 @@ export const PDFRender = ({
   width,
 }: {
   data: FunctionReturnType<typeof api.resumes.get>;
-  width?: number | string;
-  height?: number | string;
+  width?: number;
+  height?: number;
 }) => {
   const [, setNumPages] = useState<null | number>(null);
   const [instance] = usePDF({
