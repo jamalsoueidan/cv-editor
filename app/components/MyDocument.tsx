@@ -9,6 +9,7 @@ import {
 } from "@react-pdf/renderer";
 import { api } from "convex/_generated/api";
 import { FunctionReturnType } from "convex/server";
+import dayjs from "dayjs";
 import { HtmlElement } from "node_modules/react-pdf-html/dist/types/parse";
 import Html from "react-pdf-html";
 
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
     backgroundColor: "tomato",
   },
   headerImage: {
-    height: 150,
+    width: 180,
   },
   title: {
     fontSize: 14,
@@ -53,6 +54,7 @@ export const MyDocument = ({
         <View
           style={{
             flexDirection: "row",
+            maxHeight: 150,
           }}
         >
           {data.photoUrl ? (
@@ -62,24 +64,28 @@ export const MyDocument = ({
             style={{ marginLeft: 4, backgroundColor: "orange", width: "100%" }}
           >
             <View style={{ marginLeft: 20, marginTop: 5, marginBottom: 10 }}>
-              <Text
-                style={{
-                  fontSize: 32,
-                  lineHeight: 1.2,
-                }}
-              >
-                {data.firstname?.toUpperCase() || "Firstname"}
-              </Text>
-              <Text
-                style={{
-                  fontSize: 32,
-                }}
-              >
-                {data.lastname?.toUpperCase() || "Lastname"}
-              </Text>
-              <Text style={styles.title}>
-                {data.position || "Frontend Developer"}
-              </Text>
+              {data.firstname ? (
+                <Text
+                  style={{
+                    fontSize: 32,
+                    ...(data.lastname ? { lineHeight: 1.2 } : {}),
+                  }}
+                >
+                  {data.firstname.toUpperCase()}
+                </Text>
+              ) : null}
+              {data.lastname ? (
+                <Text
+                  style={{
+                    fontSize: 32,
+                  }}
+                >
+                  {data.lastname.toUpperCase()}
+                </Text>
+              ) : null}
+              {data.position ? (
+                <Text style={styles.title}>{data.position}</Text>
+              ) : null}
               <Text style={styles.link}>
                 https://www.medium.com/@jamalsoueidan
               </Text>
@@ -96,25 +102,33 @@ export const MyDocument = ({
             fontSize: 12,
           }}
         >
-          <View style={{ marginBottom: 25 }}>
-            <View style={{ flexDirection: "row" }}>
-              <Text
-                style={{
-                  backgroundColor: "black",
-                  color: "white",
-                  paddingLeft: 6,
-                  paddingRight: 6,
-                  paddingBottom: 4,
-                  marginBottom: 8,
-                }}
-              >
-                DETAILS
-              </Text>
+          {data.city || data.country || data.email || data.phone ? (
+            <View style={{ marginBottom: 25 }}>
+              <View style={{ flexDirection: "row" }}>
+                <Text
+                  style={{
+                    backgroundColor: "black",
+                    color: "white",
+                    paddingLeft: 6,
+                    paddingRight: 6,
+                    paddingBottom: 4,
+                    marginBottom: 8,
+                  }}
+                >
+                  DETALJER
+                </Text>
+              </View>
+              {data.city || data.country ? (
+                <Text>
+                  {data.city ? data.city : null}
+                  {data.city && data.country ? ", " : null}
+                  {data.country}
+                </Text>
+              ) : null}
+              {data.email ? <Text>{data.email}</Text> : null}
+              {data.phone ? <Text>{data.phone}</Text> : null}
             </View>
-            <Text>Aarhus, Denmark</Text>
-            <Text>jamal@soueidan.com</Text>
-            <Text>+45 3131 7428</Text>
-          </View>
+          ) : null}
 
           <View style={{ marginBottom: 25 }}>
             <View style={{ flexDirection: "row" }}>
@@ -179,6 +193,52 @@ export const MyDocument = ({
               </Html>
             ) : null}
           </View>
+          {data.workExperiences.length > 0 ? (
+            <View style={{ marginBottom: 25 }}>
+              <View style={{ flexDirection: "row" }}>
+                <Text
+                  style={{
+                    backgroundColor: "black",
+                    color: "white",
+                    paddingLeft: 6,
+                    paddingRight: 6,
+                    paddingBottom: 4,
+                    marginBottom: 8,
+                  }}
+                >
+                  ANSÆTTELSESHISTORIK
+                </Text>
+              </View>
+              {data.workExperiences.map((workExperience, index) => (
+                <View key={index}>
+                  <Text style={{ fontFamily: "Open Sans", fontWeight: "bold" }}>
+                    {workExperience.position}
+                    {workExperience.position && workExperience.company
+                      ? ", "
+                      : null}
+                    {workExperience.company}
+                    {workExperience.company && workExperience.city
+                      ? ", "
+                      : null}
+                    {workExperience.city}
+                  </Text>
+
+                  {workExperience.startDate || workExperience.endDate ? (
+                    <Text style={{ color: "#666" }}>
+                      {dayjs(workExperience.startDate).format("MMM YYYY")}
+                      {workExperience.startDate && workExperience.endDate
+                        ? " - "
+                        : null}
+                      {dayjs(workExperience.endDate).format("MMM YYYY")}
+                    </Text>
+                  ) : null}
+                  {workExperience.description ? (
+                    <Text>{workExperience.description}</Text>
+                  ) : null}
+                </View>
+              ))}
+            </View>
+          ) : null}
         </View>
       </Page>
     </Document>

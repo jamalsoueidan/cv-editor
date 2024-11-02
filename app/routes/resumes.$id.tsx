@@ -1,8 +1,9 @@
-import { Grid, Modal } from "@mantine/core";
+import { ActionIcon, Grid, Modal } from "@mantine/core";
 import { Outlet, useNavigate, useOutlet, useParams } from "@remix-run/react";
 import { api } from "convex/_generated/api";
 import { Id } from "convex/_generated/dataModel";
 import { useQuery } from "convex/react";
+import { FaArrowLeft } from "react-icons/fa";
 import { ClientOnly } from "remix-utils/client-only";
 import { CVForm } from "~/components/CVForm";
 import { PDFViewerWithNoSSR } from "~/components/PDFViewerWithNoSSR";
@@ -22,6 +23,16 @@ export default function Test() {
       <Grid gutter="0">
         <Grid.Col span={6} p="xl">
           <CVForm data={data} />
+          <ActionIcon
+            variant="light"
+            pos="absolute"
+            size="lg"
+            top="1rem"
+            left="2rem"
+            onClick={() => navigate("../")}
+          >
+            <FaArrowLeft />
+          </ActionIcon>
         </Grid.Col>
         <Grid.Col span={6} h="100vh" bg="gray.1" pos="sticky" top="0">
           <ClientOnly>{() => <PDFViewerWithNoSSR data={data} />}</ClientOnly>

@@ -11,6 +11,7 @@ export const create = mutationWithUser({
     return ctx.db.insert("resumes", {
       title: args.title,
       updatedTime: Date.now(),
+      workExperiences: [],
       userId: ctx.user,
     });
   },

@@ -13,6 +13,7 @@ export default function Upload() {
   }>();
   const generateUploadUrl = useMutation(api.resumes.generateUploadUrl);
   const sendImage = useMutation(api.resumes.sendImage);
+  const [saving, setSaving] = useState(false);
 
   const [file, setFile] = useState<File>();
 
@@ -40,6 +41,7 @@ export default function Upload() {
 
   const saveCanvasImage = async () => {
     if (canvasRef.current) {
+      setSaving(true);
       const blob = await generateEditedFile();
       const postUrl = await generateUploadUrl();
 
@@ -62,6 +64,7 @@ export default function Upload() {
           console.error("Error saving image:", error);
         }
       }
+      setSaving(false);
     }
   };
 
@@ -135,7 +138,9 @@ export default function Upload() {
 
       <Group justify="space-between" mt="xl">
         <Button onClick={resetFilters}>Reset</Button>
-        <Button onClick={saveCanvasImage}>Save</Button>
+        <Button onClick={saveCanvasImage} loading={saving}>
+          Save
+        </Button>
       </Group>
     </Box>
   );

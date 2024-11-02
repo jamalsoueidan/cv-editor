@@ -142,8 +142,7 @@ export const usePhotoEditor = ({
     imgElement.onload = () => {
       if (canvas && context) {
         const targetHeight = 300;
-        const aspectRatio = imgElement.width / imgElement.height;
-        const targetWidth = targetHeight * aspectRatio;
+        const targetWidth = 300;
 
         const zoomedWidth = targetWidth * zoom;
         const zoomedHeight = targetHeight * zoom;
