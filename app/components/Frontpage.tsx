@@ -60,8 +60,8 @@ export function FrontPage() {
       </Stack>
 
       <Carousel
-        withIndicators={resumes && resumes.length >= 3}
-        withControls={resumes && resumes.length >= 3}
+        withIndicators={resumes && resumes.length >= 2}
+        withControls={resumes && resumes.length >= 2}
         height={600}
         slideSize={{
           base: "100%",
