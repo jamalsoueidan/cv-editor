@@ -1,4 +1,4 @@
-import { ActionIcon, Grid, Modal } from "@mantine/core";
+import { ActionIcon, Grid, Modal, rem } from "@mantine/core";
 import { Outlet, useNavigate, useOutlet, useParams } from "@remix-run/react";
 import { api } from "convex/_generated/api";
 import { Id } from "convex/_generated/dataModel";
@@ -21,7 +21,7 @@ export default function Test() {
   return (
     <>
       <Grid gutter="0">
-        <Grid.Col span={6} p="xl">
+        <Grid.Col span={{ base: 12, md: 6 }} p={{ base: "xl", md: rem(60) }}>
           <CVForm data={data} />
           <ActionIcon
             variant="light"
@@ -34,7 +34,14 @@ export default function Test() {
             <FaArrowLeft />
           </ActionIcon>
         </Grid.Col>
-        <Grid.Col span={6} h="100vh" bg="gray.1" pos="sticky" top="0">
+        <Grid.Col
+          span={6}
+          h="100vh"
+          bg="gray.1"
+          pos="sticky"
+          top="0"
+          visibleFrom="md"
+        >
           <ClientOnly>{() => <PDFViewerWithNoSSR data={data} />}</ClientOnly>
         </Grid.Col>
       </Grid>
