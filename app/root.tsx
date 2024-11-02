@@ -11,19 +11,40 @@ import {
 
 import { ConvexAuthProvider } from "@convex-dev/auth/react";
 import "@mantine/carousel/styles.css";
-import { ColorSchemeScript, MantineProvider } from "@mantine/core";
+import {
+  ColorSchemeScript,
+  createTheme,
+  Input,
+  MantineProvider,
+} from "@mantine/core";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
 import "@mantine/tiptap/styles.css";
 import { ConvexReactClient } from "convex/react";
 import { useState } from "react";
-
+import classes from "./Input.module.css";
 export const links: LinksFunction = () => [];
 
 export async function loader() {
   const CONVEX_URL = process.env["CONVEX_URL"]!;
   return json({ ENV: { CONVEX_URL } });
 }
+
+const theme = createTheme({
+  components: {
+    Input: Input.extend({
+      classNames: {
+        input: classes.input,
+      },
+    }),
+
+    InputWrapper: Input.Wrapper.extend({
+      classNames: {
+        label: classes.label,
+      },
+    }),
+  },
+});
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const { ENV } = useLoaderData<typeof loader>();
@@ -39,7 +60,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <ColorSchemeScript />
       </head>
       <body>
-        <MantineProvider>
+        <MantineProvider theme={theme}>
           <ConvexAuthProvider client={convex}>{children}</ConvexAuthProvider>
         </MantineProvider>
         <ScrollRestoration />

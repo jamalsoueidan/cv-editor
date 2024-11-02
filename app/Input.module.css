@@ -1,0 +1,12 @@
+.label {
+  color: var(--mantine-color-gray-6);
+}
+
+.input {
+  transition: none;
+
+  &:focus-within {
+    border-color: transparent;
+    border-bottom: 2px solid var(--mantine-color-blue-filled);
+  }
+}

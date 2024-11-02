@@ -10,8 +10,7 @@ import {
 import { api } from "convex/_generated/api";
 import { FunctionReturnType } from "convex/server";
 import dayjs from "dayjs";
-import { HtmlElement } from "node_modules/react-pdf-html/dist/types/parse";
-import Html from "react-pdf-html";
+import { EditorHTML } from "./pdf/EditorHTML";
 
 Font.register({
   family: "Open Sans",
@@ -150,50 +149,7 @@ export const MyDocument = ({
                 </Text>
               </View>
 
-              <Html
-                resetStyles
-                renderers={{
-                  //https://github.com/danomatic/react-pdf-html/issues/51#issuecomment-2173007044
-                  li: ({ element, children }) => {
-                    const list = element.closest("ol, ul") as HtmlElement;
-                    const isOrderedList =
-                      list?.tag === "ol" || element.parentNode.tag === "ol";
-
-                    return (
-                      <View
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                        }}
-                      >
-                        <View>
-                          <Text>
-                            {isOrderedList
-                              ? `${element.indexOfType + 1}. `
-                              : "• "}
-                          </Text>
-                        </View>
-                        <View>
-                          <Text>{children}</Text>
-                        </View>
-                      </View>
-                    );
-                  },
-                  strong: ({ children }) => {
-                    return (
-                      <Text
-                        style={{ fontFamily: "Open Sans", fontWeight: "bold" }}
-                      >
-                        {children}
-                      </Text>
-                    );
-                  },
-                }}
-              >
-                {`<html><body><style>body { font-size: 14px; } ul,ol { margin: 12px; } </style>` +
-                  data.content +
-                  "</body></html>"}
-              </Html>
+              <EditorHTML content={data.content} />
             </View>
           ) : null}
           {data.workExperiences.length > 0 ? (
@@ -213,7 +169,7 @@ export const MyDocument = ({
                 </Text>
               </View>
               {data.workExperiences.map((workExperience, index) => (
-                <View key={index}>
+                <View key={index} style={{ marginTop: 12 }}>
                   <Text style={{ fontFamily: "Open Sans", fontWeight: "bold" }}>
                     {workExperience.position}
                     {workExperience.position && workExperience.company
@@ -236,7 +192,7 @@ export const MyDocument = ({
                     </Text>
                   ) : null}
                   {workExperience.description ? (
-                    <Text>{workExperience.description}</Text>
+                    <EditorHTML content={workExperience.description} />
                   ) : null}
                 </View>
               ))}

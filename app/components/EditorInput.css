@@ -1,0 +1,11 @@
+.ProseMirror {
+  background-color: var(--mantine-color-gray-1);
+  border: 0px;
+
+  p {
+    font-size: var(--mantine-font-size-md);
+    line-height: var(--mantine-spacing-lg);
+    margin: 0;
+    padding: 0;
+  }
+}

@@ -16,15 +16,13 @@ import {
 import { MonthPickerInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { randomId } from "@mantine/hooks";
-import { RichTextEditor, Link as RTELink } from "@mantine/tiptap";
 import { Link } from "@remix-run/react";
 
-import { useEditor } from "@tiptap/react";
-import { StarterKit } from "@tiptap/starter-kit";
 import { api } from "convex/_generated/api";
 import { useMutation } from "convex/react";
 import { FunctionReturnType } from "convex/server";
 import { FaTrash } from "react-icons/fa";
+import { EditorInput } from "./EditorInput";
 
 export function CVForm({
   data,
@@ -42,32 +40,8 @@ export function CVForm({
         const { _creationTime, userId, updatedTime, photoUrl, ...rest } =
           values;
 
-        /*const workExperiences = values.workExperiences.map((workExperience) => {
-          return {
-            ...workExperience,
-            ...(workExperience.startDate
-              ? {
-                  startDate: new Date(workExperience.startDate).getTime(),
-                }
-              : {}),
-            ...(workExperience.endDate
-              ? {
-                  endDate: new Date(workExperience.endDate).getTime(),
-                }
-              : {}),
-          };
-        });*/
         patch(rest);
       }
-    },
-  });
-
-  const editor = useEditor({
-    extensions: [StarterKit, RTELink],
-    content: data.content,
-    onUpdate({ editor }) {
-      const content = editor.getHTML();
-      form.setFieldValue("content", content);
     },
   });
 
@@ -161,6 +135,11 @@ export function CVForm({
                   {...form.getInputProps(`workExperiences.${index}.city`)}
                 />
               </Flex>
+              <EditorInput
+                label="Beskrivelse"
+                description="Ansættelseschefers tip: Skriv 200+ tegn for at øge dine chancer for at blive inviteret til jobsamtale"
+                {...form.getInputProps(`workExperiences.${index}.description`)}
+              />
             </Stack>
           </Accordion.Panel>
         </Accordion.Item>
@@ -173,19 +152,18 @@ export function CVForm({
         <Title order={3} ta="center" fw="500">
           {data?.title}
         </Title>
+
         <Stack>
           <Flex direction="column">
             <Title order={5} fw="500">
               Personlige detaljer
             </Title>
-            <Text c="dimmed" fz="sm">
-              Indtast din personlige detaljer.
-            </Text>
           </Flex>
           <Flex gap="xl">
             <TextInput
               label="Jobtitle"
               w="100%"
+              variant="filled"
               key={form.key("position")}
               {...form.getInputProps("position")}
             />
@@ -201,12 +179,14 @@ export function CVForm({
             <TextInput
               label="Fornavn"
               w="100%"
+              variant="filled"
               key={form.key("firstname")}
               {...form.getInputProps("firstname")}
             />
             <TextInput
               label="Efternavn"
               w="100%"
+              variant="filled"
               key={form.key("lastname")}
               {...form.getInputProps("lastname")}
             />
@@ -215,12 +195,14 @@ export function CVForm({
             <TextInput
               label="E-mail"
               w="100%"
+              variant="filled"
               key={form.key("email")}
               {...form.getInputProps("email")}
             />
             <TextInput
               label="Telefon"
               w="100%"
+              variant="filled"
               key={form.key("phone")}
               {...form.getInputProps("phone")}
             />{" "}
@@ -229,12 +211,14 @@ export function CVForm({
             <TextInput
               label="Land"
               w="100%"
+              variant="filled"
               key={form.key("country")}
               {...form.getInputProps("country")}
             />
             <TextInput
               label="By"
               w="100%"
+              variant="filled"
               key={form.key("city")}
               {...form.getInputProps("city")}
             />
@@ -249,31 +233,12 @@ export function CVForm({
               Skriv 2 til 3 sætninger om din samlede erfaring
             </Text>
           </Flex>
-          <RichTextEditor editor={editor}>
-            <RichTextEditor.Toolbar sticky stickyOffset={60}>
-              <RichTextEditor.ControlsGroup>
-                <RichTextEditor.Bold />
-                <RichTextEditor.Italic />
-                <RichTextEditor.Underline />
-                <RichTextEditor.Strikethrough />
-              </RichTextEditor.ControlsGroup>
 
-              <RichTextEditor.ControlsGroup>
-                <RichTextEditor.BulletList />
-                <RichTextEditor.OrderedList />
-              </RichTextEditor.ControlsGroup>
-
-              <RichTextEditor.ControlsGroup>
-                <RichTextEditor.Link />
-              </RichTextEditor.ControlsGroup>
-            </RichTextEditor.Toolbar>
-
-            <RichTextEditor.Content />
-          </RichTextEditor>
-          <Text fz="sm" mt="-10px">
-            Ansættelseschefens tip: Skriv 400-600 tegn for at øge dine chancer
-            for at blive inviteret til jobsamtale
-          </Text>
+          <EditorInput
+            description="Ansættelseschefens tip: Skriv 400-600 tegn for at øge dine chancer
+            for at blive inviteret til jobsamtale"
+            {...form.getInputProps("content")}
+          />
         </Stack>
         <Stack>
           <Flex direction="column">
