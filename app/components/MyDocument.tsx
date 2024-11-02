@@ -184,11 +184,16 @@ export const MyDocument = ({
 
                   {workExperience.startDate || workExperience.endDate ? (
                     <Text style={{ color: "#666" }}>
-                      {dayjs(workExperience.startDate).format("MMM YYYY")}
+                      {workExperience.startDate
+                        ? dayjs(workExperience.startDate).format("MMM YYYY")
+                        : null}
                       {workExperience.startDate && workExperience.endDate
                         ? " - "
                         : null}
-                      {dayjs(workExperience.endDate).format("MMM YYYY")}
+
+                      {workExperience.endDate
+                        ? dayjs(workExperience.endDate).format("MMM YYYY")
+                        : null}
                     </Text>
                   ) : null}
                   {workExperience.description ? (
