@@ -21,7 +21,7 @@ export default function Test() {
   return (
     <>
       <Grid gutter="0">
-        <Grid.Col span={{ base: 12, md: 6 }} p={{ base: "xl", md: rem(60) }}>
+        <Grid.Col span={{ base: 12, md: 6 }} p={{ base: "xl", md: rem(40) }}>
           <CVForm data={data} />
           <ActionIcon
             variant="light"

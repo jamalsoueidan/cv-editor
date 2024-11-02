@@ -1,4 +1,5 @@
-import { ActionIcon, Button, Card, Flex, Group, Text } from "@mantine/core";
+import { ActionIcon, Button, Card, Flex, Loader, Text } from "@mantine/core";
+import { useViewportSize } from "@mantine/hooks";
 import { pdf } from "@react-pdf/renderer";
 import { api } from "convex/_generated/api";
 import { FunctionReturnType } from "convex/server";
@@ -7,7 +8,7 @@ import {
   FaArrowLeft,
   FaArrowRight,
   FaDownload,
-  FaSearchLocation,
+  FaThList,
 } from "react-icons/fa";
 import { Document, Page, pdfjs } from "react-pdf";
 import { DocumentCallback } from "react-pdf/dist/esm/shared/types.js";
@@ -26,6 +27,8 @@ export const PDFViewer = ({
 }: {
   data: FunctionReturnType<typeof api.resumes.get>;
 }) => {
+  const { width, height } = useViewportSize();
+  console.log(height);
   const [numPages, setNumPages] = useState<number | null>(null);
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -65,20 +68,14 @@ export const PDFViewer = ({
   const shouldShowPreviousDocument = !isFirstRendering && isBusy;
 
   return (
-    <Flex
-      direction="column"
-      align="center"
-      justify="center"
-      gap="xs"
-      w="100%"
-      h="100%"
-    >
-      <Group justify="space-between" w="100%">
+    <Flex direction="column" justify="center" align="center">
+      <Flex direction="row" justify="space-between" mb="lg" w="100%">
         <Button
           variant="transparent"
           component="a"
           download="cv.pdf"
-          leftSection={<FaSearchLocation />}
+          c="white"
+          leftSection={<FaThList />}
         >
           Skift skabelon
         </Button>
@@ -86,13 +83,17 @@ export const PDFViewer = ({
           href={render.value || ""}
           component="a"
           download="cv.pdf"
+          size="xs"
           leftSection={<FaDownload />}
         >
           Download (PDF)
         </Button>
-      </Group>
-      <Text hidden={!shouldShowTextLoader}>Rendering PDF...</Text>
-      <Card shadow="md" p="0">
+      </Flex>
+
+      <Text hidden={!shouldShowTextLoader}>
+        <Loader size="xl" />
+      </Text>
+      <Card radius="md" p="0" flex={1}>
         {shouldShowPreviousDocument && previousRenderValue ? (
           <Document
             key={previousRenderValue}
@@ -100,7 +101,11 @@ export const PDFViewer = ({
             file={previousRenderValue}
             loading={null}
           >
-            <Page key={currentPage} pageNumber={currentPage} />
+            <Page
+              key={currentPage}
+              pageNumber={currentPage}
+              height={height * 0.87}
+            />
           </Document>
         ) : null}
         <Document
@@ -116,6 +121,7 @@ export const PDFViewer = ({
             key={currentPage}
             pageNumber={currentPage}
             onRenderSuccess={() => setPreviousRenderValue(render.value)}
+            height={height * 0.87}
           />
         </Document>
       </Card>
