@@ -15,8 +15,12 @@ pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.vers
 
 export const PDFRender = ({
   data,
+  height,
+  width,
 }: {
   data: FunctionReturnType<typeof api.resumes.get>;
+  width?: number | string;
+  height?: number | string;
 }) => {
   const [, setNumPages] = useState<null | number>(null);
   const [instance] = usePDF({
@@ -41,14 +45,16 @@ export const PDFRender = ({
             key={renderedPageNumber}
             className="prevPage"
             pageNumber={renderedPageNumber}
-            width={250}
+            height={height}
+            width={width}
           />
         ) : null}
         <Page
           key={pageNumber}
           pageNumber={pageNumber}
           onRenderSuccess={() => setRenderedPageNumber(pageNumber)}
-          width={250}
+          height={height}
+          width={width}
         />
       </Document>
     </Card>

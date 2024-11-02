@@ -1,46 +1,79 @@
-import { Button, Card, Flex, Group, Tabs, Text, Title } from "@mantine/core";
-import { GiPapers } from "react-icons/gi";
-import { GoPlus } from "react-icons/go";
-import { ResumesList } from "~/components/ResumesList";
+import { Carousel } from "@mantine/carousel";
+import {
+  Button,
+  Flex,
+  Group,
+  Stack,
+  Text,
+  Title,
+  UnstyledButton,
+} from "@mantine/core";
+import { Link } from "@remix-run/react";
+import { api } from "convex/_generated/api";
+import { useMutation, useQuery } from "convex/react";
+import { useState } from "react";
+import { ClientOnly } from "remix-utils/client-only";
+import { PDFRender } from "./PDFRender";
 
 export function FrontPage() {
+  const resumes = useQuery(api.resumes.list);
+  const create = useMutation(api.resumes.create);
+  const [loading, setLoading] = useState(false);
+
+  const onCreate = async () => {
+    setLoading(true);
+    const response = await create({ title: "Untitled" });
+    console.log(response);
+    setLoading(false);
+  };
+
+  const resumeMarkup = resumes?.map((resume) => (
+    <Carousel.Slide key={resume._id}>
+      <Flex direction="column" align="center" gap="xs">
+        <Title order={3} c="gray.6" fw="500">
+          {resume.title}
+        </Title>
+        <UnstyledButton component={Link} to={`/resumes/${resume._id}`}>
+          <ClientOnly>
+            {() => <PDFRender data={resume} height={500} />}
+          </ClientOnly>
+        </UnstyledButton>
+      </Flex>
+    </Carousel.Slide>
+  ));
+
   return (
-    <>
-      <Card bg="blue.1" radius="lg" my="xl">
-        <Group>
-          <GiPapers size="5rem" />
-          <Flex direction="column" gap="xs">
-            <Title order={4} fw="400">
-              Opret dit cv
-            </Title>
-            <Text>Vi hjælper dig med at organisere din cv&apos;er online</Text>
-          </Flex>
-        </Group>
-      </Card>
+    <Stack gap="xl">
+      <Stack>
+        <Title ta="center">Vælg din CV</Title>
 
-      <Title order={3} mb="xs">
-        Dokumenter
-      </Title>
-
-      <Tabs defaultValue="resumes">
-        <Tabs.List>
-          <Tabs.Tab value="resumes">CV&apos;er</Tabs.Tab>
-          <Tabs.Tab value="coverletters">Ansøgninger</Tabs.Tab>
-          <Tabs.Tab value="account" ml="auto">
-            <Button size="compact-sm" leftSection={<GoPlus />} fw="500">
-              Opret ny(t)
+        <Flex justify="center">
+          <Group>
+            <Text ta="center" c="gray.6">
+              Du kan også vælge at oprette en ny.
+            </Text>
+            <Button size="xs" onClick={onCreate} loading={loading}>
+              Opret ny
             </Button>
-          </Tabs.Tab>
-        </Tabs.List>
+          </Group>
+        </Flex>
+      </Stack>
 
-        <Tabs.Panel value="resumes" mt="xl">
-          <ResumesList />
-        </Tabs.Panel>
-
-        <Tabs.Panel value="coverletters" mt="xl">
-          ...
-        </Tabs.Panel>
-      </Tabs>
-    </>
+      <Carousel
+        withIndicators={resumes && resumes.length >= 3}
+        withControls={resumes && resumes.length >= 3}
+        height={600}
+        slideSize={{
+          base: "100%",
+          sm: "50%",
+          md: "33.333333%",
+        }}
+        slideGap={{ base: 0, sm: "md" }}
+        loop
+        align={resumes && resumes.length >= 3 ? "start" : "center"}
+      >
+        {resumeMarkup}
+      </Carousel>
+    </Stack>
   );
 }

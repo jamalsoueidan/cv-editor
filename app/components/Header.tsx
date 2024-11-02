@@ -7,7 +7,7 @@ import { HeaderAccount } from "./HeaderAccount";
 export function Header() {
   return (
     <header className={classes.header}>
-      <Container className={classes.mainSection}>
+      <Container fluid className={classes.mainSection}>
         <Group justify="space-between">
           <Group>
             <FaBeer />

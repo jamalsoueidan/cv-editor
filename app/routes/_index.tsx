@@ -9,11 +9,11 @@ export default function Index() {
   return (
     <>
       <Header />
-      <Container>
-        <Authenticated>
-          <FrontPage />
-        </Authenticated>
 
+      <Authenticated>
+        <FrontPage />
+      </Authenticated>
+      <Container>
         <Unauthenticated>
           <Button onClick={() => void signIn("linkedin")}>
             Sign in with Linkedin

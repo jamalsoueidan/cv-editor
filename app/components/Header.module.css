@@ -3,5 +3,5 @@
   padding-bottom: var(--mantine-spacing-sm);
   border-bottom: rem(1px) solid
     light-dark(var(--mantine-color-gray-2), transparent);
-  margin-bottom: var(--mantine-spacing-lg);
+  margin-bottom: var(--mantine-spacing-xl);
 }

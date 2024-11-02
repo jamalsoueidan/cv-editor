@@ -129,24 +129,23 @@ export const MyDocument = ({
               {data.phone ? <Text>{data.phone}</Text> : null}
             </View>
           ) : null}
+          {data.content ? (
+            <View style={{ marginBottom: 25 }}>
+              <View style={{ flexDirection: "row" }}>
+                <Text
+                  style={{
+                    backgroundColor: "black",
+                    color: "white",
+                    paddingLeft: 6,
+                    paddingRight: 6,
+                    paddingBottom: 4,
+                    marginBottom: 8,
+                  }}
+                >
+                  PROFILE
+                </Text>
+              </View>
 
-          <View style={{ marginBottom: 25 }}>
-            <View style={{ flexDirection: "row" }}>
-              <Text
-                style={{
-                  backgroundColor: "black",
-                  color: "white",
-                  paddingLeft: 6,
-                  paddingRight: 6,
-                  paddingBottom: 4,
-                  marginBottom: 8,
-                }}
-              >
-                PROFILE
-              </Text>
-            </View>
-
-            {data.content ? (
               <Html
                 resetStyles
                 renderers={{
@@ -191,8 +190,8 @@ export const MyDocument = ({
                   data.content +
                   "</body></html>"}
               </Html>
-            ) : null}
-          </View>
+            </View>
+          ) : null}
           {data.workExperiences.length > 0 ? (
             <View style={{ marginBottom: 25 }}>
               <View style={{ flexDirection: "row" }}>
