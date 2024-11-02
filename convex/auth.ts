@@ -29,6 +29,13 @@ export const { auth, signIn, signOut, store } = convexAuth({
         coursesVisible: false,
         internships: [],
         internshipsVisible: false,
+        template: {
+          name: "Gaza",
+          color: "#ffe14c",
+          lineHeight: "1.5",
+          fontSize: "12",
+          fontFamily: "Arial",
+        },
         updatedTime: Date.now(),
       });
     },

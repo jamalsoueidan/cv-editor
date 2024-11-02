@@ -84,5 +84,12 @@ export const Resume = Table("resumes", {
   ),
   internshipsVisible: v.boolean(),
   updatedTime: v.number(),
+  template: v.object({
+    name: v.string(),
+    color: v.string(),
+    lineHeight: v.string(),
+    fontSize: v.string(),
+    fontFamily: v.string(),
+  }),
   userId: v.id("users"),
 });
