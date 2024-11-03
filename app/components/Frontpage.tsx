@@ -71,7 +71,7 @@ export function FrontPage() {
       <Carousel
         withIndicators={resumes && resumes.length >= 2}
         withControls={resumes && resumes.length >= 2}
-        height={520}
+        height={540}
         slideSize={{
           base: "60%",
           sm: "40%",
