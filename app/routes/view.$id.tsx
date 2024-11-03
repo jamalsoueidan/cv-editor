@@ -5,8 +5,9 @@ import { api } from "convex/_generated/api";
 import { Id } from "convex/_generated/dataModel";
 import { useQuery } from "convex/react";
 import { ClientOnly } from "remix-utils/client-only";
-
-import { Quds } from "~/components/templates/Quds";
+import { LANGUAGES } from "~/components/templates/locales";
+import { TEMPLATES } from "~/components/templates/templates";
+import "../view.css";
 
 export default function ResumesIdViewer() {
   const params = useParams();
@@ -16,12 +17,19 @@ export default function ResumesIdViewer() {
     return <>Loading data</>;
   }
 
+  const TemplateComponent = TEMPLATES[data.template.name.toLowerCase()];
+
+  const templateLanguage =
+    LANGUAGES[
+      data.templateLanguage ? data.templateLanguage.toLowerCase() : "en"
+    ];
+
   return (
     <Flex h="100vh">
       <ClientOnly>
         {() => (
           <PDFViewer height="100%" width="100%">
-            <Quds data={data} />
+            <TemplateComponent data={data} lang={templateLanguage} />
           </PDFViewer>
         )}
       </ClientOnly>
