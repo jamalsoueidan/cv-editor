@@ -25,6 +25,7 @@ export default function Index() {
       <Authenticated>
         <FrontPage />
       </Authenticated>
+
       <Container>
         <Unauthenticated>
           <Button onClick={() => void signIn("linkedin")}>

@@ -13,7 +13,7 @@ import { api } from "convex/_generated/api";
 import { useMutation, useQuery } from "convex/react";
 import { useState } from "react";
 import { ClientOnly } from "remix-utils/client-only";
-import { PDFRender } from "./PDFRender";
+import { PDFViewer } from "./PDFViewer";
 
 export function FrontPage() {
   const resumes = useQuery(api.resumes.list);
@@ -35,7 +35,16 @@ export function FrontPage() {
         </Title>
         <UnstyledButton component={Link} to={`/resumes/${resume._id}`}>
           <ClientOnly>
-            {() => <PDFRender data={resume} height={500} />}
+            {() => (
+              <PDFViewer
+                data={resume}
+                height={500}
+                withControls={false}
+                withPagning={false}
+                withBorder={true}
+                shadow="sm"
+              />
+            )}
           </ClientOnly>
         </UnstyledButton>
       </Flex>
