@@ -4,9 +4,7 @@ import {
   Image,
   Link,
   Page,
-  Rect,
   StyleSheet,
-  Svg,
   Text,
   View,
 } from "@react-pdf/renderer";
@@ -14,6 +12,7 @@ import { api } from "convex/_generated/api";
 import { FunctionReturnType } from "convex/server";
 import dayjs from "dayjs";
 import { EditorHTML } from "../pdf/EditorHTML";
+import { SvgBar } from "../pdf/SvgBar";
 import { TemplateLocale } from "./locales";
 
 Font.register({
@@ -311,42 +310,25 @@ export const Quds = ({
                   index % 2 === 0 && (
                     <View
                       key={index}
-                      style={{ flexDirection: "row", width: "100%" }}
+                      style={{
+                        flexDirection: "row",
+                        width: "100%",
+                        marginBottom: 9,
+                      }}
                     >
                       <View style={{ width: "50%" }}>
                         <Text style={{ marginBottom: 4 }}>
                           {data.skills[index].title}
                         </Text>
-                        <Svg width="250" height="5" viewBox="0 0 250 5">
-                          <Rect width="200" height="5" fill="black" />
-                          <Rect
-                            x="200"
-                            y="0"
-                            ry="15"
-                            width="50"
-                            height="5"
-                            fill="#eaeaea"
-                          />
-                        </Svg>
+                        <SvgBar level={data.skills[index].level} />
                       </View>
 
-                      {/* Check if there's a next skill to render */}
                       {data.skills[index + 1] && (
                         <View style={{ width: "50%" }}>
                           <Text style={{ marginBottom: 4 }}>
                             {data.skills[index + 1].title}
                           </Text>
-                          <Svg width="250" height="5" viewBox="0 0 250 5">
-                            <Rect width="200" height="5" fill="black" />
-                            <Rect
-                              x="200"
-                              y="0"
-                              ry="15"
-                              width="50"
-                              height="5"
-                              fill="#eaeaea"
-                            />
-                          </Svg>
+                          <SvgBar level={data.skills[index].level} />
                         </View>
                       )}
                     </View>

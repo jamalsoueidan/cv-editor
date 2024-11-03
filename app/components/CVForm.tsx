@@ -41,7 +41,7 @@ export function CVForm({
     async (values: FunctionReturnType<typeof api.resumes.get>) => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { _creationTime, userId, updatedTime, photoUrl, ...rest } = values;
-      console.log(values);
+
       patch(rest);
     },
     500
@@ -57,7 +57,9 @@ export function CVForm({
     },
   });
 
-  function AccordionControl(props: AccordionControlProps) {
+  function AccordionControl(
+    props: AccordionControlProps & { onDelete: () => void }
+  ) {
     return (
       <Center>
         <Accordion.Control {...props} />
@@ -65,7 +67,7 @@ export function CVForm({
           size="lg"
           variant="subtle"
           color="gray"
-          onClick={props.onClick}
+          onClick={props.onDelete}
           mr="sm"
         >
           <FaTrash size="1rem" />
@@ -80,7 +82,7 @@ export function CVForm({
       return (
         <Accordion.Item key={item.key} value={item.key}>
           <AccordionControl
-            onClick={() => form.removeListItem("employees", index)}
+            onDelete={() => form.removeListItem("employees", index)}
           >
             {item.position ? item.position : "(ikke angivet)"}
           </AccordionControl>
@@ -163,7 +165,7 @@ export function CVForm({
   const skills = form.getValues().skills.map((item, index) => {
     return (
       <Accordion.Item key={item.key} value={item.key}>
-        <AccordionControl onClick={() => form.removeListItem("skills", index)}>
+        <AccordionControl onDelete={() => form.removeListItem("skills", index)}>
           {item.title ? item.title : "(ikke angivet)"}
         </AccordionControl>
         <Accordion.Panel>
@@ -412,7 +414,7 @@ export function CVForm({
                   form.insertListItem("skills", {
                     key: randomId(),
                     title: "Kommunikationsegenskaber",
-                    level: 3,
+                    level: "3",
                   })
                 }
                 rightSection={<FaPlus />}
