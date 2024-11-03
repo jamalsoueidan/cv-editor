@@ -2,8 +2,11 @@ import {
   Document,
   Font,
   Image,
+  Link,
   Page,
+  Rect,
   StyleSheet,
+  Svg,
   Text,
   View,
 } from "@react-pdf/renderer";
@@ -205,6 +208,121 @@ export const Quds = ({
               ))}
             </View>
           ) : null}
+          {data.educations?.length > 0 ? (
+            <View style={{ marginBottom: 25 }}>
+              <View style={{ flexDirection: "row" }}>
+                <Text
+                  style={{
+                    backgroundColor: "black",
+                    color: "white",
+                    paddingLeft: 6,
+                    paddingRight: 6,
+                    paddingBottom: 4,
+                    marginBottom: 8,
+                  }}
+                >
+                  {lang.education.toUpperCase()}
+                </Text>
+              </View>
+              {data.educations?.map((education, index) => (
+                <View key={index} style={{ marginBottom: 12 }} wrap>
+                  <Text style={{ fontFamily: "Open Sans", fontWeight: "bold" }}>
+                    {education.degree}
+                    {education.degree && education.school ? ", " : null}
+                    {education.school}
+                    {education.school && education.city ? ", " : null}
+                    {education.city}
+                  </Text>
+
+                  {education.startDate || education.endDate ? (
+                    <Text style={{ color: "#666", fontSize: 10 }}>
+                      {education.startDate
+                        ? dayjs(education.startDate).format("MMM YYYY")
+                        : null}
+                      {education.startDate && education.endDate ? " - " : null}
+
+                      {education.endDate
+                        ? dayjs(education.endDate).format("MMM YYYY")
+                        : null}
+                    </Text>
+                  ) : null}
+                  {education.description ? (
+                    <View style={{ marginTop: 4 }}>
+                      <EditorHTML content={education.description} />
+                    </View>
+                  ) : null}
+                </View>
+              ))}
+            </View>
+          ) : null}
+          {data.socialProfiles?.length > 0 ? (
+            <View style={{ marginBottom: 25 }}>
+              <View style={{ flexDirection: "row" }}>
+                <Text
+                  style={{
+                    backgroundColor: "black",
+                    color: "white",
+                    paddingLeft: 6,
+                    paddingRight: 6,
+                    paddingBottom: 4,
+                    marginBottom: 8,
+                  }}
+                >
+                  {lang.links.toUpperCase()}
+                </Text>
+              </View>
+              {data.socialProfiles?.map((social, index) => (
+                <View
+                  key={index}
+                  style={{ flexDirection: "row", marginBottom: 12 }}
+                >
+                  <Link
+                    href={social.url}
+                    style={{
+                      fontFamily: "Open Sans",
+                      fontWeight: "bold",
+                      color: "black",
+                    }}
+                  >
+                    {social.label}
+                  </Link>
+                </View>
+              ))}
+            </View>
+          ) : null}
+
+          <View style={{ flexDirection: "row" }}>
+            <View style={{ width: "50%" }}>
+              <Text style={{ marginBottom: 4 }}>Docker</Text>
+              <Svg width="250" height="5" viewBox="0 0 250 5">
+                <Rect width="200" height="5" fill="black" />
+
+                <Rect
+                  x="200"
+                  y="0"
+                  ry="15"
+                  width="50"
+                  height="5"
+                  fill="#eaeaea"
+                />
+              </Svg>
+            </View>
+            <View style={{ width: "50%" }}>
+              <Text style={{ marginBottom: 4 }}>Docker</Text>
+              <Svg width="250" height="5" viewBox="0 0 250 5">
+                <Rect width="200" height="5" fill="black" />
+
+                <Rect
+                  x="200"
+                  y="0"
+                  ry="15"
+                  width="50"
+                  height="5"
+                  fill="#eaeaea"
+                />
+              </Svg>
+            </View>
+          </View>
         </View>
       </Page>
     </Document>

@@ -19,6 +19,8 @@ export const create = mutationWithUser({
       socialProfilesVisible: false,
       languages: [],
       languagesVisible: false,
+      skills: [],
+      skillsVisible: false,
       references: [],
       referencesVisible: false,
       courses: [],

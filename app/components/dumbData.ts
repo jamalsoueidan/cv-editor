@@ -69,15 +69,48 @@ export const dumbData: Data = {
     {
       key: "lang1",
       language: "English",
-      level: "Native",
+      level: "5",
     },
     {
       key: "lang2",
       language: "Spanish",
-      level: "Intermediate",
+      level: "4",
+    },
+    {
+      key: "lang2",
+      language: "Arabisk",
+      level: "3",
+    },
+    {
+      key: "lang2",
+      language: "Dansk",
+      level: "2",
     },
   ],
   languagesVisible: true,
+  skills: [
+    {
+      key: "lang1",
+      title: "React",
+      level: "5",
+    },
+    {
+      key: "lang2",
+      title: "Frontend",
+      level: "4",
+    },
+    {
+      key: "lang2",
+      title: "Backend",
+      level: "3",
+    },
+    {
+      key: "lang2",
+      title: "C#",
+      level: "2",
+    },
+  ],
+  skillsVisible: true,
   references: [
     {
       key: "ref1",

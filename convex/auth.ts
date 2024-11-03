@@ -23,6 +23,8 @@ export const { auth, signIn, signOut, store } = convexAuth({
         socialProfilesVisible: false,
         languages: [],
         languagesVisible: false,
+        skills: [],
+        skillsVisible: false,
         references: [],
         referencesVisible: false,
         courses: [],

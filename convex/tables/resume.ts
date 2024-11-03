@@ -51,6 +51,14 @@ export const Resume = Table("resumes", {
     })
   ),
   languagesVisible: v.boolean(),
+  skills: v.array(
+    v.object({
+      key: v.string(),
+      title: v.string(),
+      level: v.string(),
+    })
+  ),
+  skillsVisible: v.boolean(),
   references: v.array(
     v.object({
       key: v.string(),
