@@ -1,4 +1,12 @@
-import { ActionIcon, Button, Card, Flex, Loader, Text } from "@mantine/core";
+import {
+  ActionIcon,
+  Button,
+  Card,
+  Flex,
+  Group,
+  Loader,
+  Text,
+} from "@mantine/core";
 import { useViewportSize } from "@mantine/hooks";
 import { pdf } from "@react-pdf/renderer";
 import { Link } from "@remix-run/react";
@@ -9,6 +17,7 @@ import {
   FaArrowLeft,
   FaArrowRight,
   FaDownload,
+  FaEye,
   FaThList,
 } from "react-icons/fa";
 import { Document, Page, pdfjs } from "react-pdf";
@@ -16,8 +25,8 @@ import { DocumentCallback } from "react-pdf/dist/esm/shared/types.js";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 import * as reactUse from "react-use";
-import { MyDocument } from "./MyDocument";
 import classes from "./PDFViewer.module.css";
+import { Quds } from "./templates/Quds";
 const { useAsync } = reactUse;
 
 //https://github.com/diegomura/react-pdf-site/blob/master/src/components/Repl/PDFViewer.js#L81
@@ -47,7 +56,7 @@ export const PDFViewer = ({
   const render = useAsync(async () => {
     if (!data) return null;
 
-    const blob = await pdf(<MyDocument data={data} />).toBlob();
+    const blob = await pdf(<Quds data={data} />).toBlob();
     const url = URL.createObjectURL(blob);
 
     return url;
@@ -87,15 +96,25 @@ export const PDFViewer = ({
           >
             Skift skabelon
           </Button>
-          <Button
-            href={render.value || ""}
-            component="a"
-            download="cv.pdf"
-            size="xs"
-            leftSection={<FaDownload />}
-          >
-            Download (PDF)
-          </Button>
+          <Group gap="xs">
+            <Button
+              component={Link}
+              to="view"
+              size="xs"
+              leftSection={<FaEye />}
+            >
+              View (PDF)
+            </Button>
+            <Button
+              href={render.value || ""}
+              component="a"
+              download="cv.pdf"
+              size="xs"
+              leftSection={<FaDownload />}
+            >
+              Download (PDF)
+            </Button>
+          </Group>
         </Flex>
       ) : null}
 

@@ -7,7 +7,7 @@ import { pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 import * as reactUse from "react-use";
-import { MyDocument } from "~/components/MyDocument";
+import { Quds } from "~/components/templates/Quds";
 
 const { useAsync } = reactUse;
 
@@ -23,7 +23,7 @@ export const DownloadButton = ({
   const render = useAsync(async () => {
     if (!data) return null;
 
-    const blob = await pdf(<MyDocument data={data} />).toBlob();
+    const blob = await pdf(<Quds data={data} />).toBlob();
     const url = URL.createObjectURL(blob);
 
     return url;

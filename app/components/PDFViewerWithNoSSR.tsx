@@ -10,7 +10,7 @@ import { FaDownload, FaSearchLocation } from "react-icons/fa";
 import { DocumentCallback } from "react-pdf/dist/esm/shared/types.js";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
-import { MyDocument } from "./MyDocument";
+import { Quds } from "./templates/Quds";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.mjs`;
 
@@ -21,7 +21,7 @@ export const PDFViewerWithNoSSR = ({
 }) => {
   const [numPages, setNumPages] = useState<null | number>(null);
   const [instance, updateInstance] = usePDF({
-    document: <MyDocument data={data} />,
+    document: <Quds data={data} />,
   });
   const [pageNumber, setPageNumber] = useState(1);
   const [renderedPageNumber, setRenderedPageNumber] = useState<null | number>(
@@ -29,7 +29,7 @@ export const PDFViewerWithNoSSR = ({
   );
 
   useEffect(() => {
-    updateInstance(<MyDocument data={data} />);
+    updateInstance(<Quds data={data} />);
   }, [data, updateInstance]);
 
   const onDocumentLoadSuccess = (document: DocumentCallback) => {

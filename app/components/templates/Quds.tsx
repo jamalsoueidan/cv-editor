@@ -10,7 +10,7 @@ import {
 import { api } from "convex/_generated/api";
 import { FunctionReturnType } from "convex/server";
 import dayjs from "dayjs";
-import { EditorHTML } from "./pdf/EditorHTML";
+import { EditorHTML } from "../pdf/EditorHTML";
 
 Font.register({
   family: "Open Sans",
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 });
 
 // Create Document Component
-export const MyDocument = ({
+export const Quds = ({
   data,
 }: {
   data: FunctionReturnType<typeof api.resumes.get>;
@@ -152,7 +152,7 @@ export const MyDocument = ({
               <EditorHTML content={data.content} />
             </View>
           ) : null}
-          {data.workExperiences.length > 0 ? (
+          {data.workExperiences?.length > 0 ? (
             <View style={{ marginBottom: 25 }}>
               <View style={{ flexDirection: "row" }}>
                 <Text
@@ -168,7 +168,7 @@ export const MyDocument = ({
                   ANSÆTTELSESHISTORIK
                 </Text>
               </View>
-              {data.workExperiences.map((workExperience, index) => (
+              {data.workExperiences?.map((workExperience, index) => (
                 <View key={index} style={{ marginBottom: 12 }} wrap>
                   <Text style={{ fontFamily: "Open Sans", fontWeight: "bold" }}>
                     {workExperience.position}

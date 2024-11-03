@@ -9,7 +9,7 @@ import { useState } from "react";
 import { DocumentCallback } from "react-pdf/dist/esm/shared/types.js";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
-import { MyDocument } from "./MyDocument";
+import { Quds } from "./templates/Quds";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.mjs`;
 
@@ -24,7 +24,7 @@ export const PDFRender = ({
 }) => {
   const [, setNumPages] = useState<null | number>(null);
   const [instance] = usePDF({
-    document: <MyDocument data={data} />,
+    document: <Quds data={data} />,
   });
   const [pageNumber] = useState(1);
   const [renderedPageNumber, setRenderedPageNumber] = useState<null | number>(

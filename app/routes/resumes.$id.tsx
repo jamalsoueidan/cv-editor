@@ -8,7 +8,7 @@ import { ClientOnly } from "remix-utils/client-only";
 import { CVForm } from "~/components/CVForm";
 import { PDFViewer } from "~/components/PDFViewer";
 
-export default function Test() {
+export default function ResumesId() {
   const params = useParams();
   const outlet = !!useOutlet();
   const navigate = useNavigate();
