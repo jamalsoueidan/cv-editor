@@ -16,6 +16,7 @@ export const Resume = Table("resumes", {
   workExperiences: v.array(
     v.object({
       key: v.string(),
+      order: v.optional(v.number()),
       position: v.optional(v.string()),
       company: v.optional(v.string()),
       startDate: v.optional(v.number()),
@@ -27,6 +28,7 @@ export const Resume = Table("resumes", {
   educations: v.array(
     v.object({
       key: v.string(),
+      order: v.optional(v.number()),
       school: v.optional(v.string()),
       degree: v.optional(v.string()),
       startDate: v.optional(v.number()),
@@ -38,6 +40,7 @@ export const Resume = Table("resumes", {
   socialProfiles: v.array(
     v.object({
       key: v.string(),
+      order: v.optional(v.number()),
       label: v.string(),
       url: v.string(),
     })
@@ -46,6 +49,7 @@ export const Resume = Table("resumes", {
   languages: v.array(
     v.object({
       key: v.string(),
+      order: v.optional(v.number()),
       language: v.string(),
       level: v.string(),
     })
@@ -54,6 +58,7 @@ export const Resume = Table("resumes", {
   skills: v.array(
     v.object({
       key: v.string(),
+      order: v.optional(v.number()),
       title: v.string(),
       level: v.string(),
     })
@@ -62,6 +67,7 @@ export const Resume = Table("resumes", {
   references: v.array(
     v.object({
       key: v.string(),
+      order: v.optional(v.number()),
       fullname: v.string(),
       company: v.string(),
       phone: v.string(),
@@ -72,6 +78,7 @@ export const Resume = Table("resumes", {
   courses: v.array(
     v.object({
       key: v.string(),
+      order: v.optional(v.number()),
       institution: v.string(),
       source: v.string(),
       startDate: v.optional(v.number()),
@@ -82,6 +89,7 @@ export const Resume = Table("resumes", {
   internships: v.array(
     v.object({
       key: v.string(),
+      order: v.optional(v.number()),
       position: v.optional(v.string()),
       company: v.optional(v.string()),
       startDate: v.optional(v.number()),
