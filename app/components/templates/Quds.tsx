@@ -328,7 +328,7 @@ export const Quds = ({
                           <Text style={{ marginBottom: 4 }}>
                             {data.skills[index + 1].title}
                           </Text>
-                          <SvgBar level={data.skills[index].level} />
+                          <SvgBar level={data.skills[index + 1].level} />
                         </View>
                       )}
                     </View>
