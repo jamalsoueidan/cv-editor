@@ -6,7 +6,29 @@ import { PDFViewer } from "./PDFViewer";
 import { dumbData } from "./dumbData";
 
 export function Login() {
-  const resumes = [dumbData, dumbData, dumbData, dumbData, dumbData];
+  const resumes = [
+    dumbData,
+    {
+      ...dumbData,
+      template: { ...dumbData.template, name: "Gaza", color: "#fa5252" },
+    },
+    {
+      ...dumbData,
+      template: { ...dumbData.template, name: "Gaza", color: "#e64980" },
+    },
+    {
+      ...dumbData,
+      template: { ...dumbData.template, name: "Gaza", color: "#be4bdb" },
+    },
+    {
+      ...dumbData,
+      template: { ...dumbData.template, name: "Gaza", color: "#7950f2" },
+    },
+    {
+      ...dumbData,
+      template: { ...dumbData.template, name: "Gaza", color: "#4c6ef5" },
+    },
+  ];
 
   const resumeMarkup = resumes?.map((resume) => (
     <Carousel.Slide key={resume._id}>

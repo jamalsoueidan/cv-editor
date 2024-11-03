@@ -2,6 +2,7 @@ import {
   Document,
   Font,
   Image,
+  Link,
   Page,
   StyleSheet,
   Text,
@@ -11,6 +12,7 @@ import { api } from "convex/_generated/api";
 import { FunctionReturnType } from "convex/server";
 import dayjs from "dayjs";
 import { EditorHTML } from "../pdf/EditorHTML";
+import { SvgBar } from "../pdf/SvgBar";
 import { TemplateLocale } from "./locales";
 
 Font.register({
@@ -32,7 +34,7 @@ const styles = StyleSheet.create({
     backgroundColor: "tomato",
   },
   headerImage: {
-    width: 180,
+    width: 150,
   },
   title: {
     fontSize: 14,
@@ -64,7 +66,7 @@ export const Gaza = ({
           ) : null}
           <View
             style={{
-              backgroundColor: "#FF0040",
+              backgroundColor: data.template.color,
               width: "100%",
               ...(data.photoUrl ? { marginLeft: 4 } : {}),
             }}
@@ -92,9 +94,6 @@ export const Gaza = ({
               {data.position ? (
                 <Text style={styles.title}>{data.position}</Text>
               ) : null}
-              <Text style={styles.link}>
-                https://www.medium.com/@jamalsoueidan
-              </Text>
             </View>
           </View>
         </View>
@@ -121,7 +120,7 @@ export const Gaza = ({
                     marginBottom: 8,
                   }}
                 >
-                  DETALJER
+                  {lang.details.toUpperCase()}
                 </Text>
               </View>
               {data.city || data.country ? (
@@ -148,7 +147,7 @@ export const Gaza = ({
                     marginBottom: 8,
                   }}
                 >
-                  PROFILE
+                  {lang.profile.toUpperCase()}
                 </Text>
               </View>
 
@@ -168,7 +167,7 @@ export const Gaza = ({
                     marginBottom: 8,
                   }}
                 >
-                  ANSÆTTELSESHISTORIK
+                  {lang.workExperience.toUpperCase()}
                 </Text>
               </View>
               {data.workExperiences?.map((workExperience, index) => (
@@ -206,6 +205,135 @@ export const Gaza = ({
                   ) : null}
                 </View>
               ))}
+            </View>
+          ) : null}
+          {data.educations?.length > 0 ? (
+            <View style={{ marginBottom: 25 }}>
+              <View style={{ flexDirection: "row" }}>
+                <Text
+                  style={{
+                    backgroundColor: "black",
+                    color: "white",
+                    paddingLeft: 6,
+                    paddingRight: 6,
+                    paddingBottom: 4,
+                    marginBottom: 8,
+                  }}
+                >
+                  {lang.education.toUpperCase()}
+                </Text>
+              </View>
+              {data.educations?.map((education, index) => (
+                <View key={index} style={{ marginBottom: 12 }} wrap>
+                  <Text style={{ fontFamily: "Open Sans", fontWeight: "bold" }}>
+                    {education.degree}
+                    {education.degree && education.school ? ", " : null}
+                    {education.school}
+                    {education.school && education.city ? ", " : null}
+                    {education.city}
+                  </Text>
+
+                  {education.startDate || education.endDate ? (
+                    <Text style={{ color: "#666", fontSize: 10 }}>
+                      {education.startDate
+                        ? dayjs(education.startDate).format("MMM YYYY")
+                        : null}
+                      {education.startDate && education.endDate ? " - " : null}
+
+                      {education.endDate
+                        ? dayjs(education.endDate).format("MMM YYYY")
+                        : null}
+                    </Text>
+                  ) : null}
+                  {education.description ? (
+                    <View style={{ marginTop: 4 }}>
+                      <EditorHTML content={education.description} />
+                    </View>
+                  ) : null}
+                </View>
+              ))}
+            </View>
+          ) : null}
+          {data.socialProfiles?.length > 0 ? (
+            <View style={{ marginBottom: 25 }}>
+              <View style={{ flexDirection: "row" }}>
+                <Text
+                  style={{
+                    backgroundColor: "black",
+                    color: "white",
+                    paddingLeft: 6,
+                    paddingRight: 6,
+                    paddingBottom: 4,
+                    marginBottom: 8,
+                  }}
+                >
+                  {lang.links.toUpperCase()}
+                </Text>
+              </View>
+              {data.socialProfiles?.map((social, index) => (
+                <View
+                  key={index}
+                  style={{ flexDirection: "row", marginBottom: 12 }}
+                >
+                  <Link
+                    href={social.url}
+                    style={{
+                      fontFamily: "Open Sans",
+                      fontWeight: "bold",
+                      color: "black",
+                    }}
+                  >
+                    {social.label}
+                  </Link>
+                </View>
+              ))}
+            </View>
+          ) : null}
+          {data.skills?.length > 0 ? (
+            <View style={{ marginBottom: 25 }}>
+              <View style={{ flexDirection: "row" }}>
+                <Text
+                  style={{
+                    backgroundColor: "black",
+                    color: "white",
+                    paddingLeft: 6,
+                    paddingRight: 6,
+                    paddingBottom: 4,
+                    marginBottom: 8,
+                  }}
+                >
+                  {lang.skills.toUpperCase()}
+                </Text>
+              </View>
+              {data.skills?.map(
+                (skill, index) =>
+                  index % 2 === 0 && (
+                    <View
+                      key={index}
+                      style={{
+                        flexDirection: "row",
+                        width: "100%",
+                        marginBottom: 9,
+                      }}
+                    >
+                      <View style={{ width: "50%" }}>
+                        <Text style={{ marginBottom: 4 }}>
+                          {data.skills[index].title}
+                        </Text>
+                        <SvgBar level={data.skills[index].level} />
+                      </View>
+
+                      {data.skills[index + 1] && (
+                        <View style={{ width: "50%" }}>
+                          <Text style={{ marginBottom: 4 }}>
+                            {data.skills[index + 1].title}
+                          </Text>
+                          <SvgBar level={data.skills[index + 1].level} />
+                        </View>
+                      )}
+                    </View>
+                  )
+              )}
             </View>
           ) : null}
         </View>

@@ -66,7 +66,7 @@ export const Quds = ({
           ) : null}
           <View
             style={{
-              backgroundColor: "orange",
+              backgroundColor: data.template.color,
               width: "100%",
               ...(data.photoUrl ? { marginLeft: 4 } : {}),
             }}
