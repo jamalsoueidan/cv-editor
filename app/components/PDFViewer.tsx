@@ -1,6 +1,7 @@
 import { ActionIcon, Button, Card, Flex, Loader, Text } from "@mantine/core";
 import { useViewportSize } from "@mantine/hooks";
 import { pdf } from "@react-pdf/renderer";
+import { Link } from "@remix-run/react";
 import { api } from "convex/_generated/api";
 import { FunctionReturnType } from "convex/server";
 import { useState } from "react";
@@ -24,8 +25,14 @@ pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.vers
 
 export const PDFViewer = ({
   data,
+  withControls = true,
+  withPagning = true,
+  percentage = 0.87,
 }: {
   data: FunctionReturnType<typeof api.resumes.get>;
+  withControls?: boolean;
+  withPagning?: boolean;
+  percentage?: number;
 }) => {
   const { height } = useViewportSize();
 
@@ -69,26 +76,28 @@ export const PDFViewer = ({
 
   return (
     <Flex direction="column" justify="center" align="center">
-      <Flex direction="row" justify="space-between" mb="lg" w="100%">
-        <Button
-          variant="transparent"
-          component="a"
-          download="cv.pdf"
-          c="white"
-          leftSection={<FaThList />}
-        >
-          Skift skabelon
-        </Button>
-        <Button
-          href={render.value || ""}
-          component="a"
-          download="cv.pdf"
-          size="xs"
-          leftSection={<FaDownload />}
-        >
-          Download (PDF)
-        </Button>
-      </Flex>
+      {withControls ? (
+        <Flex direction="row" justify="space-between" mb="lg" w="100%">
+          <Button
+            variant="transparent"
+            component={Link}
+            to="templates"
+            c="white"
+            leftSection={<FaThList />}
+          >
+            Skift skabelon
+          </Button>
+          <Button
+            href={render.value || ""}
+            component="a"
+            download="cv.pdf"
+            size="xs"
+            leftSection={<FaDownload />}
+          >
+            Download (PDF)
+          </Button>
+        </Flex>
+      ) : null}
 
       <Text hidden={!shouldShowTextLoader}>
         <Loader size="xl" />
@@ -104,7 +113,7 @@ export const PDFViewer = ({
             <Page
               key={currentPage}
               pageNumber={currentPage}
-              height={height * 0.87}
+              height={height * percentage}
             />
           </Document>
         ) : null}
@@ -121,12 +130,12 @@ export const PDFViewer = ({
             key={currentPage}
             pageNumber={currentPage}
             onRenderSuccess={() => setPreviousRenderValue(render.value)}
-            height={height * 0.87}
+            height={height * percentage}
           />
         </Document>
       </Card>
 
-      {currentPage && numPages ? (
+      {currentPage && numPages && withPagning ? (
         <Flex direction="row" gap="sm" align="center">
           <ActionIcon
             style={{ backgroundColor: "transparent" }}

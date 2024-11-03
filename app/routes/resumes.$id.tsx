@@ -12,6 +12,7 @@ export default function Test() {
   const params = useParams();
   const outlet = !!useOutlet();
   const navigate = useNavigate();
+
   const data = useQuery(api.resumes.get, { id: params.id as Id<"resumes"> });
 
   if (!data) {
@@ -46,6 +47,7 @@ export default function Test() {
           <ClientOnly>{() => <PDFViewer data={data} />}</ClientOnly>
         </Grid.Col>
       </Grid>
+
       <Modal opened={!!outlet} onClose={() => navigate("./")}>
         <Outlet context={{ data }} />
       </Modal>
