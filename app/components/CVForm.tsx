@@ -23,8 +23,8 @@ import { useMutation } from "convex/react";
 import { FunctionReturnType } from "convex/server";
 import { useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import classes from "./CVForm.module.css";
 import { EditorInput } from "./EditorInput";
+import { LangSelect } from "./LangSelect";
 
 export function CVForm({
   data,
@@ -158,29 +158,45 @@ export function CVForm({
   return (
     <form>
       <Stack gap={rem(50)}>
-        <Flex justify="center">
-          <TextInput
-            classNames={classes}
-            {...form.getInputProps("title")}
-            onFocus={() => setFocused(true)}
-            onBlur={() => setFocused(false)}
-            autoComplete="nope"
-            data-floating={focused}
-            rightSection={<FaEdit />}
-            style={{
-              width: "fit-content",
-              minWidth: `${1.65 * data.title.length}ch`,
-            }}
-          />
+        <Flex justify="center" direction="column" gap="0">
+          <Flex justify="center">
+            {!focused ? (
+              <UnstyledButton onClick={() => setFocused(true)}>
+                <Group>
+                  <Title order={3}>{data.title}</Title>
+                  <FaEdit />
+                </Group>
+              </UnstyledButton>
+            ) : (
+              <TextInput
+                styles={{
+                  input: {
+                    textAlign: "center",
+                    fontWeight: "bold",
+                    fontSize: rem(24),
+                  },
+                }}
+                {...form.getInputProps("title")}
+                onFocus={() => setFocused(true)}
+                onBlur={() => setFocused(false)}
+                autoComplete="nope"
+                data-floating={focused}
+                // eslint-disable-next-line jsx-a11y/no-autofocus
+                autoFocus
+              />
+            )}
+          </Flex>
+          <Flex justify="center">
+            <LangSelect {...form.getInputProps("templateLanguage")} />
+          </Flex>
         </Flex>
-
         <Stack>
           <Flex direction="column">
             <Title order={5} fw="500">
               Personlige detaljer
             </Title>
           </Flex>
-          <Flex gap="xl">
+          <Flex gap="xl" align="flex-end">
             <TextInput
               label="Jobtitle"
               w="100%"
@@ -188,9 +204,14 @@ export function CVForm({
               key={form.key("position")}
               {...form.getInputProps("position")}
             />
-            <UnstyledButton component={Link} to="upload" w="100%">
+            <UnstyledButton component={Link} to="upload" w="100%" mih="36px">
               <Group>
-                <Image src={data.photoUrl || ""} maw="60px" radius="md" />
+                <Image
+                  src={data.photoUrl}
+                  fallbackSrc="https://placehold.co/60x60?text=IMG"
+                  maw="60px"
+                  radius="md"
+                />
                 <Text>Edit image</Text>
                 <Text>Slet</Text>
               </Group>

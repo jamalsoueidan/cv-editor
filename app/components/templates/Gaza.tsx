@@ -11,6 +11,7 @@ import { api } from "convex/_generated/api";
 import { FunctionReturnType } from "convex/server";
 import dayjs from "dayjs";
 import { EditorHTML } from "../pdf/EditorHTML";
+import { TemplateLocale } from "./locales";
 
 Font.register({
   family: "Open Sans",
@@ -44,8 +45,10 @@ const styles = StyleSheet.create({
 // Create Document Component
 export const Gaza = ({
   data,
+  lang,
 }: {
   data: FunctionReturnType<typeof api.resumes.get>;
+  lang: TemplateLocale;
 }) => {
   return (
     <Document style={{ padding: 0, margin: 0 }}>

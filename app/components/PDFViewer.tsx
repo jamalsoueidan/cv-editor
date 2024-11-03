@@ -13,7 +13,7 @@ import { pdf } from "@react-pdf/renderer";
 import { Link } from "@remix-run/react";
 import { api } from "convex/_generated/api";
 import { FunctionReturnType } from "convex/server";
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   FaArrowLeft,
   FaArrowRight,
@@ -27,20 +27,13 @@ import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 import * as reactUse from "react-use";
 import classes from "./PDFViewer.module.css";
-import { Gaza } from "./templates/Gaza";
+import { LANGUAGES } from "./templates/locales";
 import { Quds } from "./templates/Quds";
+import { TEMPLATES } from "./templates/templates";
 const { useAsync } = reactUse;
 
 //https://github.com/diegomura/react-pdf-site/blob/master/src/components/Repl/PDFViewer.js#L81
 pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.mjs`;
-
-const templates: Record<
-  string,
-  React.ComponentType<{ data: FunctionReturnType<typeof api.resumes.get> }>
-> = {
-  quds: Quds,
-  gaza: Gaza,
-};
 
 export const PDFViewer = ({
   data,
@@ -51,6 +44,7 @@ export const PDFViewer = ({
   height: newHeight,
   withBorder = false,
   shadow = "0",
+  language,
 }: {
   data: FunctionReturnType<typeof api.resumes.get>;
   withControls?: boolean;
@@ -58,6 +52,7 @@ export const PDFViewer = ({
   percentage?: number;
   height?: number;
   template?: string;
+  language?: string;
 } & Pick<CardProps, "shadow" | "withBorder">) => {
   const { height } = useViewportSize();
 
@@ -70,19 +65,28 @@ export const PDFViewer = ({
   >(null);
 
   const TemplateComponent = template
-    ? templates[template.toLowerCase()]
+    ? TEMPLATES[template.toLowerCase()]
     : data.template.name
-    ? templates[data.template.name.toLowerCase()]
+    ? TEMPLATES[data.template.name.toLowerCase()]
     : Quds;
+
+  const templateLanguage = language
+    ? LANGUAGES[language.toLowerCase()]
+    : data.templateLanguage
+    ? LANGUAGES[data.templateLanguage.toLowerCase()]
+    : LANGUAGES["en"];
 
   const render = useAsync(async () => {
     if (!data) return null;
 
-    const blob = await pdf(<TemplateComponent data={data} />).toBlob();
+    const blob = await pdf(
+      <TemplateComponent data={data} lang={templateLanguage} />
+    ).toBlob();
     const url = URL.createObjectURL(blob);
 
     return url;
   }, [data]);
+  LANGUAGES;
 
   const onPreviousPage = () => {
     setCurrentPage((prev) => prev - 1);
