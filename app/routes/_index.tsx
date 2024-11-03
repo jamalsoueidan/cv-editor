@@ -2,8 +2,11 @@ import { useAuthActions } from "@convex-dev/auth/react";
 import { Button, Container, Divider, Group, rem, Title } from "@mantine/core";
 import { Authenticated, Unauthenticated } from "convex/react";
 import { FaBeer } from "react-icons/fa";
+import { IoLogoLinkedin } from "react-icons/io";
 import { FrontPage } from "~/components/Frontpage";
 import { HeaderAccount } from "~/components/HeaderAccount";
+import { Login } from "~/components/Login";
+
 export default function Index() {
   const { signIn } = useAuthActions();
 
@@ -18,6 +21,14 @@ export default function Index() {
           <Authenticated>
             <HeaderAccount />
           </Authenticated>
+          <Unauthenticated>
+            <Button
+              onClick={() => void signIn("linkedin")}
+              leftSection={<IoLogoLinkedin size="2rem" />}
+            >
+              Log ind
+            </Button>
+          </Unauthenticated>
         </Group>
       </Container>
       <Divider mb="xl" />
@@ -26,13 +37,9 @@ export default function Index() {
         <FrontPage />
       </Authenticated>
 
-      <Container>
-        <Unauthenticated>
-          <Button onClick={() => void signIn("linkedin")}>
-            Sign in with Linkedin
-          </Button>
-        </Unauthenticated>
-      </Container>
+      <Unauthenticated>
+        <Login />
+      </Unauthenticated>
     </>
   );
 }
