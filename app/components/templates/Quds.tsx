@@ -290,39 +290,70 @@ export const Quds = ({
               ))}
             </View>
           ) : null}
+          {data.skills?.length > 0 ? (
+            <View style={{ marginBottom: 25 }}>
+              <View style={{ flexDirection: "row" }}>
+                <Text
+                  style={{
+                    backgroundColor: "black",
+                    color: "white",
+                    paddingLeft: 6,
+                    paddingRight: 6,
+                    paddingBottom: 4,
+                    marginBottom: 8,
+                  }}
+                >
+                  {lang.skills.toUpperCase()}
+                </Text>
+              </View>
+              {data.skills?.map(
+                (skill, index) =>
+                  index % 2 === 0 && (
+                    <View
+                      key={index}
+                      style={{ flexDirection: "row", width: "100%" }}
+                    >
+                      <View style={{ width: "50%" }}>
+                        <Text style={{ marginBottom: 4 }}>
+                          {data.skills[index].title}
+                        </Text>
+                        <Svg width="250" height="5" viewBox="0 0 250 5">
+                          <Rect width="200" height="5" fill="black" />
+                          <Rect
+                            x="200"
+                            y="0"
+                            ry="15"
+                            width="50"
+                            height="5"
+                            fill="#eaeaea"
+                          />
+                        </Svg>
+                      </View>
 
-          <View style={{ flexDirection: "row" }}>
-            <View style={{ width: "50%" }}>
-              <Text style={{ marginBottom: 4 }}>Docker</Text>
-              <Svg width="250" height="5" viewBox="0 0 250 5">
-                <Rect width="200" height="5" fill="black" />
-
-                <Rect
-                  x="200"
-                  y="0"
-                  ry="15"
-                  width="50"
-                  height="5"
-                  fill="#eaeaea"
-                />
-              </Svg>
+                      {/* Check if there's a next skill to render */}
+                      {data.skills[index + 1] && (
+                        <View style={{ width: "50%" }}>
+                          <Text style={{ marginBottom: 4 }}>
+                            {data.skills[index + 1].title}
+                          </Text>
+                          <Svg width="250" height="5" viewBox="0 0 250 5">
+                            <Rect width="200" height="5" fill="black" />
+                            <Rect
+                              x="200"
+                              y="0"
+                              ry="15"
+                              width="50"
+                              height="5"
+                              fill="#eaeaea"
+                            />
+                          </Svg>
+                        </View>
+                      )}
+                    </View>
+                  )
+              )}
             </View>
-            <View style={{ width: "50%" }}>
-              <Text style={{ marginBottom: 4 }}>Docker</Text>
-              <Svg width="250" height="5" viewBox="0 0 250 5">
-                <Rect width="200" height="5" fill="black" />
-
-                <Rect
-                  x="200"
-                  y="0"
-                  ry="15"
-                  width="50"
-                  height="5"
-                  fill="#eaeaea"
-                />
-              </Svg>
-            </View>
-          </View>
+          ) : null}
         </View>
       </Page>
     </Document>

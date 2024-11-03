@@ -4,6 +4,7 @@ export interface TemplateLocale {
   workExperience: string;
   education: string;
   links: string;
+  skills: string;
 }
 
 export const templateEnglish: TemplateLocale = {
@@ -12,6 +13,7 @@ export const templateEnglish: TemplateLocale = {
   workExperience: "Work Experience",
   education: "Education",
   links: "Links",
+  skills: "Skills",
 };
 
 export const templateDanish: TemplateLocale = {
@@ -20,6 +22,7 @@ export const templateDanish: TemplateLocale = {
   workExperience: "Erfaring",
   education: "Uddannelse",
   links: "Hjemmesider",
+  skills: "Færdigheder",
 };
 
 export const LANGUAGES: Record<string, TemplateLocale> = {

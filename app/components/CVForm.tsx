@@ -7,7 +7,9 @@ import {
   Flex,
   Group,
   Image,
+  Input,
   rem,
+  SegmentedControl,
   Stack,
   Text,
   TextInput,
@@ -23,7 +25,7 @@ import { api } from "convex/_generated/api";
 import { useMutation } from "convex/react";
 import { FunctionReturnType } from "convex/server";
 import { useState } from "react";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
 import { EditorInput } from "./EditorInput";
 import { LangSelect } from "./LangSelect";
 
@@ -55,7 +57,7 @@ export function CVForm({
     },
   });
 
-  function AccordionControl(props: AccordionControlProps & { index: number }) {
+  function AccordionControl(props: AccordionControlProps) {
     return (
       <Center>
         <Accordion.Control {...props} />
@@ -63,7 +65,7 @@ export function CVForm({
           size="lg"
           variant="subtle"
           color="gray"
-          onClick={() => form.removeListItem("employees", props.index)}
+          onClick={props.onClick}
           mr="sm"
         >
           <FaTrash size="1rem" />
@@ -77,7 +79,9 @@ export function CVForm({
     .workExperiences.map((item, index) => {
       return (
         <Accordion.Item key={item.key} value={item.key}>
-          <AccordionControl index={index}>
+          <AccordionControl
+            onClick={() => form.removeListItem("employees", index)}
+          >
             {item.position ? item.position : "(ikke angivet)"}
           </AccordionControl>
           <Accordion.Panel>
@@ -155,6 +159,63 @@ export function CVForm({
         </Accordion.Item>
       );
     });
+
+  const skills = form.getValues().skills.map((item, index) => {
+    return (
+      <Accordion.Item key={item.key} value={item.key}>
+        <AccordionControl onClick={() => form.removeListItem("skills", index)}>
+          {item.title ? item.title : "(ikke angivet)"}
+        </AccordionControl>
+        <Accordion.Panel>
+          <Stack>
+            <Flex gap="xl">
+              <TextInput
+                withAsterisk
+                label="Evne"
+                variant="filled"
+                w="100%"
+                style={{ flex: 1 }}
+                {...form.getInputProps(`skills.${index}.title`)}
+              />
+              <Input.Wrapper
+                label="Niveau - Ekspert"
+                inputWrapperOrder={["label", "error", "input", "description"]}
+                w="50%"
+              >
+                <div style={{ display: "block" }}>
+                  <SegmentedControl
+                    {...form.getInputProps(`skills.${index}.level`)}
+                    data={[
+                      {
+                        label: <Center miw={rem(15)}>1</Center>,
+                        value: "1",
+                      },
+                      {
+                        label: <Center miw={rem(15)}>2</Center>,
+                        value: "2",
+                      },
+                      {
+                        label: <Center miw={rem(15)}>3</Center>,
+                        value: "3",
+                      },
+                      {
+                        label: <Center miw={rem(15)}>4</Center>,
+                        value: "4",
+                      },
+                      {
+                        label: <Center miw={rem(15)}>5</Center>,
+                        value: "5",
+                      },
+                    ]}
+                  />
+                </div>
+              </Input.Wrapper>
+            </Flex>
+          </Stack>
+        </Accordion.Panel>
+      </Accordion.Item>
+    );
+  });
 
   const [focused, setFocused] = useState(false);
 
@@ -333,6 +394,70 @@ export function CVForm({
               + Tilføj en yderligere ansættelse
             </Text>
           </UnstyledButton>
+        </Stack>
+        <Stack>
+          <Flex direction="column">
+            <Title order={5} fw="500">
+              Færdigheder
+            </Title>
+            <Text c="dimmed" fz="sm">
+              Anfør dine kompetencer og erfaringsniveauer for at tydeliggøre
+              dine styrker og optimere dine nøgleord.
+            </Text>
+            <Flex mt="md" gap="xs" wrap="wrap">
+              <Button
+                size="xs"
+                variant="light"
+                onClick={() =>
+                  form.insertListItem("skills", {
+                    key: randomId(),
+                    title: "Kommunikationsegenskaber",
+                    level: 3,
+                  })
+                }
+                rightSection={<FaPlus />}
+              >
+                Kommunikationsegenskaber
+              </Button>
+              <Button
+                size="xs"
+                variant="light"
+                onClick={() =>
+                  form.insertListItem("skills", {
+                    key: randomId(),
+                    title: "God holdspiller",
+                    level: "3",
+                  })
+                }
+                rightSection={<FaPlus />}
+              >
+                God holdspiller
+              </Button>
+              <Button
+                size="xs"
+                variant="light"
+                onClick={() =>
+                  form.insertListItem("skills", {
+                    key: randomId(),
+                    title: "Velorganiseret",
+                    level: "3",
+                  })
+                }
+                rightSection={<FaPlus />}
+              >
+                Velorganiseret
+              </Button>
+            </Flex>
+          </Flex>
+          {skills.length > 0 && (
+            <Accordion
+              variant="separated"
+              chevronPosition="left"
+              defaultValue="Apples"
+            >
+              {skills}
+            </Accordion>
+          )}
         </Stack>
       </Stack>
     </form>
