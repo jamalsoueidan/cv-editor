@@ -145,7 +145,7 @@ export default function Templates() {
             <ClientOnly>
               {() => (
                 <PDFViewer
-                  data={value ? dumbData : data}
+                  data={value ? { ...dumbData, template: data.template } : data}
                   withControls={false}
                   withPagning={false}
                   percentage={0.8}

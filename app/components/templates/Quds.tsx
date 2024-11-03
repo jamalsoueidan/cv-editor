@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     backgroundColor: "tomato",
   },
   headerImage: {
-    width: 180,
+    width: 150,
   },
   title: {
     fontSize: 14,
@@ -89,9 +89,6 @@ export const Quds = ({
               {data.position ? (
                 <Text style={styles.title}>{data.position}</Text>
               ) : null}
-              <Text style={styles.link}>
-                https://www.medium.com/@jamalsoueidan
-              </Text>
             </View>
           </View>
         </View>
