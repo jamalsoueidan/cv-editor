@@ -3,6 +3,7 @@ import {
   Burger,
   Button,
   Card,
+  Checkbox,
   Container,
   Divider,
   Drawer,
@@ -14,7 +15,7 @@ import {
   UnstyledButton,
   rem,
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useToggle } from "@mantine/hooks";
 import { Link, useParams } from "@remix-run/react";
 import { api } from "convex/_generated/api";
 import { Id } from "convex/_generated/dataModel";
@@ -22,6 +23,7 @@ import { useMutation, useQuery } from "convex/react";
 import { FaArrowLeft, FaCheckCircle } from "react-icons/fa";
 import { ClientOnly } from "remix-utils/client-only";
 import { DownloadButton } from "~/components/DownloadPDF";
+import { dumbData } from "~/components/dumbData";
 import { PDFViewer } from "~/components/PDFViewer";
 
 export default function Templates() {
@@ -29,6 +31,7 @@ export default function Templates() {
   const patch = useMutation(api.resumes.updateTemplate);
   const data = useQuery(api.resumes.get, { id: params.id as Id<"resumes"> });
   const templates = useQuery(api.templates.list);
+  const [value, toggle] = useToggle();
 
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
@@ -101,7 +104,7 @@ export default function Templates() {
                   <ClientOnly>
                     {() => (
                       <PDFViewer
-                        data={data}
+                        data={dumbData}
                         withControls={false}
                         withPagning={false}
                         height={300}
@@ -138,16 +141,26 @@ export default function Templates() {
           p="xl"
           h="calc(100vh - 61px)"
         >
-          <ClientOnly>
-            {() => (
-              <PDFViewer
-                data={data}
-                withControls={false}
-                withPagning={false}
-                percentage={0.85}
+          <Flex direction="column" justify="center">
+            <ClientOnly>
+              {() => (
+                <PDFViewer
+                  data={value ? dumbData : data}
+                  withControls={false}
+                  withPagning={false}
+                  percentage={0.8}
+                />
+              )}
+            </ClientOnly>
+            <Flex align="center" gap="xs" justify="center" mt="xs">
+              <Checkbox
+                checked={value}
+                onChange={(event) => toggle(event.currentTarget.checked)}
+                label="Preview data"
+                labelPosition="left"
               />
-            )}
-          </ClientOnly>
+            </Flex>
+          </Flex>
         </Grid.Col>
       </Grid>
 
