@@ -120,7 +120,7 @@ export const PDFViewer = ({
             c="white"
             leftSection={<FaThList />}
           >
-            Skift skabelon
+            Select template
           </Button>
           <Group gap="xs">
             <Button
@@ -129,7 +129,7 @@ export const PDFViewer = ({
               size="xs"
               leftSection={<FaEye />}
             >
-              View (PDF)
+              View PDF
             </Button>
             <Button
               href={render.value || ""}
@@ -138,7 +138,7 @@ export const PDFViewer = ({
               size="xs"
               leftSection={<FaDownload />}
             >
-              Download (PDF)
+              Download PDF
             </Button>
           </Group>
         </Flex>

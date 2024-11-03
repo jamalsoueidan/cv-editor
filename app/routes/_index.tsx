@@ -16,7 +16,7 @@ export default function Index() {
         <Group justify="space-between" mih={rem(60)}>
           <Group>
             <FaBeer />
-            <Title order={3}>CV.dk</Title>
+            <Title order={3}>CV Editor</Title>
           </Group>
           <Authenticated>
             <HeaderAccount />
@@ -26,7 +26,7 @@ export default function Index() {
               onClick={() => void signIn("linkedin")}
               leftSection={<IoLogoLinkedin size="2rem" />}
             >
-              Log ind
+              Login
             </Button>
           </Unauthenticated>
         </Group>

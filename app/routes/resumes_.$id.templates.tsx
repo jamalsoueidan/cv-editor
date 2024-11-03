@@ -50,7 +50,7 @@ export default function Templates() {
             to={`/resumes/${params.id}`}
             leftSection={<FaArrowLeft />}
           >
-            Tilbage til redigering
+            Back to editor
           </Button>
 
           <Group h="100%" gap={0} visibleFrom="sm"></Group>
@@ -178,8 +178,8 @@ export default function Templates() {
           <Divider my="sm" />
 
           <Group justify="center" grow pb="xl" px="md">
-            <Button variant="default">Log in</Button>
-            <Button>Sign up</Button>
+            <Button variant="default">Login</Button>
+            <Button>Signup</Button>
           </Group>
         </ScrollArea>
       </Drawer>

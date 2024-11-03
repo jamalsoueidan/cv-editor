@@ -109,7 +109,7 @@ export function CVForm({
               <Flex gap="xl">
                 <Flex direction="column" flex="1">
                   <Text fw="500" fz="sm">
-                    Start- og slutdato
+                    Start- og end date
                   </Text>
                   <Flex gap="md">
                     <MonthPickerInput
@@ -223,7 +223,7 @@ export function CVForm({
 
   return (
     <form>
-      <Stack gap={rem(50)}>
+      <Stack gap={rem(50)} mb="xl">
         <Flex justify="center" direction="column" gap="0">
           <Flex justify="center">
             {!focused ? (
@@ -259,7 +259,7 @@ export function CVForm({
         <Stack>
           <Flex direction="column">
             <Title order={5} fw="500">
-              Personlige detaljer
+              Personal details
             </Title>
           </Flex>
           <Flex gap="xl" align="flex-end">
@@ -281,7 +281,7 @@ export function CVForm({
               {data.photoUrl ? (
                 <>
                   <Button variant="subtle" component={Link} to="upload">
-                    Ændre billed
+                    Change image
                   </Button>
                   <Button
                     variant="subtle"
@@ -289,7 +289,7 @@ export function CVForm({
                       data.photo && deleteImage({ storageId: data.photo })
                     }
                   >
-                    Slet
+                    Delete image
                   </Button>
                 </>
               ) : (
@@ -351,27 +351,26 @@ export function CVForm({
         <Stack>
           <Flex direction="column">
             <Title order={5} fw="500">
-              Professionel profil
+              Professional Summary
             </Title>
             <Text c="dimmed" fz="sm">
-              Skriv 2 til 3 sætninger om din samlede erfaring
+              Write 2 to 3 sentences about your overall experience.
             </Text>
           </Flex>
 
           <EditorInput
-            description="Ansættelseschefens tip: Skriv 400-600 tegn for at øge dine chancer
-            for at blive inviteret til jobsamtale"
+            description="Recruiter tip: write 400-600 characters to increase interview chances"
             {...form.getInputProps("content")}
           />
         </Stack>
         <Stack>
           <Flex direction="column">
             <Title order={5} fw="500">
-              Ansættelseshistorik
+              Employment History
             </Title>
             <Text c="dimmed" fz="sm">
-              Inkluder de sidste 10 år med relevant erfaringer og datoer i denne
-              sektion. Anfør din seneste stilling først.
+              Show your relevant experience (last 10 years). Use bullet points
+              to note your achievements.
             </Text>
           </Flex>
           {workExperiences.length > 0 && (
@@ -384,27 +383,29 @@ export function CVForm({
             </Accordion>
           )}
 
-          <UnstyledButton
-            ml="md"
-            onClick={() =>
-              form.insertListItem("workExperiences", {
-                key: randomId(),
-              })
-            }
-          >
-            <Text c="blue" fw="500" fz="sm">
-              + Tilføj en yderligere ansættelse
-            </Text>
-          </UnstyledButton>
+          <Flex>
+            <Button
+              variant="transparent"
+              onClick={() =>
+                form.insertListItem("workExperiences", {
+                  key: randomId(),
+                })
+              }
+              leftSection={<FaPlus />}
+            >
+              Add employment
+            </Button>
+          </Flex>
         </Stack>
         <Stack>
           <Flex direction="column">
             <Title order={5} fw="500">
-              Færdigheder
+              Skills
             </Title>
             <Text c="dimmed" fz="sm">
-              Anfør dine kompetencer og erfaringsniveauer for at tydeliggøre
-              dine styrker og optimere dine nøgleord.
+              Choose 5 important skills that show you fit the position. Make
+              sure they match the key skills mentioned in the job listing
+              (especially when applying via an online system).
             </Text>
             <Flex mt="md" gap="xs" wrap="wrap">
               <Button
@@ -413,13 +414,13 @@ export function CVForm({
                 onClick={() =>
                   form.insertListItem("skills", {
                     key: randomId(),
-                    title: "Kommunikationsegenskaber",
+                    title: "Teamwork Skills",
                     level: "3",
                   })
                 }
                 rightSection={<FaPlus />}
               >
-                Kommunikationsegenskaber
+                Teamwork Skills
               </Button>
               <Button
                 size="xs"
@@ -427,13 +428,13 @@ export function CVForm({
                 onClick={() =>
                   form.insertListItem("skills", {
                     key: randomId(),
-                    title: "God holdspiller",
+                    title: "Critical Thinking",
                     level: "3",
                   })
                 }
                 rightSection={<FaPlus />}
               >
-                God holdspiller
+                Critical Thinking
               </Button>
               <Button
                 size="xs"
@@ -441,22 +442,18 @@ export function CVForm({
                 onClick={() =>
                   form.insertListItem("skills", {
                     key: randomId(),
-                    title: "Velorganiseret",
+                    title: "Customer Service",
                     level: "3",
                   })
                 }
                 rightSection={<FaPlus />}
               >
-                Velorganiseret
+                Customer Service
               </Button>
             </Flex>
           </Flex>
           {skills.length > 0 && (
-            <Accordion
-              variant="separated"
-              chevronPosition="left"
-              defaultValue="Apples"
-            >
+            <Accordion variant="separated" chevronPosition="left">
               {skills}
             </Accordion>
           )}

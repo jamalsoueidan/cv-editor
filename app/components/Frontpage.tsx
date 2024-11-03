@@ -54,15 +54,15 @@ export function FrontPage() {
   return (
     <Stack gap="xl">
       <Stack>
-        <Title ta="center">Vælg dit CV</Title>
+        <Title ta="center">Choose Your CV</Title>
 
         <Flex justify="center">
           <Group>
             <Text ta="center" c="gray.6">
-              Du kan også vælge at ...
+              You can also choose to ...
             </Text>
             <Button size="xs" onClick={onCreate} loading={loading}>
-              Opret ny cv!
+              Create a new CV!
             </Button>
           </Group>
         </Flex>

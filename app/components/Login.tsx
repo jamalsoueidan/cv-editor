@@ -57,12 +57,12 @@ export function Login() {
     <Stack gap="xl">
       <Container size="lg">
         <Title order={2} className={classes.title} ta="center" mt="sm">
-          Lav et professionelt CV nemt og hurtigt
+          Create a Professional CV Easily and Quickly
         </Title>
 
         <Text c="dimmed" className={classes.description} ta="center" mt="md">
-          Indtast dine oplysninger, vælg en CV-skabelon, og tilpas dit CV alt
-          efter din stil og personlighed og download dit CV med det samme.
+          Enter your information, choose a CV template, customize your CV to
+          match your style and personality, and download your CV right away.
         </Text>
       </Container>
 
