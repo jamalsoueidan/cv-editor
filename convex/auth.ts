@@ -14,32 +14,38 @@ export const { auth, signIn, signOut, store } = convexAuth({
   providers: [Linkedin],
   callbacks: {
     async afterUserCreatedOrUpdated(ctx: MutationCtx, { userId }) {
-      await ctx.db.insert("resumes", {
-        userId,
-        title: "Untitled",
-        workExperiences: [],
-        educations: [],
-        socialProfiles: [],
-        socialProfilesVisible: false,
-        languages: [],
-        languagesVisible: false,
-        skills: [],
-        skillsVisible: false,
-        references: [],
-        referencesVisible: false,
-        courses: [],
-        coursesVisible: false,
-        internships: [],
-        internshipsVisible: false,
-        template: {
-          name: "quds",
-          color: "#ffe14c",
-          lineHeight: "1.5",
-          fontSize: "12",
-          fontFamily: "Arial",
-        },
-        updatedTime: Date.now(),
-      });
+      const resumes = await ctx.db
+        .query("resumes")
+        .withIndex("byUserId", (q) => q.eq("userId", userId))
+        .collect();
+      if (resumes.length === 0) {
+        await ctx.db.insert("resumes", {
+          userId,
+          title: "Untitled",
+          workExperiences: [],
+          educations: [],
+          socialProfiles: [],
+          socialProfilesVisible: false,
+          languages: [],
+          languagesVisible: false,
+          skills: [],
+          skillsVisible: false,
+          references: [],
+          referencesVisible: false,
+          courses: [],
+          coursesVisible: false,
+          internships: [],
+          internshipsVisible: false,
+          template: {
+            name: "quds",
+            color: "#ffe14c",
+            lineHeight: "1.5",
+            fontSize: "12",
+            fontFamily: "Arial",
+          },
+          updatedTime: Date.now(),
+        });
+      }
     },
   },
 });

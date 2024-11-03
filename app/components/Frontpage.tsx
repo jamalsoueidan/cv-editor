@@ -71,15 +71,13 @@ export function FrontPage() {
       <Carousel
         withIndicators={resumes && resumes.length >= 2}
         withControls={resumes && resumes.length >= 2}
-        height={600}
+        height={520}
         slideSize={{
-          base: "100%",
-          sm: "50%",
-          md: "33.333333%",
+          base: "60%",
+          sm: "40%",
+          md: "25%",
         }}
-        slideGap={{ base: 0, sm: "md" }}
-        loop
-        align={resumes && resumes.length >= 3 ? "start" : "center"}
+        slideGap={{ base: "sm", sm: "md" }}
       >
         {resumeMarkup}
       </Carousel>
