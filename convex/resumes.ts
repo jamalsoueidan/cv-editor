@@ -144,3 +144,10 @@ export const sendImage = mutationWithUser({
     });
   },
 });
+
+export const deleteImage = mutationWithUser({
+  args: { storageId: v.id("_storage") },
+  handler: async (ctx, args) => {
+    await ctx.storage.delete(args.storageId);
+  },
+});

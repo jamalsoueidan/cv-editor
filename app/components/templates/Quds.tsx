@@ -145,7 +145,7 @@ export const Quds = ({
                     marginBottom: 8,
                   }}
                 >
-                  PROFILE
+                  {lang.profile.toUpperCase()}
                 </Text>
               </View>
 
@@ -165,7 +165,7 @@ export const Quds = ({
                     marginBottom: 8,
                   }}
                 >
-                  ANSÆTTELSESHISTORIK
+                  {lang.workExperience.toUpperCase()}
                 </Text>
               </View>
               {data.workExperiences?.map((workExperience, index) => (

@@ -2,6 +2,7 @@ import {
   Accordion,
   AccordionControlProps,
   ActionIcon,
+  Button,
   Center,
   Flex,
   Group,
@@ -32,11 +33,13 @@ export function CVForm({
   data: FunctionReturnType<typeof api.resumes.get>;
 }) {
   const patch = useMutation(api.resumes.update);
+  const deleteImage = useMutation(api.resumes.deleteImage);
 
   const save = useDebouncedCallback(
     async (values: FunctionReturnType<typeof api.resumes.get>) => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { _creationTime, userId, updatedTime, photoUrl, ...rest } = values;
+      console.log(values);
       patch(rest);
     },
     500
@@ -204,18 +207,34 @@ export function CVForm({
               key={form.key("position")}
               {...form.getInputProps("position")}
             />
-            <UnstyledButton component={Link} to="upload" w="100%" mih="36px">
-              <Group>
-                <Image
-                  src={data.photoUrl}
-                  fallbackSrc="https://placehold.co/60x60?text=IMG"
-                  maw="60px"
-                  radius="md"
-                />
-                <Text>Edit image</Text>
-                <Text>Slet</Text>
-              </Group>
-            </UnstyledButton>
+
+            <Group w="100%" mih="36px">
+              <Image
+                src={data.photoUrl}
+                fallbackSrc="https://placehold.co/60x60?text=IMG"
+                maw="60px"
+                radius="md"
+              />
+              {data.photoUrl ? (
+                <>
+                  <Button variant="subtle" component={Link} to="upload">
+                    Ændre billed
+                  </Button>
+                  <Button
+                    variant="subtle"
+                    onClick={() =>
+                      data.photo && deleteImage({ storageId: data.photo })
+                    }
+                  >
+                    Slet
+                  </Button>
+                </>
+              ) : (
+                <Button variant="subtle" component={Link} to="upload">
+                  Add image
+                </Button>
+              )}
+            </Group>
           </Flex>
           <Flex gap="xl">
             <TextInput
