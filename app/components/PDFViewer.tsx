@@ -2,6 +2,7 @@ import {
   ActionIcon,
   Button,
   Card,
+  CardProps,
   Flex,
   Group,
   Loader,
@@ -12,7 +13,7 @@ import { pdf } from "@react-pdf/renderer";
 import { Link } from "@remix-run/react";
 import { api } from "convex/_generated/api";
 import { FunctionReturnType } from "convex/server";
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   FaArrowLeft,
   FaArrowRight,
@@ -26,23 +27,38 @@ import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 import * as reactUse from "react-use";
 import classes from "./PDFViewer.module.css";
+import { Gaza } from "./templates/Gaza";
 import { Quds } from "./templates/Quds";
 const { useAsync } = reactUse;
 
 //https://github.com/diegomura/react-pdf-site/blob/master/src/components/Repl/PDFViewer.js#L81
 pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.mjs`;
 
+const templates: Record<
+  string,
+  React.ComponentType<{ data: FunctionReturnType<typeof api.resumes.get> }>
+> = {
+  quds: Quds,
+  gaza: Gaza,
+};
+
 export const PDFViewer = ({
   data,
   withControls = true,
   withPagning = true,
   percentage = 0.87,
+  template,
+  height: newHeight,
+  withBorder = false,
+  shadow = "0",
 }: {
   data: FunctionReturnType<typeof api.resumes.get>;
   withControls?: boolean;
   withPagning?: boolean;
   percentage?: number;
-}) => {
+  height?: number;
+  template?: string;
+} & Pick<CardProps, "shadow" | "withBorder">) => {
   const { height } = useViewportSize();
 
   const [numPages, setNumPages] = useState<number | null>(null);
@@ -53,10 +69,16 @@ export const PDFViewer = ({
     null | string | undefined
   >(null);
 
+  const TemplateComponent = template
+    ? templates[template.toLowerCase()]
+    : data.template.name
+    ? templates[data.template.name.toLowerCase()]
+    : Quds;
+
   const render = useAsync(async () => {
     if (!data) return null;
 
-    const blob = await pdf(<Quds data={data} />).toBlob();
+    const blob = await pdf(<TemplateComponent data={data} />).toBlob();
     const url = URL.createObjectURL(blob);
 
     return url;
@@ -99,7 +121,7 @@ export const PDFViewer = ({
           <Group gap="xs">
             <Button
               component={Link}
-              to="view"
+              to={`/view/${data._id}`}
               size="xs"
               leftSection={<FaEye />}
             >
@@ -121,7 +143,7 @@ export const PDFViewer = ({
       <Text hidden={!shouldShowTextLoader}>
         <Loader size="xl" />
       </Text>
-      <Card radius="md" p="0" flex={1}>
+      <Card radius="md" p="0" withBorder={withBorder} shadow={shadow} flex={1}>
         {shouldShowPreviousDocument && previousRenderValue ? (
           <Document
             key={previousRenderValue}
@@ -132,7 +154,7 @@ export const PDFViewer = ({
             <Page
               key={currentPage}
               pageNumber={currentPage}
-              height={height * percentage}
+              height={newHeight ? newHeight : height * percentage}
             />
           </Document>
         ) : null}
@@ -149,7 +171,7 @@ export const PDFViewer = ({
             key={currentPage}
             pageNumber={currentPage}
             onRenderSuccess={() => setPreviousRenderValue(render.value)}
-            height={height * percentage}
+            height={newHeight ? newHeight : height * percentage}
           />
         </Document>
       </Card>

@@ -1,7 +1,9 @@
 import { asyncMap, omit } from "convex-helpers";
 import { ConvexError, v } from "convex/values";
+import { query } from "./_generated/server";
 import { mutationWithUser, queryWithUser } from "./auth";
 import { Resume } from "./tables/resume";
+import { Template } from "./tables/template";
 
 export const create = mutationWithUser({
   args: {
@@ -35,7 +37,7 @@ export const create = mutationWithUser({
   },
 });
 
-export const get = queryWithUser({
+export const get = query({
   args: {
     id: v.id("resumes"),
   },
@@ -75,6 +77,27 @@ export const update = mutationWithUser({
     "userId",
     "updatedTime",
   ]),
+  handler: async (ctx, args) => {
+    const doc = await ctx.db
+      .query("resumes")
+      .withIndex("byUserId", (q) => q.eq("userId", ctx.user))
+      .filter((q) => q.eq(q.field("_id"), args._id))
+      .unique();
+    if (!doc) {
+      throw new ConvexError("Not authorized");
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { _id, ...rest } = args;
+    return ctx.db.patch(_id, { ...rest, updatedTime: Date.now() });
+  },
+});
+
+export const updateTemplate = mutationWithUser({
+  args: {
+    _id: v.id("resumes"),
+    template: v.object(Template.withoutSystemFields),
+  },
   handler: async (ctx, args) => {
     const doc = await ctx.db
       .query("resumes")
