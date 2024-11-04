@@ -14,20 +14,11 @@ export function EditorHTML({ content }: { content: string }) {
             list?.tag === "ol" || element.parentNode.tag === "ol";
 
           return (
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-              }}
-            >
-              <View>
-                <Text>
-                  {isOrderedList ? `${element.indexOfType + 1}. ` : "• "}
-                </Text>
-              </View>
-              <View>
-                <Text>{children}</Text>
-              </View>
+            <View>
+              <Text>
+                {isOrderedList ? `${element.indexOfType + 1}. ` : "• "}
+                {children}
+              </Text>
             </View>
           );
         },
