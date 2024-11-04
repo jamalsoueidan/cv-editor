@@ -3,7 +3,6 @@ import { ConvexError, v } from "convex/values";
 import { query } from "./_generated/server";
 import { mutationWithUser, queryWithUser } from "./auth";
 import { Resume } from "./tables/resume";
-import { Template } from "./tables/template";
 
 export const create = mutationWithUser({
   args: {
@@ -98,7 +97,13 @@ export const update = mutationWithUser({
 export const updateTemplate = mutationWithUser({
   args: {
     _id: v.id("resumes"),
-    template: v.object(Template.withoutSystemFields),
+    template: v.object({
+      color: v.string(),
+      fontFamily: v.string(),
+      fontSize: v.string(),
+      lineHeight: v.string(),
+      name: v.string(),
+    }),
   },
   handler: async (ctx, args) => {
     const doc = await ctx.db

@@ -26,11 +26,26 @@ import { DownloadButton } from "~/components/DownloadPDF";
 import { dumbData } from "~/components/dumbData";
 import { PDFViewer } from "~/components/PDFViewer";
 
+const TemplateList = [
+  {
+    color: "#eaeaea",
+    fontFamily: "Open Sans",
+    fontSize: "14",
+    lineHeight: "",
+    name: "Gaza",
+  },
+  {
+    color: "#fff66d",
+    fontFamily: "Open Sans",
+    fontSize: "14",
+    lineHeight: "",
+    name: "Quds",
+  },
+];
 export default function Templates() {
   const params = useParams();
   const patch = useMutation(api.resumes.updateTemplate);
   const data = useQuery(api.resumes.get, { id: params.id as Id<"resumes"> });
-  const templates = useQuery(api.templates.list);
   const [value, toggle] = useToggle();
 
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
@@ -72,13 +87,11 @@ export default function Templates() {
       <Grid gutter="0">
         <Grid.Col span={5} p="xl" visibleFrom="md">
           <Flex gap="xl" justify="center" wrap="wrap">
-            {templates?.map((template) => (
+            {TemplateList?.map((template) => (
               <UnstyledButton
-                key={template._id}
+                key={template.name}
                 onClick={() => {
-                  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                  const { _id, _creationTime, ...rest } = template;
-                  patch({ _id: data._id, template: rest });
+                  patch({ _id: data._id, template });
                 }}
                 variant="outline"
               >

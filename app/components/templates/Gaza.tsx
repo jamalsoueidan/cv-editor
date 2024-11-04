@@ -65,18 +65,18 @@ export const Gaza = ({
             left: 12,
             right: 12,
             flexDirection: "row",
-            maxHeight: 250,
+            maxHeight: 200,
             borderRadius: 24,
           }}
         >
-          <Svg viewBox={`0 0 1500 250`}>
+          <Svg viewBox={`0 0 1500 200`}>
             <Rect
               x="0"
               width="1500"
-              height="250"
+              height="200"
               rx="25"
               ry="25"
-              fill="#eaeaea"
+              fill={data.template.color}
             />
           </Svg>
         </View>
@@ -84,11 +84,11 @@ export const Gaza = ({
         <View
           style={{
             position: "absolute",
-            top: 25,
+            top: 12,
             left: 12,
             right: 12,
             flexDirection: "row",
-            maxHeight: 150,
+            maxHeight: 100,
             borderRadius: 24,
           }}
         >
@@ -97,7 +97,15 @@ export const Gaza = ({
               width: "100%",
             }}
           >
-            <View style={{ marginLeft: 20, marginTop: 5, marginBottom: 10 }}>
+            <View
+              style={{
+                marginLeft: 20,
+                marginRight: 20,
+                marginTop: 20,
+                marginBottom: 10,
+                flexDirection: "row",
+              }}
+            >
               {data.firstname || data.lastname ? (
                 <Text
                   style={{
@@ -109,13 +117,23 @@ export const Gaza = ({
               ) : null}
 
               {data.position ? (
-                <Text style={styles.title}>{data.position}</Text>
+                <Text
+                  style={{
+                    fontSize: 14,
+                    textAlign: "right",
+                    marginTop: 10,
+
+                    flex: 1,
+                  }}
+                >
+                  {data.position}
+                </Text>
               ) : null}
             </View>
           </View>
         </View>
 
-        <View style={{ marginTop: 80 }}></View>
+        <View style={{ marginTop: 60 }}></View>
 
         <View
           style={{

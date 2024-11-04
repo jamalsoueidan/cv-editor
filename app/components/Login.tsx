@@ -14,7 +14,7 @@ export function Login() {
     },
     {
       ...dumbData,
-      template: { ...dumbData.template, name: "Gaza", color: "#e64980" },
+      template: { ...dumbData.template, name: "Quds", color: "#e64980" },
     },
     {
       ...dumbData,
@@ -22,7 +22,7 @@ export function Login() {
     },
     {
       ...dumbData,
-      template: { ...dumbData.template, name: "Gaza", color: "#7950f2" },
+      template: { ...dumbData.template, name: "Quds", color: "#7950f2" },
     },
     {
       ...dumbData,
@@ -30,8 +30,8 @@ export function Login() {
     },
   ];
 
-  const resumeMarkup = resumes?.map((resume) => (
-    <Carousel.Slide key={resume._id}>
+  const resumeMarkup = resumes?.map((resume, index) => (
+    <Carousel.Slide key={index}>
       <Flex direction="column" align="center" gap="xs">
         <Title order={4} c="gray.6" fw="500">
           {resume.title}
