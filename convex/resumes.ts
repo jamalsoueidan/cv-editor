@@ -52,6 +52,12 @@ export const get = query({
 
     return {
       ...data,
+      workExperiences: data.workExperiences.sort((a, b) => {
+        const aSort = a.order !== undefined ? a.order : Infinity;
+        const bSort = b.order !== undefined ? b.order : Infinity;
+
+        return aSort - bSort;
+      }),
       ...(data.photo ? { photoUrl: await ctx.storage.getUrl(data.photo) } : {}),
     };
   },

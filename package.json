@@ -17,6 +17,7 @@
   "dependencies": {
     "@auth/core": "^0.36.0",
     "@convex-dev/auth": "^0.0.74",
+    "@hello-pangea/dnd": "^17.0.0",
     "@mantine/carousel": "^7.13.4",
     "@mantine/core": "^7.13.4",
     "@mantine/dates": "^7.13.4",
