@@ -1,18 +1,11 @@
 import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
-import {
-  Accordion,
-  Button,
-  Flex,
-  Stack,
-  Text,
-  TextInput,
-  Title,
-} from "@mantine/core";
+import { Accordion, Button, Flex, Stack, Text, TextInput } from "@mantine/core";
 import { randomId } from "@mantine/hooks";
 import { FaPlus } from "react-icons/fa";
 import { useFormContext } from "~/providers/CVFormProvider";
 import { AccordionControlDrag } from "./AccordionControlDrag";
 import { DraggableItem } from "./DraggableItem";
+import { TitleHover } from "./TitleHover";
 
 export function LinksForm() {
   const form = useFormContext();
@@ -66,9 +59,10 @@ export function LinksForm() {
   return (
     <Stack>
       <Flex direction="column">
-        <Title order={5} fw="500">
-          Social Links
-        </Title>
+        <TitleHover
+          title="Social Links"
+          onDelete={() => form.setValues({ socialProfilesVisible: false })}
+        />
         <Text c="dimmed" fz="sm">
           You can add links to websites you want hiring managers to see! Perhaps
           It will be a link to your portfolio, LinkedIn profile, or personal

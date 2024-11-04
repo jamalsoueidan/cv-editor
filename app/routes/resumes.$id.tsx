@@ -1,7 +1,7 @@
 import {
   ActionIcon,
-  Box,
   Button,
+  Flex,
   Grid,
   Group,
   Modal,
@@ -50,27 +50,22 @@ export default function ResumesId() {
   return (
     <>
       <Grid gutter="0">
-        <Grid.Col
-          span={{ base: 12, md: 6 }}
-          p={{ base: "xl", md: rem(40) }}
-          pos="relative"
-        >
-          <ActionIcon
-            variant="light"
-            pos="absolute"
-            size="lg"
-            top="1rem"
-            left="2rem"
-            onClick={() => navigate("../")}
-          >
-            <FaArrowLeft />
-          </ActionIcon>
+        <Grid.Col span={{ base: 12, md: 6 }} p={{ base: "xs", md: rem(40) }}>
+          <Flex w="100%" pos="relative">
+            <Flex pos="absolute" w="100%" justify="space-between">
+              <ActionIcon
+                variant="light"
+                size="lg"
+                onClick={() => navigate("../")}
+              >
+                <FaArrowLeft />
+              </ActionIcon>
 
-          <CVForm data={data} />
+              <ResumeBurger destroy={destroyAction} clone={cloneAction} />
+            </Flex>
 
-          <Box pos="absolute" top="1rem" right="2rem">
-            <ResumeBurger destroy={destroyAction} clone={cloneAction} />
-          </Box>
+            <CVForm data={data} />
+          </Flex>
         </Grid.Col>
         <Grid.Col
           span={6}

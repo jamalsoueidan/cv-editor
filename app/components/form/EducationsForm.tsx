@@ -113,7 +113,7 @@ export function EducationsForm() {
   return (
     <Stack>
       <Flex direction="column">
-        <Title order={5} fw="500">
+        <Title order={3} fw="500">
           Education
         </Title>{" "}
         <Text c="dimmed" fz="sm">

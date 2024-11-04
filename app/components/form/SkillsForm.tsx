@@ -10,13 +10,13 @@ import {
   Stack,
   Text,
   TextInput,
-  Title,
 } from "@mantine/core";
 import { randomId } from "@mantine/hooks";
 import { FaPlus } from "react-icons/fa";
 import { useFormContext } from "~/providers/CVFormProvider";
 import { AccordionControlDrag } from "./AccordionControlDrag";
 import { DraggableItem } from "./DraggableItem";
+import { TitleHover } from "./TitleHover";
 
 export function SkillsForm() {
   const form = useFormContext();
@@ -100,9 +100,10 @@ export function SkillsForm() {
   return (
     <Stack>
       <Flex direction="column">
-        <Title order={5} fw="500">
-          Skills
-        </Title>
+        <TitleHover
+          title="Skills"
+          onDelete={() => form.setValues({ skillsVisible: false })}
+        />
         <Text c="dimmed" fz="sm">
           Choose 5 important skills that show you fit the position. Make sure
           they match the key skills mentioned in the job listing (especially

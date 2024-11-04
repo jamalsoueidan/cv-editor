@@ -16,7 +16,7 @@ import { api } from "convex/_generated/api";
 import { useMutation } from "convex/react";
 import { FunctionReturnType } from "convex/server";
 import { useState } from "react";
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaLanguage, FaLink, FaSchool } from "react-icons/fa";
 import { FormProvider } from "../providers/CVFormProvider";
 import { EducationsForm } from "./form/EducationsForm";
 import { LanguagesForm } from "./form/LanguagesForm";
@@ -40,7 +40,7 @@ export function CVForm({
 
       patch(rest);
     },
-    500
+    250
   );
 
   const form = useForm({
@@ -93,7 +93,7 @@ export function CVForm({
           </Flex>
           <Stack>
             <Flex direction="column">
-              <Title order={5} fw="500">
+              <Title order={3} fw="500">
                 Personal details
               </Title>
             </Flex>
@@ -192,9 +192,54 @@ export function CVForm({
 
           <WorkingExperiencesForm />
           <EducationsForm />
-          <SkillsForm />
-          <LinksForm />
-          <LanguagesForm />
+          {data.skillsVisible && <SkillsForm />}
+          {data.socialProfilesVisible && <LinksForm />}
+          {data.languagesVisible && <LanguagesForm />}
+
+          <Stack>
+            <Flex direction="column">
+              <Title order={5} fw="500">
+                Add Section
+              </Title>
+            </Flex>
+
+            <Flex gap="md" wrap="wrap">
+              <Button
+                variant="light"
+                onClick={() =>
+                  form.setValues({ languagesVisible: !data.languagesVisible })
+                }
+                leftSection={<FaLanguage />}
+                disabled={data.languagesVisible}
+              >
+                Languages
+              </Button>
+              <Button
+                variant="light"
+                onClick={() =>
+                  form.setValues({
+                    socialProfilesVisible: !data.socialProfilesVisible,
+                  })
+                }
+                leftSection={<FaLink />}
+                disabled={data.socialProfilesVisible}
+              >
+                Social Links
+              </Button>
+              <Button
+                variant="light"
+                onClick={() =>
+                  form.setValues({
+                    skillsVisible: !data.skillsVisible,
+                  })
+                }
+                leftSection={<FaSchool />}
+                disabled={data.skillsVisible}
+              >
+                Skills
+              </Button>
+            </Flex>
+          </Stack>
         </Stack>
       </form>
     </FormProvider>

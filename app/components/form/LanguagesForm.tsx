@@ -10,13 +10,13 @@ import {
   Stack,
   Text,
   TextInput,
-  Title,
 } from "@mantine/core";
 import { randomId } from "@mantine/hooks";
 import { FaPlus } from "react-icons/fa";
 import { useFormContext } from "~/providers/CVFormProvider";
 import { AccordionControlDrag } from "./AccordionControlDrag";
 import { DraggableItem } from "./DraggableItem";
+import { TitleHover } from "./TitleHover";
 
 export function LanguagesForm() {
   const form = useFormContext();
@@ -100,9 +100,11 @@ export function LanguagesForm() {
   return (
     <Stack>
       <Flex direction="column">
-        <Title order={5} fw="500">
-          Languages
-        </Title>{" "}
+        <TitleHover
+          title="Languages"
+          onDelete={() => form.setValues({ languagesVisible: false })}
+        />
+
         <Text c="dimmed" fz="sm">
           You can add which languages you speak and your level.
         </Text>
