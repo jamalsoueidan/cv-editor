@@ -31,7 +31,7 @@ export function EditorHTML({ content }: { content: string }) {
         },
       }}
     >
-      {`<html><body><style>body { font-size: 12px; } ul,ol { margin: 12px; } </style>` +
+      {`<html><body><style>body { font-size: 12px; } ul,ol { margin: 12px 0 6px 12px; } </style>` +
         content +
         "</body></html>"}
     </Html>

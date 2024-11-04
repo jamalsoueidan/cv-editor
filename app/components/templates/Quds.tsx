@@ -310,6 +310,30 @@ export const Quds = ({
               ))}
             </View>
           ) : null}
+          {data.languages?.length > 0 ? (
+            <View style={{ marginBottom: 25 }}>
+              <View style={{ flexDirection: "row" }}>
+                <Text
+                  style={{
+                    backgroundColor: "black",
+                    color: "white",
+                    paddingLeft: 6,
+                    paddingRight: 6,
+                    paddingBottom: 4,
+                    marginBottom: 8,
+                  }}
+                >
+                  {lang.languages.toUpperCase()}
+                </Text>
+              </View>
+              {data.languages?.map((skill, index) => (
+                <View style={{ marginBottom: 9 }} key={index}>
+                  <Text style={{ marginBottom: 4 }}>{skill.language}</Text>
+                  <SvgBar level={skill.level} />
+                </View>
+              ))}
+            </View>
+          ) : null}
           {data.skills?.length > 0 ? (
             <View style={{ marginBottom: 25 }}>
               <View style={{ flexDirection: "row" }}>

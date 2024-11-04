@@ -181,7 +181,7 @@ export function CVForm({
               />
               <Input.Wrapper
                 label="Level - from 1 to 5"
-                description="5 is the best"
+                description="5 is best"
                 inputWrapperOrder={["label", "error", "input", "description"]}
                 w="50%"
               >
@@ -248,6 +248,66 @@ export function CVForm({
                 style={{ flex: 1 }}
                 {...form.getInputProps(`socialProfiles.${index}.url`)}
               />
+            </Flex>
+          </Stack>
+        </Accordion.Panel>
+      </Accordion.Item>
+    );
+  });
+
+  const languages = form.getValues().languages.map((item, index) => {
+    return (
+      <Accordion.Item key={item.key} value={item.key}>
+        <AccordionControl
+          onDelete={() => form.removeListItem("languages", index)}
+        >
+          {item.language ? item.language : "(ikke angivet)"}
+        </AccordionControl>
+        <Accordion.Panel>
+          <Stack>
+            <Flex gap="xl">
+              <TextInput
+                withAsterisk
+                label="Language"
+                variant="filled"
+                w="100%"
+                style={{ flex: 1 }}
+                {...form.getInputProps(`languages.${index}.language`)}
+              />
+              <Input.Wrapper
+                label="Level - from 1 to 5"
+                description="5 is best"
+                inputWrapperOrder={["label", "error", "input", "description"]}
+                w="50%"
+              >
+                <div style={{ display: "block" }}>
+                  <SegmentedControl
+                    {...form.getInputProps(`languages.${index}.level`)}
+                    data={[
+                      {
+                        label: <Center miw={rem(15)}>1</Center>,
+                        value: "1",
+                      },
+                      {
+                        label: <Center miw={rem(15)}>2</Center>,
+                        value: "2",
+                      },
+                      {
+                        label: <Center miw={rem(15)}>3</Center>,
+                        value: "3",
+                      },
+                      {
+                        label: <Center miw={rem(15)}>4</Center>,
+                        value: "4",
+                      },
+                      {
+                        label: <Center miw={rem(15)}>5</Center>,
+                        value: "5",
+                      },
+                    ]}
+                  />
+                </div>
+              </Input.Wrapper>
             </Flex>
           </Stack>
         </Accordion.Panel>
@@ -500,7 +560,7 @@ export function CVForm({
                 }
                 rightSection={<FaPlus />}
               >
-                Create new
+                Add one more skill
               </Button>
             </Flex>
           </Flex>
@@ -570,6 +630,36 @@ export function CVForm({
               {socialProfiles}
             </Accordion>
           )}
+        </Stack>
+        <Stack>
+          <Flex direction="column">
+            <Title order={5} fw="500">
+              Languages
+            </Title>{" "}
+            <Text c="dimmed" fz="sm">
+              You can add which languages you speak and your level.
+            </Text>
+          </Flex>
+          {languages.length > 0 && (
+            <Accordion variant="separated" chevronPosition="left">
+              {languages}
+            </Accordion>
+          )}
+          <Flex>
+            <Button
+              variant="transparent"
+              onClick={() =>
+                form.insertListItem("languages", {
+                  key: randomId(),
+                  language: "",
+                  level: "3",
+                })
+              }
+              leftSection={<FaPlus />}
+            >
+              Add one more language
+            </Button>
+          </Flex>
         </Stack>
       </Stack>
     </form>
