@@ -19,6 +19,7 @@ import {
 } from "@mantine/core";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
+import { ModalsProvider } from "@mantine/modals";
 import "@mantine/tiptap/styles.css";
 import { ConvexReactClient } from "convex/react";
 import { useState } from "react";
@@ -62,7 +63,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <MantineProvider theme={theme}>
-          <ConvexAuthProvider client={convex}>{children}</ConvexAuthProvider>
+          <ModalsProvider>
+            <ConvexAuthProvider client={convex}>{children}</ConvexAuthProvider>
+          </ModalsProvider>
         </MantineProvider>
         <ScrollRestoration />
         <Scripts />

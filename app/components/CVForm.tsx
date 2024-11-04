@@ -57,9 +57,10 @@ export function CVForm({
     },
   });
 
-  function AccordionControl(
-    props: AccordionControlProps & { onDelete: () => void }
-  ) {
+  function AccordionControl({
+    onDestroy,
+    ...props
+  }: AccordionControlProps & { onDestroy: () => void }) {
     return (
       <Center>
         <Accordion.Control {...props} />
@@ -67,7 +68,7 @@ export function CVForm({
           size="lg"
           variant="subtle"
           color="gray"
-          onClick={props.onDelete}
+          onClick={onDestroy}
           mr="sm"
         >
           <FaTrash size="1rem" />
@@ -82,7 +83,7 @@ export function CVForm({
       return (
         <Accordion.Item key={item.key} value={item.key}>
           <AccordionControl
-            onDelete={() => form.removeListItem("workExperiences", index)}
+            onDestroy={() => form.removeListItem("workExperiences", index)}
           >
             {item.position ? item.position : "(ikke angivet)"}
           </AccordionControl>
@@ -165,7 +166,7 @@ export function CVForm({
     return (
       <Accordion.Item key={item.key} value={item.key}>
         <AccordionControl
-          onDelete={() => form.removeListItem("educations", index)}
+          onDestroy={() => form.removeListItem("educations", index)}
         >
           {item.school ? item.school : "(ikke angivet)"}
         </AccordionControl>
@@ -242,7 +243,9 @@ export function CVForm({
   const skills = form.getValues().skills.map((item, index) => {
     return (
       <Accordion.Item key={item.key} value={item.key}>
-        <AccordionControl onDelete={() => form.removeListItem("skills", index)}>
+        <AccordionControl
+          onDestroy={() => form.removeListItem("skills", index)}
+        >
           {item.title ? item.title : "(ikke angivet)"}
         </AccordionControl>
         <Accordion.Panel>
@@ -301,7 +304,7 @@ export function CVForm({
     return (
       <Accordion.Item key={link.key} value={link.key}>
         <AccordionControl
-          onDelete={() => form.removeListItem("socialProfiles", index)}
+          onDestroy={() => form.removeListItem("socialProfiles", index)}
         >
           {link.label ? link.label : "(ikke angivet)"}
         </AccordionControl>
@@ -336,7 +339,7 @@ export function CVForm({
     return (
       <Accordion.Item key={item.key} value={item.key}>
         <AccordionControl
-          onDelete={() => form.removeListItem("languages", index)}
+          onDestroy={() => form.removeListItem("languages", index)}
         >
           {item.language ? item.language : "(ikke angivet)"}
         </AccordionControl>

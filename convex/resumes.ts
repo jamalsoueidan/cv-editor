@@ -1,7 +1,9 @@
 import { asyncMap, omit } from "convex-helpers";
 import { ConvexError, v } from "convex/values";
-import { query } from "./_generated/server";
-import { mutationWithUser, queryWithUser } from "./auth";
+import { api, internal } from "./_generated/api";
+import { Id } from "./_generated/dataModel";
+import { internalMutation, query } from "./_generated/server";
+import { actionWithUser, mutationWithUser, queryWithUser } from "./auth";
 import { Resume } from "./tables/resume";
 
 export const create = mutationWithUser({
@@ -55,20 +57,64 @@ export const get = query({
   },
 });
 
-export const destroy = mutationWithUser({
+export const clone = actionWithUser({
   args: {
     id: v.id("resumes"),
   },
   handler: async (ctx, args) => {
+    const data = await ctx.runQuery(api.resumes.get, { id: args.id });
+    const response: string = await ctx.runMutation(api.resumes.create, {
+      title: data.title,
+    });
+
+    if (data.photo && data.photoUrl) {
+      const response = await fetch(data.photoUrl);
+      const image = await response.blob();
+      data.photo = await ctx.storage.store(image);
+    }
+
+    await ctx.runMutation(api.resumes.update, {
+      _id: response as Id<"resumes">,
+      ...omit({ ...data, title: "Clone of " + data.title }, [
+        "_id",
+        "_creationTime",
+        "updatedTime",
+        "photoUrl",
+        "userId",
+      ]),
+    });
+
+    return response;
+  },
+});
+
+export const destroy = internalMutation({
+  args: {
+    id: v.id("resumes"),
+    userId: v.id("users"),
+  },
+  handler: async (ctx, args) => {
     const doc = await ctx.db
       .query("resumes")
-      .withIndex("byUserId", (q) => q.eq("userId", ctx.user))
+      .withIndex("byUserId", (q) => q.eq("userId", args.userId))
       .filter((q) => q.eq(q.field("_id"), args.id))
       .unique();
     if (!doc) {
       throw new ConvexError("Not authorized");
     }
     return ctx.db.delete(args.id);
+  },
+});
+
+export const asyncDestroy = actionWithUser({
+  args: {
+    id: v.id("resumes"),
+  },
+  handler: async (ctx, args) => {
+    await ctx.scheduler.runAfter(250, internal.resumes.destroy, {
+      id: args.id,
+      userId: ctx.user,
+    });
   },
 });
 
