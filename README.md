@@ -1,7 +1,7 @@
 # CV Editor - Built with Remix and React-PDF
 
-![Application](screenshots/application2.png)
-![Edit](screenshots/edit.png)
+![Application](screenshots/frontpage.png)
+![Edit](screenshots/new-cv-editor.png)
 
 This is a browser-based CV Editor powered by [Remix](https://remix.run/) and [react-pdf](https://react-pdf.dev/), enabling users to create, edit, and export CVs in PDF format.
 
