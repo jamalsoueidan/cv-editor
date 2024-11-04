@@ -82,7 +82,7 @@ export function CVForm({
       return (
         <Accordion.Item key={item.key} value={item.key}>
           <AccordionControl
-            onDelete={() => form.removeListItem("employees", index)}
+            onDelete={() => form.removeListItem("workExperiences", index)}
           >
             {item.position ? item.position : "(ikke angivet)"}
           </AccordionControl>
@@ -91,7 +91,7 @@ export function CVForm({
               <Flex gap="xl">
                 <TextInput
                   withAsterisk
-                  label="Jobtitle"
+                  label="Job Title"
                   variant="filled"
                   w="100%"
                   style={{ flex: 1 }}
@@ -99,7 +99,7 @@ export function CVForm({
                 />
                 <TextInput
                   withAsterisk
-                  label="Arbejdsgiver"
+                  label="Employer"
                   variant="filled"
                   w="100%"
                   style={{ flex: 1 }}
@@ -109,11 +109,11 @@ export function CVForm({
               <Flex gap="xl">
                 <Flex direction="column" flex="1">
                   <Text fw="500" fz="sm">
-                    Start- og end date
+                    Start- & end date
                   </Text>
                   <Flex gap="md">
                     <MonthPickerInput
-                      placeholder="MM / ÅÅÅÅ"
+                      placeholder="MM / YYYY"
                       valueFormat="MM / YYYY"
                       w="50%"
                       variant="filled"
@@ -127,7 +127,7 @@ export function CVForm({
                       value={item.startDate ? new Date(item.startDate) : null}
                     />
                     <MonthPickerInput
-                      placeholder="MM / ÅÅÅÅ"
+                      placeholder="MM / YYYY"
                       valueFormat="MM / YYYY"
                       w="50%"
                       variant="filled"
@@ -144,7 +144,7 @@ export function CVForm({
                 </Flex>
                 <TextInput
                   withAsterisk
-                  label="By"
+                  label="City"
                   variant="filled"
                   w="100%"
                   style={{ flex: 1 }}
@@ -152,8 +152,8 @@ export function CVForm({
                 />
               </Flex>
               <EditorInput
-                label="Beskrivelse"
-                description="Ansættelseschefers tip: Skriv 200+ tegn for at øge dine chancer for at blive inviteret til jobsamtale"
+                label="Description"
+                description="Recruiter tip: write 200+ characters to increase interview chances"
                 {...form.getInputProps(`workExperiences.${index}.description`)}
               />
             </Stack>
@@ -173,14 +173,15 @@ export function CVForm({
             <Flex gap="xl">
               <TextInput
                 withAsterisk
-                label="Evne"
+                label="Skill"
                 variant="filled"
                 w="100%"
                 style={{ flex: 1 }}
                 {...form.getInputProps(`skills.${index}.title`)}
               />
               <Input.Wrapper
-                label="Niveau - Ekspert"
+                label="Level - from 1 to 5"
+                description="5 is the best"
                 inputWrapperOrder={["label", "error", "input", "description"]}
                 w="50%"
               >
@@ -212,6 +213,41 @@ export function CVForm({
                   />
                 </div>
               </Input.Wrapper>
+            </Flex>
+          </Stack>
+        </Accordion.Panel>
+      </Accordion.Item>
+    );
+  });
+
+  const socialProfiles = form.getValues().socialProfiles.map((link, index) => {
+    return (
+      <Accordion.Item key={link.key} value={link.key}>
+        <AccordionControl
+          onDelete={() => form.removeListItem("socialProfiles", index)}
+        >
+          {link.label ? link.label : "(ikke angivet)"}
+        </AccordionControl>
+        <Accordion.Panel>
+          <Stack>
+            <Flex gap="xl">
+              <TextInput
+                withAsterisk
+                label="Label"
+                variant="filled"
+                w="100%"
+                style={{ flex: 1 }}
+                {...form.getInputProps(`socialProfiles.${index}.label`)}
+              />
+              <TextInput
+                withAsterisk
+                label="Link"
+                variant="filled"
+                placeholder="https://example.com"
+                w="100%"
+                style={{ flex: 1 }}
+                {...form.getInputProps(`socialProfiles.${index}.url`)}
+              />
             </Flex>
           </Stack>
         </Accordion.Panel>
@@ -264,7 +300,7 @@ export function CVForm({
           </Flex>
           <Flex gap="xl" align="flex-end">
             <TextInput
-              label="Jobtitle"
+              label="Job title"
               w="100%"
               variant="filled"
               key={form.key("position")}
@@ -275,12 +311,17 @@ export function CVForm({
               <Image
                 src={data.photoUrl}
                 fallbackSrc="https://placehold.co/60x60?text=IMG"
-                maw="60px"
+                maw="40px"
                 radius="md"
               />
               {data.photoUrl ? (
                 <>
-                  <Button variant="subtle" component={Link} to="upload">
+                  <Button
+                    variant="subtle"
+                    component={Link}
+                    to="upload"
+                    size="compact-xs"
+                  >
                     Change image
                   </Button>
                   <Button
@@ -288,6 +329,7 @@ export function CVForm({
                     onClick={() =>
                       data.photo && deleteImage({ storageId: data.photo })
                     }
+                    size="compact-xs"
                   >
                     Delete image
                   </Button>
@@ -301,14 +343,14 @@ export function CVForm({
           </Flex>
           <Flex gap="xl">
             <TextInput
-              label="Fornavn"
+              label="First Name"
               w="100%"
               variant="filled"
               key={form.key("firstname")}
               {...form.getInputProps("firstname")}
             />
             <TextInput
-              label="Efternavn"
+              label="Last Name"
               w="100%"
               variant="filled"
               key={form.key("lastname")}
@@ -324,7 +366,7 @@ export function CVForm({
               {...form.getInputProps("email")}
             />
             <TextInput
-              label="Telefon"
+              label="Phone"
               w="100%"
               variant="filled"
               key={form.key("phone")}
@@ -333,14 +375,14 @@ export function CVForm({
           </Flex>
           <Flex gap="xl">
             <TextInput
-              label="Land"
+              label="Country"
               w="100%"
               variant="filled"
               key={form.key("country")}
               {...form.getInputProps("country")}
             />
             <TextInput
-              label="By"
+              label="City"
               w="100%"
               variant="filled"
               key={form.key("city")}
@@ -374,11 +416,7 @@ export function CVForm({
             </Text>
           </Flex>
           {workExperiences.length > 0 && (
-            <Accordion
-              variant="separated"
-              chevronPosition="left"
-              defaultValue="Apples"
-            >
+            <Accordion variant="separated" chevronPosition="left">
               {workExperiences}
             </Accordion>
           )}
@@ -450,11 +488,86 @@ export function CVForm({
               >
                 Customer Service
               </Button>
+              <Button
+                size="xs"
+                variant="light"
+                onClick={() =>
+                  form.insertListItem("skills", {
+                    key: randomId(),
+                    title: "",
+                    level: "3",
+                  })
+                }
+                rightSection={<FaPlus />}
+              >
+                Create new
+              </Button>
             </Flex>
           </Flex>
           {skills.length > 0 && (
             <Accordion variant="separated" chevronPosition="left">
               {skills}
+            </Accordion>
+          )}
+        </Stack>
+        <Stack>
+          <Flex direction="column">
+            <Title order={5} fw="500">
+              Social Links
+            </Title>
+            <Text c="dimmed" fz="sm">
+              You can add links to websites you want hiring managers to see!
+              Perhaps It will be a link to your portfolio, LinkedIn profile, or
+              personal website
+            </Text>
+            <Flex mt="md" gap="xs" wrap="wrap">
+              <Button
+                size="xs"
+                variant="light"
+                onClick={() =>
+                  form.insertListItem("socialProfiles", {
+                    key: randomId(),
+                    label: "LinkedIn",
+                    url: "",
+                  })
+                }
+                rightSection={<FaPlus />}
+              >
+                Linkedin
+              </Button>
+              <Button
+                size="xs"
+                variant="light"
+                onClick={() =>
+                  form.insertListItem("socialProfiles", {
+                    key: randomId(),
+                    label: "Blog",
+                    url: "",
+                  })
+                }
+                rightSection={<FaPlus />}
+              >
+                Blog
+              </Button>
+              <Button
+                size="xs"
+                variant="light"
+                onClick={() =>
+                  form.insertListItem("socialProfiles", {
+                    key: randomId(),
+                    title: "",
+                    url: "",
+                  })
+                }
+                rightSection={<FaPlus />}
+              >
+                Add one more link
+              </Button>
+            </Flex>
+          </Flex>
+          {socialProfiles.length > 0 && (
+            <Accordion variant="separated" chevronPosition="left">
+              {socialProfiles}
             </Accordion>
           )}
         </Stack>

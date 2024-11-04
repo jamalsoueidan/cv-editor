@@ -29,7 +29,13 @@ Font.register({
 });
 
 const styles = StyleSheet.create({
-  page: { fontFamily: "Open Sans", fontSize: 12 },
+  page: {
+    fontFamily: "Open Sans",
+    fontSize: 12,
+    paddingTop: 35,
+    paddingBottom: 65,
+    paddingHorizontal: 35,
+  },
   section: {
     backgroundColor: "tomato",
   },
@@ -42,6 +48,15 @@ const styles = StyleSheet.create({
   link: {
     fontSize: 14,
   },
+  pageNumber: {
+    position: "absolute",
+    fontSize: 12,
+    bottom: 30,
+    left: 0,
+    right: 0,
+    textAlign: "center",
+    color: "grey",
+  },
 });
 
 // Create Document Component
@@ -53,10 +68,14 @@ export const Quds = ({
   lang: TemplateLocale;
 }) => {
   return (
-    <Document style={{ padding: 0, margin: 0 }}>
+    <Document>
       <Page size="A4" style={styles.page} wrap>
         <View
           style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
             flexDirection: "row",
             maxHeight: 150,
           }}
@@ -97,6 +116,8 @@ export const Quds = ({
             </View>
           </View>
         </View>
+
+        <View style={{ marginTop: 100 }}></View>
 
         <View
           style={{
@@ -337,6 +358,14 @@ export const Quds = ({
             </View>
           ) : null}
         </View>
+
+        <Text
+          style={styles.pageNumber}
+          render={({ pageNumber, totalPages }) =>
+            `${pageNumber} / ${totalPages}`
+          }
+          fixed
+        />
       </Page>
     </Document>
   );
