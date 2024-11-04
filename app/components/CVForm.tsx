@@ -108,39 +108,38 @@ export function CVForm({
               </Flex>
               <Flex gap="xl">
                 <Flex direction="column" flex="1">
-                  <Text fw="500" fz="sm">
-                    Start- & end date
-                  </Text>
-                  <Flex gap="md">
-                    <MonthPickerInput
-                      placeholder="MM / YYYY"
-                      valueFormat="MM / YYYY"
-                      w="50%"
-                      variant="filled"
-                      clearable
-                      onChange={(value) => {
-                        form.setFieldValue(
-                          `workExperiences.${index}.startDate`,
-                          value?.getTime()
-                        );
-                      }}
-                      value={item.startDate ? new Date(item.startDate) : null}
-                    />
-                    <MonthPickerInput
-                      placeholder="MM / YYYY"
-                      valueFormat="MM / YYYY"
-                      w="50%"
-                      variant="filled"
-                      clearable
-                      onChange={(value) => {
-                        form.setFieldValue(
-                          `workExperiences.${index}.endDate`,
-                          value?.getTime()
-                        );
-                      }}
-                      value={item.endDate ? new Date(item.endDate) : null}
-                    />
-                  </Flex>
+                  <Input.Wrapper label="Start- & end date">
+                    <Flex gap="md">
+                      <MonthPickerInput
+                        placeholder="MM / YYYY"
+                        valueFormat="MM / YYYY"
+                        w="50%"
+                        variant="filled"
+                        clearable
+                        onChange={(value) => {
+                          form.setFieldValue(
+                            `workExperiences.${index}.startDate`,
+                            value?.getTime()
+                          );
+                        }}
+                        value={item.startDate ? new Date(item.startDate) : null}
+                      />
+                      <MonthPickerInput
+                        placeholder="MM / YYYY"
+                        valueFormat="MM / YYYY"
+                        w="50%"
+                        variant="filled"
+                        clearable
+                        onChange={(value) => {
+                          form.setFieldValue(
+                            `workExperiences.${index}.endDate`,
+                            value?.getTime()
+                          );
+                        }}
+                        value={item.endDate ? new Date(item.endDate) : null}
+                      />
+                    </Flex>
+                  </Input.Wrapper>
                 </Flex>
                 <TextInput
                   withAsterisk
@@ -161,6 +160,84 @@ export function CVForm({
         </Accordion.Item>
       );
     });
+
+  const educations = form.getValues().educations.map((item, index) => {
+    return (
+      <Accordion.Item key={item.key} value={item.key}>
+        <AccordionControl
+          onDelete={() => form.removeListItem("educations", index)}
+        >
+          {item.school ? item.school : "(ikke angivet)"}
+        </AccordionControl>
+        <Accordion.Panel>
+          <Stack>
+            <Flex gap="xl">
+              <TextInput
+                withAsterisk
+                label="School"
+                variant="filled"
+                w="100%"
+                style={{ flex: 1 }}
+                {...form.getInputProps(`educations.${index}.school`)}
+              />
+              <TextInput
+                withAsterisk
+                label="Degree"
+                variant="filled"
+                w="100%"
+                style={{ flex: 1 }}
+                {...form.getInputProps(`educations.${index}.degree`)}
+              />
+            </Flex>
+            <Flex gap="xl">
+              <Flex direction="column" flex="1">
+                <Input.Wrapper label="Start- & end date">
+                  <Flex gap="md">
+                    <MonthPickerInput
+                      placeholder="MM / YYYY"
+                      valueFormat="MM / YYYY"
+                      w="50%"
+                      variant="filled"
+                      clearable
+                      onChange={(value) => {
+                        form.setFieldValue(
+                          `educations.${index}.startDate`,
+                          value?.getTime()
+                        );
+                      }}
+                      value={item.startDate ? new Date(item.startDate) : null}
+                    />
+                    <MonthPickerInput
+                      placeholder="MM / YYYY"
+                      valueFormat="MM / YYYY"
+                      w="50%"
+                      variant="filled"
+                      clearable
+                      onChange={(value) => {
+                        form.setFieldValue(
+                          `educations.${index}.endDate`,
+                          value?.getTime()
+                        );
+                      }}
+                      value={item.endDate ? new Date(item.endDate) : null}
+                    />
+                  </Flex>
+                </Input.Wrapper>
+              </Flex>
+              <TextInput
+                withAsterisk
+                label="City"
+                variant="filled"
+                w="100%"
+                style={{ flex: 1 }}
+                {...form.getInputProps(`educations.${index}.city`)}
+              />
+            </Flex>
+          </Stack>
+        </Accordion.Panel>
+      </Accordion.Item>
+    );
+  });
 
   const skills = form.getValues().skills.map((item, index) => {
     return (
@@ -492,6 +569,35 @@ export function CVForm({
               leftSection={<FaPlus />}
             >
               Add employment
+            </Button>
+          </Flex>
+        </Stack>
+        <Stack>
+          <Flex direction="column">
+            <Title order={5} fw="500">
+              Education
+            </Title>{" "}
+            <Text c="dimmed" fz="sm">
+              A varied education on your resume sums up the value that your
+              learnings and background will bring to job.
+            </Text>
+          </Flex>
+          {educations.length > 0 && (
+            <Accordion variant="separated" chevronPosition="left">
+              {educations}
+            </Accordion>
+          )}
+          <Flex>
+            <Button
+              variant="transparent"
+              onClick={() =>
+                form.insertListItem("educations", {
+                  key: randomId(),
+                })
+              }
+              leftSection={<FaPlus />}
+            >
+              Add education
             </Button>
           </Flex>
         </Stack>

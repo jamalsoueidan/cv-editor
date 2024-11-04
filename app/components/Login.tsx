@@ -57,7 +57,7 @@ export function Login() {
     <Stack gap="xl">
       <Container size="lg">
         <Title order={2} className={classes.title} ta="center" mt="sm">
-          Create a Professional CV Easily and Quickly
+          Create CV Easily (FREE OF CHARGE)
         </Title>
 
         <Text c="dimmed" className={classes.description} ta="center" mt="md">
