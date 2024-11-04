@@ -117,7 +117,7 @@ export default function Templates() {
                   <ClientOnly>
                     {() => (
                       <PDFViewer
-                        data={dumbData}
+                        data={{ ...dumbData, template: template }}
                         withControls={false}
                         withPagning={false}
                         height={300}
