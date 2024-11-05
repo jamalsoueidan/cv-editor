@@ -37,7 +37,7 @@ export const { auth, signIn, signOut, store } = convexAuth({
           internships: [],
           internshipsVisible: false,
           template: {
-            name: "quds",
+            name: "Copenhagen",
             color: "#ffe14c",
             lineHeight: "1.5",
             fontSize: "12",

@@ -1,8 +1,10 @@
 import { api } from "convex/_generated/api";
 import { FunctionReturnType } from "convex/server";
-import { Gaza } from "./Gaza";
+
+import { Aarhus } from "./Aarhus";
+
+import { Copenhagen } from "./Copenhagen";
 import { TemplateLocale } from "./locales";
-import { Quds } from "./Quds";
 
 export const TEMPLATES: Record<
   string,
@@ -11,6 +13,6 @@ export const TEMPLATES: Record<
     lang: TemplateLocale;
   }>
 > = {
-  quds: Quds,
-  gaza: Gaza,
+  copenhagen: Copenhagen,
+  aarhus: Aarhus,
 };

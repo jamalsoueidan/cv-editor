@@ -32,7 +32,7 @@ export const create = mutation({
       internships: [],
       internshipsVisible: false,
       template: {
-        name: "Gaza",
+        name: "Aarhus",
         color: "#ffe14c",
         lineHeight: "1.5",
         fontSize: "12",

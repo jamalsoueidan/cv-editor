@@ -27,8 +27,8 @@ import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 import * as reactUse from "react-use";
 import classes from "./PDFViewer.module.css";
+import { Copenhagen } from "./templates/Copenhagen";
 import { LANGUAGES } from "./templates/locales";
-import { Quds } from "./templates/Quds";
 import { TEMPLATES } from "./templates/templates";
 const { useAsync } = reactUse;
 
@@ -68,7 +68,7 @@ export const PDFViewer = ({
     ? TEMPLATES[template.toLowerCase()]
     : data.template.name
     ? TEMPLATES[data.template.name.toLowerCase()]
-    : Quds;
+    : Copenhagen;
 
   const templateLanguage = language
     ? LANGUAGES[language.toLowerCase()]

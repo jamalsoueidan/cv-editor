@@ -29,14 +29,14 @@ export function Login() {
       firstname: "Steve",
       lastname: "Jobs",
       position: "CEO Apple",
-      template: { ...dumbData.template, name: "Quds", color: "#e64980" },
+      template: { ...dumbData.template, name: "Copenhagen", color: "#e64980" },
     },
     {
       ...dumbData,
       firstname: "Jen-Hsun",
       lastname: "Huang",
       position: "CEO Nvidia",
-      template: { ...dumbData.template, name: "Gaza", color: "#be4bdb" },
+      template: { ...dumbData.template, name: "Aarhus", color: "#be4bdb" },
     },
     {
       ...dumbData,
@@ -45,21 +45,21 @@ export function Login() {
       position: "CEO Tesla",
       photoUrl:
         "https://nationaltoday.com/wp-content/uploads/2022/05/123-Elon-Musk-150x150.jpg",
-      template: { ...dumbData.template, name: "Quds", color: "#7950f2" },
+      template: { ...dumbData.template, name: "Copenhagen", color: "#7950f2" },
     },
     {
       ...dumbData,
       firstname: "David",
       lastname: "Hansson",
       position: "CEO Basecamp",
-      template: { ...dumbData.template, name: "Gaza", color: "#4c6ef5" },
+      template: { ...dumbData.template, name: "Aarhus", color: "#4c6ef5" },
     },
     {
       ...dumbData,
       firstname: "Seth",
       lastname: "Godin",
       position: "Marketing",
-      template: { ...dumbData.template, name: "Gaza", color: "#4c6ef5" },
+      template: { ...dumbData.template, name: "Aarhus", color: "#4c6ef5" },
     },
   ];
 
@@ -91,9 +91,10 @@ export function Login() {
       <Container size="lg">
         <Stack gap={rem(40)} mt={rem(40)}>
           <Text className={classes.description} ta="center">
-            Enter your information or upload your PDF, then choose a CV
-            template, customize your CV to match your style and personality, and
-            download your CV right away.
+            Create a CV quickly. Start by entering your details or uploading an
+            existing PDF, then select a template that fits your style. Customize
+            it to showcase your skills and personality, and download your CV as
+            PDF!
           </Text>
 
           <Grid>

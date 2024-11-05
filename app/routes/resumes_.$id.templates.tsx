@@ -32,14 +32,14 @@ const TemplateList = [
     fontFamily: "Open Sans",
     fontSize: "14",
     lineHeight: "",
-    name: "Gaza",
+    name: "Aarhus",
   },
   {
     color: "#fff66d",
     fontFamily: "Open Sans",
     fontSize: "14",
     lineHeight: "",
-    name: "Quds",
+    name: "Copenhagen",
   },
 ];
 export default function Templates() {

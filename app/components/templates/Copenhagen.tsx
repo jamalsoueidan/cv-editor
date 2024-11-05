@@ -1,24 +1,36 @@
 import {
   Document,
+  Font,
+  Image,
   Link,
   Page,
-  Rect,
   StyleSheet,
-  Svg,
   Text,
   View,
 } from "@react-pdf/renderer";
 import { api } from "convex/_generated/api";
 import { FunctionReturnType } from "convex/server";
 import dayjs from "dayjs";
-import React from "react";
 import { EditorHTML } from "../pdf/EditorHTML";
 import { SvgBar } from "../pdf/SvgBar";
 import { TemplateLocale } from "./locales";
 
+Font.register({
+  family: "Open Sans",
+  fonts: [
+    {
+      src: "https://cdn.jsdelivr.net/npm/open-sans-all@0.1.3/fonts/open-sans-regular.ttf",
+    },
+    {
+      src: "https://cdn.jsdelivr.net/npm/open-sans-all@0.1.3/fonts/open-sans-600.ttf",
+      fontWeight: 600,
+    },
+  ],
+});
+
 const styles = StyleSheet.create({
   page: {
-    fontFamily: "Times-Roman",
+    fontFamily: "Open Sans",
     fontSize: 12,
     paddingTop: 35,
     paddingBottom: 65,
@@ -48,7 +60,7 @@ const styles = StyleSheet.create({
 });
 
 // Create Document Component
-export const Gaza = ({
+export const Copenhagen = ({
   data,
   lang,
 }: {
@@ -61,79 +73,51 @@ export const Gaza = ({
         <View
           style={{
             position: "absolute",
-            top: 12,
-            left: 12,
-            right: 12,
+            top: 0,
+            left: 0,
+            right: 0,
             flexDirection: "row",
-            maxHeight: 200,
-            borderRadius: 24,
+            maxHeight: 150,
           }}
         >
-          <Svg viewBox={`0 0 1500 200`}>
-            <Rect
-              x="0"
-              width="1500"
-              height="200"
-              rx="25"
-              ry="25"
-              fill={data.template.color}
-            />
-          </Svg>
-        </View>
-
-        <View
-          style={{
-            position: "absolute",
-            top: 12,
-            left: 12,
-            right: 12,
-            flexDirection: "row",
-            maxHeight: 100,
-            borderRadius: 24,
-          }}
-        >
+          {data.photoUrl ? (
+            <Image src={data.photoUrl} style={styles.headerImage} />
+          ) : null}
           <View
             style={{
+              backgroundColor: data.template.color,
               width: "100%",
+              ...(data.photoUrl ? { marginLeft: 4 } : {}),
             }}
           >
-            <View
-              style={{
-                marginLeft: 20,
-                marginRight: 20,
-                marginTop: 20,
-                marginBottom: 10,
-                flexDirection: "row",
-              }}
-            >
-              {data.firstname || data.lastname ? (
+            <View style={{ marginLeft: 20, marginTop: 5, marginBottom: 10 }}>
+              {data.firstname ? (
+                <Text
+                  style={{
+                    fontSize: 32,
+                    ...(data.lastname ? { lineHeight: 1.2 } : {}),
+                  }}
+                >
+                  {data.firstname.toUpperCase()}
+                </Text>
+              ) : null}
+              {data.lastname ? (
                 <Text
                   style={{
                     fontSize: 32,
                   }}
                 >
-                  {data.firstname?.toUpperCase()} {data.lastname?.toUpperCase()}
+                  {data.lastname.toUpperCase()}
                 </Text>
               ) : null}
-
               {data.position ? (
-                <Text
-                  style={{
-                    fontSize: 14,
-                    textAlign: "right",
-                    marginTop: 10,
-
-                    flex: 1,
-                  }}
-                >
-                  {data.position}
-                </Text>
+                <Text style={styles.title}>{data.position}</Text>
               ) : null}
             </View>
           </View>
         </View>
 
-        <View style={{ marginTop: 60 }}></View>
+        <View style={{ marginTop: 100 }}></View>
 
         <View
           style={{
@@ -146,17 +130,20 @@ export const Gaza = ({
         >
           {data.city || data.country || data.email || data.phone ? (
             <View style={{ marginBottom: 25 }}>
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontWeight: "bold",
-                  textDecoration: "underline",
-                  paddingBottom: 6,
-                }}
-              >
-                {lang.details.toUpperCase()}
-              </Text>
-
+              <View style={{ flexDirection: "row" }}>
+                <Text
+                  style={{
+                    backgroundColor: "black",
+                    color: "white",
+                    paddingLeft: 6,
+                    paddingRight: 6,
+                    paddingBottom: 4,
+                    marginBottom: 8,
+                  }}
+                >
+                  {lang.details.toUpperCase()}
+                </Text>
+              </View>
               {data.city || data.country ? (
                 <Text>
                   {data.city ? data.city : null}
@@ -170,35 +157,42 @@ export const Gaza = ({
           ) : null}
           {data.content ? (
             <View style={{ marginBottom: 25 }}>
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontWeight: "bold",
-                  textDecoration: "underline",
-                  paddingBottom: 6,
-                }}
-              >
-                {lang.profile.toUpperCase()}
-              </Text>
+              <View style={{ flexDirection: "row" }}>
+                <Text
+                  style={{
+                    backgroundColor: "black",
+                    color: "white",
+                    paddingLeft: 6,
+                    paddingRight: 6,
+                    paddingBottom: 4,
+                    marginBottom: 8,
+                  }}
+                >
+                  {lang.profile.toUpperCase()}
+                </Text>
+              </View>
 
               <EditorHTML content={data.content} />
             </View>
           ) : null}
           {data.workExperiences?.length > 0 ? (
-            <>
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontWeight: "bold",
-                  textDecoration: "underline",
-                  paddingBottom: 6,
-                }}
-              >
-                {lang.workExperience.toUpperCase()}
-              </Text>
-
+            <View style={{ marginBottom: 25 }}>
+              <View style={{ flexDirection: "row" }}>
+                <Text
+                  style={{
+                    backgroundColor: "black",
+                    color: "white",
+                    paddingLeft: 6,
+                    paddingRight: 6,
+                    paddingBottom: 4,
+                    marginBottom: 8,
+                  }}
+                >
+                  {lang.workExperience.toUpperCase()}
+                </Text>
+              </View>
               {data.workExperiences?.map((workExperience, index) => (
-                <React.Fragment key={index}>
+                <View key={index} style={{ marginBottom: 12 }} wrap>
                   <Text style={{ fontFamily: "Open Sans", fontWeight: "bold" }}>
                     {workExperience.position}
                     {workExperience.position && workExperience.company
@@ -210,6 +204,7 @@ export const Gaza = ({
                       : null}
                     {workExperience.city}
                   </Text>
+
                   {workExperience.startDate || workExperience.endDate ? (
                     <Text style={{ color: "#666", fontSize: 10 }}>
                       {workExperience.startDate
@@ -229,28 +224,28 @@ export const Gaza = ({
                       <EditorHTML content={workExperience.description} />
                     </View>
                   ) : null}
-                  <View style={{ marginBottom: 12 }} />
-                </React.Fragment>
+                </View>
               ))}
-              <View style={{ marginBottom: 25 }} />
-            </>
+            </View>
           ) : null}
           {data.educations?.length > 0 ? (
-            <>
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontWeight: "bold",
-                  textDecoration: "underline",
-                  paddingBottom: 6,
-                }}
-                wrap
-              >
-                {lang.education.toUpperCase()}
-              </Text>
-
+            <View style={{ marginBottom: 25 }}>
+              <View style={{ flexDirection: "row" }}>
+                <Text
+                  style={{
+                    backgroundColor: "black",
+                    color: "white",
+                    paddingLeft: 6,
+                    paddingRight: 6,
+                    paddingBottom: 4,
+                    marginBottom: 8,
+                  }}
+                >
+                  {lang.education.toUpperCase()}
+                </Text>
+              </View>
               {data.educations?.map((education, index) => (
-                <View style={{ marginBottom: 12 }} key={index} wrap>
+                <View key={index} style={{ marginBottom: 12 }} wrap>
                   <Text style={{ fontFamily: "Open Sans", fontWeight: "bold" }}>
                     {education.degree}
                     {education.degree && education.school ? ", " : null}
@@ -276,25 +271,26 @@ export const Gaza = ({
                       <EditorHTML content={education.description} />
                     </View>
                   ) : null}
-                  <View />
                 </View>
               ))}
-              <View style={{ marginBottom: 25 }} />
-            </>
+            </View>
           ) : null}
           {data.socialProfilesVisible && data.socialProfiles?.length > 0 ? (
             <View style={{ marginBottom: 25 }}>
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontWeight: "bold",
-                  textDecoration: "underline",
-                  paddingBottom: 6,
-                }}
-              >
-                {lang.links.toUpperCase()}
-              </Text>
-
+              <View style={{ flexDirection: "row" }}>
+                <Text
+                  style={{
+                    backgroundColor: "black",
+                    color: "white",
+                    paddingLeft: 6,
+                    paddingRight: 6,
+                    paddingBottom: 4,
+                    marginBottom: 8,
+                  }}
+                >
+                  {lang.links.toUpperCase()}
+                </Text>
+              </View>
               {data.socialProfiles?.map((social, index) => (
                 <View
                   key={index}
@@ -316,17 +312,20 @@ export const Gaza = ({
           ) : null}
           {data.languagesVisible && data.languages?.length > 0 ? (
             <View style={{ marginBottom: 25 }}>
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontWeight: "bold",
-                  textDecoration: "underline",
-                  paddingBottom: 6,
-                }}
-              >
-                {lang.languages.toUpperCase()}
-              </Text>
-
+              <View style={{ flexDirection: "row" }}>
+                <Text
+                  style={{
+                    backgroundColor: "black",
+                    color: "white",
+                    paddingLeft: 6,
+                    paddingRight: 6,
+                    paddingBottom: 4,
+                    marginBottom: 8,
+                  }}
+                >
+                  {lang.languages.toUpperCase()}
+                </Text>
+              </View>
               {data.languages?.map((skill, index) => (
                 <View style={{ marginBottom: 9 }} key={index}>
                   <Text style={{ marginBottom: 4 }}>{skill.language}</Text>
@@ -337,17 +336,20 @@ export const Gaza = ({
           ) : null}
           {data.skillsVisible && data.skills?.length > 0 ? (
             <View style={{ marginBottom: 25 }}>
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontWeight: "bold",
-                  textDecoration: "underline",
-                  paddingBottom: 6,
-                }}
-              >
-                {lang.skills.toUpperCase()}
-              </Text>
-
+              <View style={{ flexDirection: "row" }}>
+                <Text
+                  style={{
+                    backgroundColor: "black",
+                    color: "white",
+                    paddingLeft: 6,
+                    paddingRight: 6,
+                    paddingBottom: 4,
+                    marginBottom: 8,
+                  }}
+                >
+                  {lang.skills.toUpperCase()}
+                </Text>
+              </View>
               {data.skills?.map(
                 (skill, index) =>
                   index % 2 === 0 && (

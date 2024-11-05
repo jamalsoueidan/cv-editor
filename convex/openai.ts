@@ -145,7 +145,7 @@ export const dumbData: Omit<
   ],
   internshipsVisible: true,
   template: {
-    name: "Quds",
+    name: "Copenhagen",
     color: "#ffe14c",
     lineHeight: "1.5",
     fontSize: "12",
@@ -437,7 +437,7 @@ export const uploadPDF = action({
       userId: user || undefined,
       title: "Imported from PDF",
       template: {
-        name: "Gaza",
+        name: "Aarhus",
         color: "#ffe14c",
         lineHeight: "1.5",
         fontSize: "12",
