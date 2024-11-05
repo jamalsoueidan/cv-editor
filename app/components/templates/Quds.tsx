@@ -275,7 +275,7 @@ export const Quds = ({
               ))}
             </View>
           ) : null}
-          {data.socialProfiles?.length > 0 ? (
+          {data.socialProfilesVisible && data.socialProfiles?.length > 0 ? (
             <View style={{ marginBottom: 25 }}>
               <View style={{ flexDirection: "row" }}>
                 <Text
@@ -310,7 +310,7 @@ export const Quds = ({
               ))}
             </View>
           ) : null}
-          {data.languages?.length > 0 ? (
+          {data.languagesVisible && data.languages?.length > 0 ? (
             <View style={{ marginBottom: 25 }}>
               <View style={{ flexDirection: "row" }}>
                 <Text
@@ -334,7 +334,7 @@ export const Quds = ({
               ))}
             </View>
           ) : null}
-          {data.skills?.length > 0 ? (
+          {data.skillsVisible && data.skills?.length > 0 ? (
             <View style={{ marginBottom: 25 }}>
               <View style={{ flexDirection: "row" }}>
                 <Text

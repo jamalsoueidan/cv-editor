@@ -5,6 +5,7 @@ import {
   Image,
   rem,
   Stack,
+  Text,
   TextInput,
   Title,
   UnstyledButton,
@@ -198,9 +199,12 @@ export function CVForm({
 
           <Stack>
             <Flex direction="column">
-              <Title order={5} fw="500">
+              <Title order={3} fw="500">
                 Add Section
-              </Title>
+              </Title>{" "}
+              <Text c="dimmed" fz="sm">
+                You can add more sectionds to your CV
+              </Text>
             </Flex>
 
             <Flex gap="md" wrap="wrap">

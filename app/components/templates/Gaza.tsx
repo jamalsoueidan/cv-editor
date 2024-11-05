@@ -278,7 +278,7 @@ export const Gaza = ({
               ))}
             </View>
           ) : null}
-          {data.socialProfiles?.length > 0 ? (
+          {data.socialProfilesVisible && data.socialProfiles?.length > 0 ? (
             <View style={{ marginBottom: 25 }}>
               <Text
                 style={{
@@ -310,7 +310,7 @@ export const Gaza = ({
               ))}
             </View>
           ) : null}
-          {data.languages?.length > 0 ? (
+          {data.languagesVisible && data.languages?.length > 0 ? (
             <View style={{ marginBottom: 25 }}>
               <Text
                 style={{
@@ -331,7 +331,7 @@ export const Gaza = ({
               ))}
             </View>
           ) : null}
-          {data.skills?.length > 0 ? (
+          {data.skillsVisible && data.skills?.length > 0 ? (
             <View style={{ marginBottom: 25 }}>
               <Text
                 style={{
