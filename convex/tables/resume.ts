@@ -108,5 +108,5 @@ export const Resume = Table("resumes", {
     fontFamily: v.string(),
   }),
   templateLanguage: v.optional(v.string()),
-  userId: v.id("users"),
+  userId: v.optional(v.id("users")),
 });

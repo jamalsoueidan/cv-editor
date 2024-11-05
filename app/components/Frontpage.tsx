@@ -8,24 +8,16 @@ import {
   Title,
   UnstyledButton,
 } from "@mantine/core";
-import { Link, useNavigate } from "@remix-run/react";
+import { Link } from "@remix-run/react";
 import { api } from "convex/_generated/api";
-import { useMutation, useQuery } from "convex/react";
-import { useState } from "react";
+import { useQuery } from "convex/react";
 import { ClientOnly } from "remix-utils/client-only";
+import { useCreateResume } from "~/hooks/useCreateResume";
 import { PDFViewer } from "./PDFViewer";
 
 export function FrontPage() {
   const resumes = useQuery(api.resumes.list);
-  const create = useMutation(api.resumes.create);
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-
-  const onCreate = async () => {
-    setLoading(true);
-    const response = await create({ title: "Untitled" });
-    navigate(`/resumes/${response}`);
-  };
+  const { create, loading } = useCreateResume();
 
   const resumeMarkup = resumes?.map((resume) => (
     <Carousel.Slide key={resume._id}>
@@ -61,7 +53,7 @@ export function FrontPage() {
             <Text ta="center" c="gray.6">
               You can also choose to ...
             </Text>
-            <Button size="xs" onClick={onCreate} loading={loading}>
+            <Button size="xs" onClick={create} loading={loading}>
               Create a new CV!
             </Button>
           </Group>

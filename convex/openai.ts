@@ -1,8 +1,9 @@
 import { ConvexError, v } from "convex/values";
 
+import { getAuthUserId } from "@convex-dev/auth/server";
 import { internal } from "./_generated/api";
 import { Doc } from "./_generated/dataModel";
-import { actionWithUser } from "./auth";
+import { action } from "./_generated/server";
 
 type Data = Doc<"resumes">;
 
@@ -152,7 +153,7 @@ export const dumbData: Omit<
   },
 };
 
-export const uploadPDF = actionWithUser({
+export const uploadPDF = action({
   args: {
     content: v.string(),
     id: v.id("resumes"),
@@ -415,7 +416,7 @@ export const uploadPDF = actionWithUser({
 
     const pdf = JSON.parse(json.choices[0].message.content);
 
-    console.log(pdf);
+    const user = await getAuthUserId(ctx);
     await ctx.runMutation(internal.resumes.updateInternal, {
       workExperiences: [],
       educations: [],
@@ -433,7 +434,7 @@ export const uploadPDF = actionWithUser({
       internshipsVisible: false,
       ...pdf,
       _id: args.id,
-      userId: ctx.user,
+      userId: user || undefined,
       title: "Imported from PDF",
       template: {
         name: "Gaza",

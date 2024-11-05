@@ -1,16 +1,19 @@
+import { getAuthUserId } from "@convex-dev/auth/server";
 import { asyncMap, omit } from "convex-helpers";
 import { ConvexError, v } from "convex/values";
 import { api, internal } from "./_generated/api";
 import { Id } from "./_generated/dataModel";
-import { internalMutation, query } from "./_generated/server";
-import { actionWithUser, mutationWithUser, queryWithUser } from "./auth";
+import { action, internalMutation, mutation, query } from "./_generated/server";
+import { actionWithUser, queryWithUser } from "./auth";
 import { Resume } from "./tables/resume";
 
-export const create = mutationWithUser({
+export const create = mutation({
   args: {
     title: v.string(),
   },
   handler: async (ctx, args) => {
+    const user = await getAuthUserId(ctx);
+
     return ctx.db.insert("resumes", {
       title: args.title,
       updatedTime: Date.now(),
@@ -35,7 +38,7 @@ export const create = mutationWithUser({
         fontSize: "12",
         fontFamily: "Arial",
       },
-      userId: ctx.user,
+      userId: user || undefined,
     });
   },
 });
@@ -48,6 +51,13 @@ export const get = query({
     const data = await ctx.db.get(args.id);
     if (!data) {
       throw new ConvexError("not found");
+    }
+
+    if (data.userId) {
+      const user = await getAuthUserId(ctx);
+      if (data.userId != user) {
+        throw new ConvexError("CV belong to a user");
+      }
     }
 
     return {
@@ -63,7 +73,7 @@ export const get = query({
   },
 });
 
-export const clone = actionWithUser({
+export const clone = action({
   args: {
     id: v.id("resumes"),
   },
@@ -143,20 +153,27 @@ export const updateInternal = internalMutation({
   },
 });
 
-export const update = mutationWithUser({
+export const update = mutation({
   args: omit(Resume.withSystemFields, [
     "_creationTime",
     "userId",
     "updatedTime",
   ]),
   handler: async (ctx, args) => {
-    const doc = await ctx.db
+    const data = await ctx.db
       .query("resumes")
-      .withIndex("byUserId", (q) => q.eq("userId", ctx.user))
       .filter((q) => q.eq(q.field("_id"), args._id))
       .unique();
-    if (!doc) {
-      throw new ConvexError("Not authorized");
+
+    if (!data) {
+      throw new ConvexError("not found");
+    }
+
+    if (data.userId) {
+      const user = await getAuthUserId(ctx);
+      if (data.userId != user) {
+        throw new ConvexError("CV belong to a user");
+      }
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -165,7 +182,7 @@ export const update = mutationWithUser({
   },
 });
 
-export const updateTemplate = mutationWithUser({
+export const updateTemplate = mutation({
   args: {
     _id: v.id("resumes"),
     template: v.object({
@@ -177,13 +194,20 @@ export const updateTemplate = mutationWithUser({
     }),
   },
   handler: async (ctx, args) => {
-    const doc = await ctx.db
+    const data = await ctx.db
       .query("resumes")
-      .withIndex("byUserId", (q) => q.eq("userId", ctx.user))
       .filter((q) => q.eq(q.field("_id"), args._id))
       .unique();
-    if (!doc) {
-      throw new ConvexError("Not authorized");
+
+    if (!data) {
+      throw new ConvexError("not found");
+    }
+
+    if (data.userId) {
+      const user = await getAuthUserId(ctx);
+      if (data.userId != user) {
+        throw new ConvexError("CV belong to a user");
+      }
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -210,11 +234,11 @@ export const list = queryWithUser({
   },
 });
 
-export const generateUploadUrl = mutationWithUser(async (ctx) => {
+export const generateUploadUrl = mutation(async (ctx) => {
   return await ctx.storage.generateUploadUrl();
 });
 
-export const sendImage = mutationWithUser({
+export const sendImage = mutation({
   args: { storageId: v.id("_storage"), id: v.id("resumes") },
   handler: async (ctx, args) => {
     await ctx.db.patch(args.id, {
@@ -223,7 +247,7 @@ export const sendImage = mutationWithUser({
   },
 });
 
-export const deleteImage = mutationWithUser({
+export const deleteImage = mutation({
   args: { storageId: v.id("_storage") },
   handler: async (ctx, args) => {
     await ctx.storage.delete(args.storageId);

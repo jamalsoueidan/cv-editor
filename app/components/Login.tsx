@@ -1,12 +1,27 @@
+import { useAuthActions } from "@convex-dev/auth/react";
 import { Carousel } from "@mantine/carousel";
-import { Button, Container, Flex, Stack, Text, Title } from "@mantine/core";
+import {
+  Button,
+  Container,
+  Flex,
+  Grid,
+  rem,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
 import { FaHeart } from "react-icons/fa";
 import { ClientOnly } from "remix-utils/client-only";
+import { useCreateResume } from "~/hooks/useCreateResume";
+import { CardButton } from "./CardButton";
 import classes from "./Login.module.css";
 import { PDFViewer } from "./PDFViewer";
 import { dumbData } from "./dumbData";
 
 export function Login() {
+  const { create } = useCreateResume();
+  const { signIn } = useAuthActions();
+
   const resumes = [
     {
       ...dumbData,
@@ -58,7 +73,7 @@ export function Login() {
           {() => (
             <PDFViewer
               data={resume}
-              height={500}
+              height={400}
               withControls={false}
               withPagning={false}
               withBorder={true}
@@ -71,23 +86,40 @@ export function Login() {
   ));
 
   return (
-    <Stack gap="xl">
+    <Stack gap={rem(40)}>
       <Container size="lg">
-        <Title order={2} className={classes.title} ta="center" mt="sm">
-          Create CV Easily (FREE OF CHARGE)
-        </Title>
+        <Stack gap={rem(40)} mt={rem(40)}>
+          <Text className={classes.description} ta="center">
+            Enter your information or upload your PDF, then choose a CV
+            template, customize your CV to match your style and personality, and
+            download your CV right away.
+          </Text>
 
-        <Text c="dimmed" className={classes.description} ta="center" mt="md">
-          Enter your information or upload your PDF, choose a CV template,
-          customize your CV to match your style and personality, and download
-          your CV right away.
-        </Text>
+          <Grid>
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <CardButton
+                title="Login with LinkedIn"
+                text=" Save, organize, and access multiple CVs."
+                onClick={() => {
+                  signIn("linkedin");
+                }}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <CardButton
+                title="Create CV without Login"
+                text="Unique link to CV to create it anytime."
+                onClick={create}
+              />
+            </Grid.Col>
+          </Grid>
+        </Stack>
       </Container>
 
       <Carousel
         withIndicators={resumes && resumes.length >= 2}
         withControls={resumes && resumes.length >= 2}
-        height={520}
+        height={420}
         slideSize={{
           base: "60%",
           sm: "40%",
