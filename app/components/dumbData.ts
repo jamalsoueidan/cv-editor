@@ -20,7 +20,7 @@ export const dumbData: Data = {
   hobbies: "Reading, Hiking, Traveling",
   photo: "photo_id_123" as any,
   photoUrl:
-    "https://gravatar.com/avatar/694503a789c1e68bb7f307b594a98904?s=400&d=robohash&r=x",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFXjTsCHHsbmGchZnRSej06SejBufyYxTMkQ&s",
   workExperiences: [
     {
       key: "exp1",

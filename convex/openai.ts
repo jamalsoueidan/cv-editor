@@ -175,7 +175,10 @@ export const uploadPDF = actionWithUser({
         Use the following schema:
         - Fill in the extracted details in the predefined fields such as 'firstname', 'lastname', 'email', etc.
         - Work experiences should be an array with each job position's details.
-        - Only include properties that match the schema.
+        - Only include properties that match the schema, do not add any other properties or the schema will not work.
+        - DO NOT SET ANY VALUE TO NULL or the schema will not work like.
+        - Only set the XXXVisible to true if you have information about it otherwise false.
+        - Do not set any startDate, endDate or any other value to NULL or the schema will not work.
 
         Here is a example: ${JSON.stringify(dumbData)}
 
@@ -412,10 +415,25 @@ export const uploadPDF = actionWithUser({
 
     const pdf = JSON.parse(json.choices[0].message.content);
 
+    console.log(pdf);
     await ctx.runMutation(internal.resumes.updateInternal, {
+      workExperiences: [],
+      educations: [],
+      socialProfiles: [],
+      socialProfilesVisible: false,
+      languages: [],
+      languagesVisible: false,
+      skills: [],
+      skillsVisible: false,
+      references: [],
+      referencesVisible: false,
+      courses: [],
+      coursesVisible: false,
+      internships: [],
+      internshipsVisible: false,
+      ...pdf,
       _id: args.id,
       userId: ctx.user,
-      ...pdf,
       title: "Imported from PDF",
       template: {
         name: "Gaza",

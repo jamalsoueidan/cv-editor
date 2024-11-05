@@ -185,7 +185,7 @@ export const Gaza = ({
             </View>
           ) : null}
           {data.workExperiences?.length > 0 ? (
-            <View style={{ marginBottom: 25 }}>
+            <>
               <Text
                 style={{
                   fontSize: 16,
@@ -232,10 +232,11 @@ export const Gaza = ({
                   <View style={{ marginBottom: 12 }} />
                 </React.Fragment>
               ))}
-            </View>
+              <View style={{ marginBottom: 25 }} />
+            </>
           ) : null}
           {data.educations?.length > 0 ? (
-            <View style={{ marginBottom: 25 }}>
+            <>
               <Text
                 style={{
                   fontSize: 16,
@@ -243,12 +244,13 @@ export const Gaza = ({
                   textDecoration: "underline",
                   paddingBottom: 6,
                 }}
+                wrap
               >
                 {lang.education.toUpperCase()}
               </Text>
 
               {data.educations?.map((education, index) => (
-                <View key={index} style={{ marginBottom: 12 }}>
+                <View style={{ marginBottom: 12 }} key={index} wrap>
                   <Text style={{ fontFamily: "Open Sans", fontWeight: "bold" }}>
                     {education.degree}
                     {education.degree && education.school ? ", " : null}
@@ -274,9 +276,11 @@ export const Gaza = ({
                       <EditorHTML content={education.description} />
                     </View>
                   ) : null}
+                  <View />
                 </View>
               ))}
-            </View>
+              <View style={{ marginBottom: 25 }} />
+            </>
           ) : null}
           {data.socialProfilesVisible && data.socialProfiles?.length > 0 ? (
             <View style={{ marginBottom: 25 }}>

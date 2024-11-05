@@ -79,10 +79,14 @@ export default function ResumesId() {
     }
 
     setLoadingPDF("Asking AI to generate a cv...");
-    await upload({
-      content: extractedText,
-      id: params.id as Id<"resumes">,
-    });
+    try {
+      await upload({
+        content: extractedText,
+        id: params.id as Id<"resumes">,
+      });
+    } catch (e) {
+      setLoadingPDF("Error");
+    }
 
     window.location.reload();
   };

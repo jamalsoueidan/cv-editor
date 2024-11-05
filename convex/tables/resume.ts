@@ -80,7 +80,7 @@ export const Resume = Table("resumes", {
       key: v.string(),
       order: v.optional(v.number()),
       institution: v.string(),
-      source: v.string(),
+      source: v.optional(v.string()),
       startDate: v.optional(v.number()),
       endDate: v.optional(v.number()),
     })
