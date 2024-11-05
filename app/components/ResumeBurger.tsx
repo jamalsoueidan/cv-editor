@@ -1,11 +1,21 @@
-import { ActionIcon, Menu, rem, Text } from "@mantine/core";
+import {
+  ActionIcon,
+  Button,
+  FileButton,
+  Group,
+  Menu,
+  rem,
+  Text,
+} from "@mantine/core";
 import { modals } from "@mantine/modals";
-import { FaClone, FaHamburger, FaTrash } from "react-icons/fa";
+import { FaClone, FaHamburger, FaRegFilePdf, FaTrash } from "react-icons/fa";
 
 export function ResumeBurger({
+  upload,
   destroy,
   clone,
 }: {
+  upload: (payload: File | File[] | null) => void;
   destroy: () => void;
   clone: () => void;
 }) {
@@ -31,6 +41,23 @@ export function ResumeBurger({
       </Menu.Target>
 
       <Menu.Dropdown>
+        <FileButton onChange={upload} accept="application/pdf">
+          {(props) => (
+            <Button
+              variant="subtle"
+              {...props}
+              pl="xs"
+              justify="space-between"
+              fullWidth
+            >
+              <Group gap="xs">
+                <FaRegFilePdf style={{ width: rem(14), height: rem(14) }} />
+                Import PDF
+              </Group>
+            </Button>
+          )}
+        </FileButton>
+
         <Menu.Item
           leftSection={<FaClone style={{ width: rem(14), height: rem(14) }} />}
           onClick={clone}

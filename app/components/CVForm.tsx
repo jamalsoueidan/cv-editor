@@ -58,7 +58,7 @@ export function CVForm({
 
   return (
     <FormProvider form={form}>
-      <form>
+      <form style={{ width: "100%" }}>
         <Stack gap={rem(50)} mb="xl">
           <Flex justify="center" direction="column" gap="0">
             <Flex justify="center">

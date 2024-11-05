@@ -15,6 +15,7 @@ import type {
 } from "convex/server";
 import type * as auth from "../auth.js";
 import type * as http from "../http.js";
+import type * as openai from "../openai.js";
 import type * as resumes from "../resumes.js";
 import type * as tables_resume from "../tables/resume.js";
 
@@ -29,6 +30,7 @@ import type * as tables_resume from "../tables/resume.js";
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   http: typeof http;
+  openai: typeof openai;
   resumes: typeof resumes;
   "tables/resume": typeof tables_resume;
 }>;

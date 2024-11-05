@@ -124,6 +124,25 @@ export const asyncDestroy = actionWithUser({
   },
 });
 
+export const updateInternal = internalMutation({
+  args: omit(Resume.withSystemFields, ["_creationTime", "updatedTime"]),
+  handler: async (ctx, args) => {
+    const doc = await ctx.db
+      .query("resumes")
+      .withIndex("byUserId", (q) => q.eq("userId", args.userId))
+      .filter((q) => q.eq(q.field("_id"), args._id))
+      .unique();
+
+    if (!doc) {
+      throw new ConvexError("Not authorized");
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { _id, ...rest } = args;
+    return ctx.db.patch(_id, { ...rest, updatedTime: Date.now() });
+  },
+});
+
 export const update = mutationWithUser({
   args: omit(Resume.withSystemFields, [
     "_creationTime",

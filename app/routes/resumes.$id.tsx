@@ -11,12 +11,18 @@ import { Outlet, useNavigate, useOutlet, useParams } from "@remix-run/react";
 import { api } from "convex/_generated/api";
 import { Id } from "convex/_generated/dataModel";
 import { useAction, useQuery } from "convex/react";
+import { getDocument } from "pdfjs-dist";
+import { TextItem } from "pdfjs-dist/types/src/display/api";
 import { useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
+import { pdfjs } from "react-pdf";
 import { ClientOnly } from "remix-utils/client-only";
 import { CVForm } from "~/components/CVForm";
 import { PDFViewer } from "~/components/PDFViewer";
 import { ResumeBurger } from "~/components/ResumeBurger";
+
+//https://github.com/diegomura/react-pdf-site/blob/master/src/components/Repl/PDFViewer.js#L81
+pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.mjs`;
 
 export default function ResumesId() {
   const params = useParams();
@@ -24,6 +30,7 @@ export default function ResumesId() {
   const navigate = useNavigate();
   const destroy = useAction(api.resumes.asyncDestroy);
   const clone = useAction(api.resumes.clone);
+  const upload = useAction(api.openai.uploadPDF);
   const [cloneId, setCloneId] = useState<string | null>(null);
 
   const data = useQuery(api.resumes.get, { id: params.id as Id<"resumes"> });
@@ -36,6 +43,43 @@ export default function ResumesId() {
   const destroyAction = async () => {
     await destroy({ id: params.id as Id<"resumes"> });
     navigate("../");
+  };
+
+  const uploadAction = async (payload: File | File[] | null) => {
+    console.log("start");
+    if (!payload || (Array.isArray(payload) && payload.length === 0)) {
+      console.log("No file uploaded");
+      return;
+    }
+
+    // Handle single file (or first file if multiple)
+    const file = Array.isArray(payload) ? payload[0] : payload;
+
+    // Convert file to ArrayBuffer
+    const arrayBuffer = await file.arrayBuffer();
+
+    // Load the PDF document with pdfjs-dist
+    const loadingTask = getDocument(arrayBuffer);
+    const pdf = await loadingTask.promise;
+    let extractedText = "";
+
+    // Loop through each page and extract text
+    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+      const page = await pdf.getPage(pageNum);
+      const textContent = await page.getTextContent();
+
+      const pageText = textContent.items
+        .filter((item): item is TextItem => "str" in item) // Type guard to filter only TextItems
+        .map((item) => item.str)
+        .join(" ");
+
+      extractedText += pageText + " ";
+    }
+
+    await upload({
+      content: extractedText,
+      id: params.id as Id<"resumes">,
+    });
   };
 
   const gotoClone = async () => {
@@ -61,7 +105,11 @@ export default function ResumesId() {
                 <FaArrowLeft />
               </ActionIcon>
 
-              <ResumeBurger destroy={destroyAction} clone={cloneAction} />
+              <ResumeBurger
+                destroy={destroyAction}
+                clone={cloneAction}
+                upload={uploadAction}
+              />
             </Flex>
 
             <CVForm data={data} />
