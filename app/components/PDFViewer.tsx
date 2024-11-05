@@ -147,13 +147,15 @@ export const PDFViewer = ({
       <Text hidden={!shouldShowTextLoader}>
         <Loader size="xl" />
       </Text>
+
       <Card radius="md" p="0" withBorder={withBorder} shadow={shadow} flex={1}>
         {shouldShowPreviousDocument && previousRenderValue ? (
           <Document
             key={previousRenderValue}
             className={classes.previousDocument}
             file={previousRenderValue}
-            loading={null}
+            loading={<Loader />}
+            noData={<></>}
           >
             <Page
               key={currentPage}
@@ -168,7 +170,8 @@ export const PDFViewer = ({
             shouldShowPreviousDocument ? classes.renderingDocument : null
           }
           file={render.value}
-          loading={null}
+          loading={<Loader />}
+          noData={<></>}
           onLoadSuccess={onDocumentLoad}
         >
           <Page

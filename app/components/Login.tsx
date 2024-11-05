@@ -8,12 +8,6 @@ import { dumbData } from "./dumbData";
 
 export function Login() {
   const resumes = [
-    dumbData,
-    {
-      ...dumbData,
-
-      template: { ...dumbData.template, name: "Gaza", color: "#fa5252" },
-    },
     {
       ...dumbData,
       firstname: "Steve",
@@ -42,6 +36,13 @@ export function Login() {
       firstname: "David",
       lastname: "Hansson",
       position: "CEO Basecamp",
+      template: { ...dumbData.template, name: "Gaza", color: "#4c6ef5" },
+    },
+    {
+      ...dumbData,
+      firstname: "Seth",
+      lastname: "Godin",
+      position: "Marketing",
       template: { ...dumbData.template, name: "Gaza", color: "#4c6ef5" },
     },
   ];
