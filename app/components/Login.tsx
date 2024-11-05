@@ -89,13 +89,18 @@ export function Login() {
   return (
     <Stack gap={rem(40)}>
       <Container size="lg">
-        <Stack gap={rem(40)} mt={rem(40)}>
-          <Text className={classes.description} ta="center">
-            Create a CV quickly. Start by entering your details or uploading an
-            existing PDF, then select a template that fits your style. Customize
-            it to showcase your skills and personality, and download your CV as
-            PDF!
-          </Text>
+        <Stack gap={rem(40)} mt={rem(20)}>
+          <div>
+            <Title ta="center" mb="md">
+              Gratis CV Online
+            </Title>
+            <Text className={classes.description} ta="center">
+              Create a CV quickly. Start by entering your details or uploading
+              an existing PDF, then select a template that fits your style.
+              Customize it to showcase your skills and personality, and download
+              your CV as PDF!
+            </Text>
+          </div>
 
           <Grid>
             <Grid.Col span={{ base: 12, md: 6 }}>
@@ -113,7 +118,7 @@ export function Login() {
             <Grid.Col span={{ base: 12, md: 6 }}>
               <CardButton
                 title="Create CV without Login"
-                text="Unique link to CV to create it anytime."
+                text="Unique link to your CV to edit it anytime."
                 onClick={create}
                 icon={
                   <PiReadCvLogo style={{ width: rem(24), height: rem(24) }} />

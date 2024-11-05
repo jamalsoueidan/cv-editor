@@ -1,4 +1,4 @@
-import type { LinksFunction } from "@remix-run/node";
+import type { LinksFunction, MetaFunction } from "@remix-run/node";
 import {
   json,
   Links,
@@ -26,6 +26,21 @@ import { useState } from "react";
 
 import classes from "./Input.module.css";
 export const links: LinksFunction = () => [];
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: "Gratis CV Online" },
+    {
+      property: "og:title",
+      content: "Gratis CV Online",
+    },
+    {
+      name: "description",
+      content:
+        "Create a CV quickly. Start by entering your details or uploading an existing PDF, then select a template that fits your style. Customize it to showcase your skills and personality, and download your CV as PDF!",
+    },
+  ];
+};
 
 export async function loader() {
   const CONVEX_URL = process.env["CONVEX_URL"]!;
