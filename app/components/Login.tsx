@@ -10,7 +10,8 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { FaHeart } from "react-icons/fa";
+import { FaHeart, FaLinkedin } from "react-icons/fa";
+import { PiReadCvLogo } from "react-icons/pi";
 import { ClientOnly } from "remix-utils/client-only";
 import { useCreateResume } from "~/hooks/useCreateResume";
 import { CardButton } from "./CardButton";
@@ -103,6 +104,9 @@ export function Login() {
                 onClick={() => {
                   signIn("linkedin");
                 }}
+                icon={
+                  <FaLinkedin style={{ width: rem(24), height: rem(24) }} />
+                }
               />
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 6 }}>
@@ -110,6 +114,9 @@ export function Login() {
                 title="Create CV without Login"
                 text="Unique link to CV to create it anytime."
                 onClick={create}
+                icon={
+                  <PiReadCvLogo style={{ width: rem(24), height: rem(24) }} />
+                }
               />
             </Grid.Col>
           </Grid>

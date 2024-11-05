@@ -1,8 +1,10 @@
+import { useAuthActions } from "@convex-dev/auth/react";
 import { Carousel } from "@mantine/carousel";
 import {
-  Button,
+  Container,
   Flex,
-  Group,
+  Grid,
+  rem,
   Stack,
   Text,
   Title,
@@ -11,13 +13,21 @@ import {
 import { Link } from "@remix-run/react";
 import { api } from "convex/_generated/api";
 import { useQuery } from "convex/react";
+import { IoMdLogOut } from "react-icons/io";
+import { PiReadCvLogo } from "react-icons/pi";
 import { ClientOnly } from "remix-utils/client-only";
 import { useCreateResume } from "~/hooks/useCreateResume";
+import { CardButton } from "./CardButton";
+import classes from "./Login.module.css";
 import { PDFViewer } from "./PDFViewer";
 
 export function FrontPage() {
+  const { signOut } = useAuthActions();
+  const data = useQuery(api.auth.currentUser);
   const resumes = useQuery(api.resumes.list);
   const { create, loading } = useCreateResume();
+
+  if (!data) return null;
 
   const resumeMarkup = resumes?.map((resume) => (
     <Carousel.Slide key={resume._id}>
@@ -44,21 +54,38 @@ export function FrontPage() {
   ));
 
   return (
-    <Stack gap="xl">
-      <Stack>
-        <Title ta="center">Choose Your CV</Title>
-
-        <Flex justify="center">
-          <Group>
-            <Text ta="center" c="gray.6">
-              You can also choose to ...
-            </Text>
-            <Button size="xs" onClick={create} loading={loading}>
-              Create a new CV!
-            </Button>
-          </Group>
-        </Flex>
-      </Stack>
+    <Stack gap={rem(40)}>
+      <Container size="lg">
+        <Stack gap={rem(40)} mt={rem(20)}>
+          <Text className={classes.description} ta="center">
+            You are now logged in as <strong>{data?.name}</strong>
+          </Text>
+          <Grid>
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <CardButton
+                title="Create a New CV"
+                text="Start a new CV and add it to your saved list."
+                onClick={create}
+                loading={loading}
+                icon={
+                  <PiReadCvLogo style={{ width: rem(24), height: rem(24) }} />
+                }
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 6 }}>
+              <CardButton
+                title="Log out"
+                text="Log out of your account"
+                onClick={signOut}
+                loading={loading}
+                icon={
+                  <IoMdLogOut style={{ width: rem(24), height: rem(24) }} />
+                }
+              />
+            </Grid.Col>
+          </Grid>
+        </Stack>
+      </Container>
 
       <Carousel
         withIndicators={resumes && resumes.length >= 2}
