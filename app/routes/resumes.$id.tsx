@@ -4,6 +4,7 @@ import {
   Flex,
   Grid,
   Group,
+  LoadingOverlay,
   Modal,
   rem,
 } from "@mantine/core";
@@ -30,7 +31,10 @@ export default function ResumesId() {
   const navigate = useNavigate();
   const destroy = useAction(api.resumes.asyncDestroy);
   const clone = useAction(api.resumes.clone);
+
+  const [loadingPDF, setLoadingPDF] = useState<string | null>(null);
   const upload = useAction(api.openai.uploadPDF);
+
   const [cloneId, setCloneId] = useState<string | null>(null);
 
   const data = useQuery(api.resumes.get, { id: params.id as Id<"resumes"> });
@@ -46,40 +50,41 @@ export default function ResumesId() {
   };
 
   const uploadAction = async (payload: File | File[] | null) => {
-    console.log("start");
     if (!payload || (Array.isArray(payload) && payload.length === 0)) {
       console.log("No file uploaded");
       return;
     }
 
-    // Handle single file (or first file if multiple)
+    setLoadingPDF("Reading PDF file...");
     const file = Array.isArray(payload) ? payload[0] : payload;
 
-    // Convert file to ArrayBuffer
     const arrayBuffer = await file.arrayBuffer();
 
-    // Load the PDF document with pdfjs-dist
     const loadingTask = getDocument(arrayBuffer);
+
+    setLoadingPDF("Extracting PDF text...");
     const pdf = await loadingTask.promise;
     let extractedText = "";
 
-    // Loop through each page and extract text
     for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
       const page = await pdf.getPage(pageNum);
       const textContent = await page.getTextContent();
 
       const pageText = textContent.items
-        .filter((item): item is TextItem => "str" in item) // Type guard to filter only TextItems
+        .filter((item): item is TextItem => "str" in item)
         .map((item) => item.str)
         .join(" ");
 
       extractedText += pageText + " ";
     }
 
+    setLoadingPDF("Asking AI to generate a cv...");
     await upload({
       content: extractedText,
       id: params.id as Id<"resumes">,
     });
+
+    window.location.reload();
   };
 
   const gotoClone = async () => {
@@ -145,6 +150,15 @@ export default function ResumesId() {
             <Button onClick={gotoClone}>Gå til ny klonet cv</Button>
           </Group>
         </Modal>
+      )}
+
+      {loadingPDF && (
+        <LoadingOverlay
+          visible={true}
+          zIndex={1000}
+          overlayProps={{ radius: "sm", blur: 2 }}
+          loaderProps={{ children: loadingPDF }}
+        />
       )}
     </>
   );

@@ -8,9 +8,8 @@ type Data = Doc<"resumes">;
 
 export const dumbData: Omit<
   Data,
-  "_id" | "_creationTime" | "photo" | "userId" | "updatedTime"
+  "_id" | "_creationTime" | "photo" | "userId" | "updatedTime" | "title"
 > = {
-  title: "",
   position: "Software Engineer",
   firstname: "John",
   lastname: "Doe",
@@ -191,7 +190,6 @@ export const uploadPDF = actionWithUser({
             schema: {
               type: "object",
               properties: {
-                title: { type: "string" },
                 updatedTime: { type: "integer" },
                 userId: { type: "string" },
                 position: { type: "string" },
@@ -418,6 +416,7 @@ export const uploadPDF = actionWithUser({
       _id: args.id,
       userId: ctx.user,
       ...pdf,
+      title: "Imported from PDF",
       template: {
         name: "Gaza",
         color: "#ffe14c",
