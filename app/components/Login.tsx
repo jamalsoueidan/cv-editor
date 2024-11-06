@@ -10,6 +10,7 @@ import {
   Text,
   Title,
 } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import { useMemo } from "react";
 import { FaHeart, FaLinkedin } from "react-icons/fa";
 import { PiReadCvLogo } from "react-icons/pi";
@@ -61,6 +62,7 @@ const resumes = [
 ];
 
 export function Login() {
+  const isMobile = useMediaQuery("(max-width: 768px)");
   const { create, loading } = useCreateResume();
   const { signIn } = useAuthActions();
 
@@ -140,12 +142,12 @@ export function Login() {
         withControls={resumes && resumes.length >= 2}
         height={420}
         slideSize={{
-          base: "60%",
+          base: "80%",
           sm: "40%",
           md: "25%",
         }}
         slideGap={{ base: "sm", sm: "md" }}
-        loop
+        loop={!isMobile}
       >
         {resumeMarkup}
       </Carousel>
