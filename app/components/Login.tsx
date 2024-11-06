@@ -10,6 +10,7 @@ import {
   Text,
   Title,
 } from "@mantine/core";
+import { useMemo } from "react";
 import { FaHeart, FaLinkedin } from "react-icons/fa";
 import { PiReadCvLogo } from "react-icons/pi";
 import { ClientOnly } from "remix-utils/client-only";
@@ -19,72 +20,76 @@ import classes from "./Login.module.css";
 import { PDFViewer } from "./PDFViewer";
 import { dumbData } from "./dumbData";
 
+const resumes = [
+  {
+    ...dumbData,
+    firstname: "Steve",
+    lastname: "Jobs",
+    position: "CEO Apple",
+    template: { ...dumbData.template, name: "Copenhagen", color: "#e64980" },
+  },
+  {
+    ...dumbData,
+    firstname: "Jen-Hsun",
+    lastname: "Huang",
+    position: "CEO Nvidia",
+    template: { ...dumbData.template, name: "Aarhus", color: "#be4bdb" },
+  },
+  {
+    ...dumbData,
+    firstname: "Elon",
+    lastname: "Musk",
+    position: "CEO Tesla",
+    photoUrl:
+      "https://nationaltoday.com/wp-content/uploads/2022/05/123-Elon-Musk-150x150.jpg",
+    template: { ...dumbData.template, name: "Copenhagen", color: "#7950f2" },
+  },
+  {
+    ...dumbData,
+    firstname: "David",
+    lastname: "Hansson",
+    position: "CEO Basecamp",
+    template: { ...dumbData.template, name: "Aarhus", color: "#4c6ef5" },
+  },
+  {
+    ...dumbData,
+    firstname: "Seth",
+    lastname: "Godin",
+    position: "Marketing",
+    template: { ...dumbData.template, name: "Aarhus", color: "#4c6ef5" },
+  },
+];
+
 export function Login() {
-  const { create } = useCreateResume();
+  const { create, loading } = useCreateResume();
   const { signIn } = useAuthActions();
 
-  const resumes = [
-    {
-      ...dumbData,
-      firstname: "Steve",
-      lastname: "Jobs",
-      position: "CEO Apple",
-      template: { ...dumbData.template, name: "Copenhagen", color: "#e64980" },
-    },
-    {
-      ...dumbData,
-      firstname: "Jen-Hsun",
-      lastname: "Huang",
-      position: "CEO Nvidia",
-      template: { ...dumbData.template, name: "Aarhus", color: "#be4bdb" },
-    },
-    {
-      ...dumbData,
-      firstname: "Elon",
-      lastname: "Musk",
-      position: "CEO Tesla",
-      photoUrl:
-        "https://nationaltoday.com/wp-content/uploads/2022/05/123-Elon-Musk-150x150.jpg",
-      template: { ...dumbData.template, name: "Copenhagen", color: "#7950f2" },
-    },
-    {
-      ...dumbData,
-      firstname: "David",
-      lastname: "Hansson",
-      position: "CEO Basecamp",
-      template: { ...dumbData.template, name: "Aarhus", color: "#4c6ef5" },
-    },
-    {
-      ...dumbData,
-      firstname: "Seth",
-      lastname: "Godin",
-      position: "Marketing",
-      template: { ...dumbData.template, name: "Aarhus", color: "#4c6ef5" },
-    },
-  ];
+  const resumeMarkup = useMemo(
+    () =>
+      resumes?.map((resume, index) => (
+        <Carousel.Slide key={index}>
+          <Flex direction="column" align="center" gap="xs">
+            <Title order={4} c="gray.6" fw="500">
+              {resume.title}
+            </Title>
 
-  const resumeMarkup = resumes?.map((resume, index) => (
-    <Carousel.Slide key={index}>
-      <Flex direction="column" align="center" gap="xs">
-        <Title order={4} c="gray.6" fw="500">
-          {resume.title}
-        </Title>
-
-        <ClientOnly>
-          {() => (
-            <PDFViewer
-              data={resume}
-              height={400}
-              withControls={false}
-              withPagning={false}
-              withBorder={true}
-              shadow="sm"
-            />
-          )}
-        </ClientOnly>
-      </Flex>
-    </Carousel.Slide>
-  ));
+            <ClientOnly>
+              {() => (
+                <PDFViewer
+                  data={resume}
+                  height={400}
+                  withControls={false}
+                  withPagning={false}
+                  withBorder={true}
+                  shadow="sm"
+                />
+              )}
+            </ClientOnly>
+          </Flex>
+        </Carousel.Slide>
+      )),
+    []
+  );
 
   return (
     <Stack gap={rem(40)}>
@@ -120,6 +125,7 @@ export function Login() {
                 title="Create CV without Login"
                 text="Unique link to your CV to edit it anytime."
                 onClick={create}
+                loading={loading}
                 icon={
                   <PiReadCvLogo style={{ width: rem(24), height: rem(24) }} />
                 }

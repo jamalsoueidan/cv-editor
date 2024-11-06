@@ -1,4 +1,4 @@
-import { Flex, Text, UnstyledButton } from "@mantine/core";
+import { Flex, LoadingOverlay, Text, UnstyledButton } from "@mantine/core";
 import classes from "./CardButton.module.css";
 
 export function CardButton({
@@ -15,7 +15,12 @@ export function CardButton({
   loading?: boolean;
 }) {
   return (
-    <UnstyledButton onClick={onClick} className={classes.button} miw="350px">
+    <UnstyledButton
+      onClick={onClick}
+      className={classes.button}
+      miw="350px"
+      disabled={loading}
+    >
       <div>
         <Flex align="center" gap="xs" mb="xs">
           {icon}
@@ -27,6 +32,12 @@ export function CardButton({
           {text}
         </Text>
       </div>
+      {loading ? (
+        <LoadingOverlay
+          visible={loading}
+          loaderProps={{ children: "Creating empty cv for you..." }}
+        />
+      ) : null}
     </UnstyledButton>
   );
 }
