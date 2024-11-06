@@ -20,6 +20,7 @@ import { Link, useParams } from "@remix-run/react";
 import { api } from "convex/_generated/api";
 import { Id } from "convex/_generated/dataModel";
 import { useMutation, useQuery } from "convex/react";
+import { useMemo } from "react";
 import { FaArrowLeft, FaCheckCircle } from "react-icons/fa";
 import { ClientOnly } from "remix-utils/client-only";
 import { DownloadButton } from "~/components/DownloadPDF";
@@ -50,6 +51,64 @@ export default function Templates() {
 
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
+
+  const markup = useMemo(
+    () =>
+      data &&
+      TemplateList?.map((template) => (
+        <UnstyledButton
+          key={template.name}
+          onClick={() => {
+            patch({ _id: data._id, template });
+          }}
+          variant="outline"
+        >
+          <Flex justify="center">
+            <Title order={4} fw="400">
+              {template.name.charAt(0).toUpperCase() + template.name.slice(1)}
+            </Title>
+          </Flex>
+          <Card
+            pos="relative"
+            style={{
+              boxSizing: "border-box",
+              outline:
+                data.template.name === template.name
+                  ? "3px solid #228be6"
+                  : "none",
+            }}
+            withBorder
+            radius="md"
+            p="0"
+          >
+            <ClientOnly>
+              {() => (
+                <PDFViewer
+                  data={{ ...dumbData, template: template }}
+                  withControls={false}
+                  withPagning={false}
+                  height={300}
+                  template={template.name}
+                />
+              )}
+            </ClientOnly>
+            {data.template.name === template.name && (
+              <Box
+                pos="absolute"
+                top="50%"
+                left="50%"
+                style={{
+                  transform: "translate(-50%, -50%)",
+                }}
+              >
+                <FaCheckCircle size={rem(10)} opacity=".5" color="#228be6" />
+              </Box>
+            )}
+          </Card>
+        </UnstyledButton>
+      )),
+    [data, patch]
+  );
 
   if (!data) {
     return <>Loading data</>;
@@ -87,63 +146,7 @@ export default function Templates() {
       <Grid gutter="0">
         <Grid.Col span={5} p="xl" visibleFrom="md">
           <Flex gap="xl" justify="center" wrap="wrap">
-            {TemplateList?.map((template) => (
-              <UnstyledButton
-                key={template.name}
-                onClick={() => {
-                  patch({ _id: data._id, template });
-                }}
-                variant="outline"
-              >
-                <Flex justify="center">
-                  <Title order={4} fw="400">
-                    {template.name.charAt(0).toUpperCase() +
-                      template.name.slice(1)}
-                  </Title>
-                </Flex>
-                <Card
-                  pos="relative"
-                  style={{
-                    boxSizing: "border-box",
-                    outline:
-                      data.template.name === template.name
-                        ? "3px solid #228be6"
-                        : "none",
-                  }}
-                  withBorder
-                  radius="md"
-                  p="0"
-                >
-                  <ClientOnly>
-                    {() => (
-                      <PDFViewer
-                        data={{ ...dumbData, template: template }}
-                        withControls={false}
-                        withPagning={false}
-                        height={300}
-                        template={template.name}
-                      />
-                    )}
-                  </ClientOnly>
-                  {data.template.name === template.name && (
-                    <Box
-                      pos="absolute"
-                      top="50%"
-                      left="50%"
-                      style={{
-                        transform: "translate(-50%, -50%)",
-                      }}
-                    >
-                      <FaCheckCircle
-                        size={rem(10)}
-                        opacity=".5"
-                        color="#228be6"
-                      />
-                    </Box>
-                  )}
-                </Card>
-              </UnstyledButton>
-            ))}
+            {markup}
           </Flex>
         </Grid.Col>
         <Grid.Col
@@ -186,14 +189,9 @@ export default function Templates() {
         zIndex={1000000}
       >
         <ScrollArea h={`calc(40vh - ${rem(80)})`} mx="-md">
-          <Divider my="sm" />
-
-          <Divider my="sm" />
-
-          <Group justify="center" grow pb="xl" px="md">
-            <Button variant="default">Login</Button>
-            <Button>Signup</Button>
-          </Group>
+          <Flex direction="column" align="center" gap="md">
+            {markup}
+          </Flex>
         </ScrollArea>
       </Drawer>
     </>

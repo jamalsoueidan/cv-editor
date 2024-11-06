@@ -8,7 +8,9 @@ import {
   Text,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
+import { Link } from "@remix-run/react";
 import { FaClone, FaHamburger, FaRegFilePdf, FaTrash } from "react-icons/fa";
+import { PiReadCvLogo } from "react-icons/pi";
 
 export function ResumeBurger({
   upload,
@@ -41,6 +43,22 @@ export function ResumeBurger({
       </Menu.Target>
 
       <Menu.Dropdown>
+        <Menu.Item
+          component={Link}
+          to="view"
+          leftSection={
+            <PiReadCvLogo style={{ width: rem(14), height: rem(14) }} />
+          }
+        >
+          View & Download CV
+        </Menu.Item>
+
+        <Menu.Item
+          leftSection={<FaClone style={{ width: rem(14), height: rem(14) }} />}
+          onClick={clone}
+        >
+          Clone CV
+        </Menu.Item>
         <FileButton onChange={upload} accept="application/pdf">
           {(props) => (
             <Button
@@ -57,13 +75,6 @@ export function ResumeBurger({
             </Button>
           )}
         </FileButton>
-
-        <Menu.Item
-          leftSection={<FaClone style={{ width: rem(14), height: rem(14) }} />}
-          onClick={clone}
-        >
-          Clone CV
-        </Menu.Item>
         <Menu.Item
           leftSection={<FaTrash style={{ width: rem(14), height: rem(14) }} />}
           onClick={openModal}

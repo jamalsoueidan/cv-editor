@@ -114,10 +114,9 @@ export const PDFViewer = ({
       {withControls ? (
         <Flex direction="row" justify="space-between" mb="lg" w="100%">
           <Button
-            variant="transparent"
+            variant="white"
             component={Link}
-            to="templates"
-            c="white"
+            to={`/resumes/${data._id}/templates`}
             leftSection={<FaThList />}
           >
             Select template

@@ -3,18 +3,20 @@ import {
   Button,
   Flex,
   Grid,
-  Group,
   LoadingOverlay,
   Modal,
   rem,
+  Stack,
+  Text,
 } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import { Outlet, useNavigate, useOutlet, useParams } from "@remix-run/react";
 import { api } from "convex/_generated/api";
 import { Id } from "convex/_generated/dataModel";
 import { useAction, useQuery } from "convex/react";
 import { getDocument } from "pdfjs-dist";
 import { TextItem } from "pdfjs-dist/types/src/display/api";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { pdfjs } from "react-pdf";
 import { ClientOnly } from "remix-utils/client-only";
@@ -26,6 +28,7 @@ import { ResumeBurger } from "~/components/ResumeBurger";
 pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.mjs`;
 
 export default function ResumesId() {
+  const isMobile = useMediaQuery("(max-width: 768px)");
   const params = useParams();
   const outlet = !!useOutlet();
   const navigate = useNavigate();
@@ -39,62 +42,65 @@ export default function ResumesId() {
 
   const data = useQuery(api.resumes.get, { id: params.id as Id<"resumes"> });
 
-  const cloneAction = async () => {
+  const cloneAction = useCallback(async () => {
     const response = await clone({ id: params.id as Id<"resumes"> });
     setCloneId(response);
-  };
+  }, [clone, params.id]);
 
-  const destroyAction = async () => {
+  const destroyAction = useCallback(async () => {
     await destroy({ id: params.id as Id<"resumes"> });
     navigate("../");
-  };
+  }, [destroy, navigate, params.id]);
 
-  const uploadAction = async (payload: File | File[] | null) => {
-    if (!payload || (Array.isArray(payload) && payload.length === 0)) {
-      console.log("No file uploaded");
-      return;
-    }
+  const uploadAction = useCallback(
+    async (payload: File | File[] | null) => {
+      if (!payload || (Array.isArray(payload) && payload.length === 0)) {
+        console.log("No file uploaded");
+        return;
+      }
 
-    setLoadingPDF("Reading PDF file...");
-    const file = Array.isArray(payload) ? payload[0] : payload;
+      setLoadingPDF("Reading PDF file...");
+      const file = Array.isArray(payload) ? payload[0] : payload;
 
-    const arrayBuffer = await file.arrayBuffer();
+      const arrayBuffer = await file.arrayBuffer();
 
-    const loadingTask = getDocument(arrayBuffer);
+      const loadingTask = getDocument(arrayBuffer);
 
-    setLoadingPDF("Extracting PDF text...");
-    const pdf = await loadingTask.promise;
-    let extractedText = "";
+      setLoadingPDF("Extracting PDF text...");
+      const pdf = await loadingTask.promise;
+      let extractedText = "";
 
-    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-      const page = await pdf.getPage(pageNum);
-      const textContent = await page.getTextContent();
+      for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+        const page = await pdf.getPage(pageNum);
+        const textContent = await page.getTextContent();
 
-      const pageText = textContent.items
-        .filter((item): item is TextItem => "str" in item)
-        .map((item) => item.str)
-        .join(" ");
+        const pageText = textContent.items
+          .filter((item): item is TextItem => "str" in item)
+          .map((item) => item.str)
+          .join(" ");
 
-      extractedText += pageText + " ";
-    }
+        extractedText += pageText + " ";
+      }
 
-    setLoadingPDF("Asking AI to generate a cv...");
-    try {
-      await upload({
-        content: extractedText,
-        id: params.id as Id<"resumes">,
-      });
-    } catch (e) {
-      setLoadingPDF("Error");
-    }
+      setLoadingPDF("Asking AI to generate a cv...");
+      try {
+        await upload({
+          content: extractedText,
+          id: params.id as Id<"resumes">,
+        });
+      } catch (e) {
+        setLoadingPDF("Error");
+      }
 
-    window.location.reload();
-  };
+      window.location.reload();
+    },
+    [params.id, upload]
+  );
 
-  const gotoClone = async () => {
+  const gotoClone = useCallback(async () => {
     setCloneId(null);
     navigate(`/resumes/${cloneId}`);
-  };
+  }, [cloneId, navigate]);
 
   if (!data) {
     return <>Loading data</>;
@@ -137,7 +143,11 @@ export default function ResumesId() {
         </Grid.Col>
       </Grid>
 
-      <Modal opened={!!outlet} onClose={() => navigate("./")}>
+      <Modal
+        opened={!!outlet}
+        onClose={() => navigate("./")}
+        fullScreen={isMobile}
+      >
         <Outlet context={{ data }} />
       </Modal>
 
@@ -150,9 +160,10 @@ export default function ResumesId() {
           shadow="md"
           radius="md"
         >
-          <Group align="flex-start" mr="xl">
-            <Button onClick={gotoClone}>Gå til ny klonet cv</Button>
-          </Group>
+          <Stack align="flex-start" mr="xl">
+            <Text>Dit CV er nu blevet klonet.</Text>
+            <Button onClick={gotoClone}>Åbn klonet CV</Button>
+          </Stack>
         </Modal>
       )}
 
