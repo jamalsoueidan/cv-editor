@@ -146,7 +146,6 @@ export function Login() {
         }}
         slideGap={{ base: "sm", sm: "md" }}
         loop
-        align="center"
       >
         {resumeMarkup}
       </Carousel>
