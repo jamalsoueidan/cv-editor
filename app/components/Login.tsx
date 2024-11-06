@@ -146,7 +146,6 @@ export function Login() {
         }}
         slideGap={{ base: "sm", sm: "md" }}
         loop
-        initialSlide={2}
         align="center"
       >
         {resumeMarkup}
