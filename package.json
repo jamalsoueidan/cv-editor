@@ -56,7 +56,8 @@
     "react-pdf": "^9.1.1",
     "react-pdf-html": "^2.1.2",
     "react-use": "^17.5.1",
-    "remix-utils": "^7.7.0"
+    "remix-utils": "^7.7.0",
+    "vanilla-cookieconsent": "^3.0.1"
   },
   "devDependencies": {
     "@remix-run/dev": "^2.13.1",

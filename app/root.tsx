@@ -22,9 +22,13 @@ import "@mantine/dates/styles.css";
 import { ModalsProvider } from "@mantine/modals";
 import "@mantine/tiptap/styles.css";
 import { ConvexReactClient } from "convex/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import * as CookieConsent from "vanilla-cookieconsent";
+import "vanilla-cookieconsent/dist/cookieconsent.css";
 
 import classes from "./Input.module.css";
+import { configConsent } from "./cookieconsent-config";
+
 export const links: LinksFunction = () => [];
 
 export const meta: MetaFunction = () => {
@@ -66,6 +70,10 @@ const theme = createTheme({
 export function Layout({ children }: { children: React.ReactNode }) {
   const { ENV } = useLoaderData<typeof loader>();
   const [convex] = useState(() => new ConvexReactClient(ENV.CONVEX_URL));
+
+  useEffect(() => {
+    CookieConsent.run(configConsent);
+  }, []);
 
   return (
     <html lang="en">
