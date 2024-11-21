@@ -360,8 +360,9 @@ export const Copenhagen = ({
                         width: "100%",
                         marginBottom: 9,
                       }}
+                      wrap={false}
                     >
-                      <View style={{ width: "50%" }}>
+                      <View style={{ width: "50%" }} wrap={false}>
                         <Text style={{ marginBottom: 4 }}>
                           {data.skills[index].title}
                         </Text>
@@ -369,7 +370,7 @@ export const Copenhagen = ({
                       </View>
 
                       {data.skills[index + 1] && (
-                        <View style={{ width: "50%" }}>
+                        <View style={{ width: "50%" }} wrap={false}>
                           <Text style={{ marginBottom: 4 }}>
                             {data.skills[index + 1].title}
                           </Text>
