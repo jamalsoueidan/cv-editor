@@ -8,7 +8,6 @@ import {
   Text,
   TextInput,
   Title,
-  UnstyledButton,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useDebouncedCallback } from "@mantine/hooks";
@@ -19,6 +18,7 @@ import { FunctionReturnType } from "convex/server";
 import { useState } from "react";
 import { FaEdit, FaLanguage, FaLink, FaSchool } from "react-icons/fa";
 import { FormProvider } from "../providers/CVFormProvider";
+import { EditorInput } from "./form/EditorInput";
 import { EducationsForm } from "./form/EducationsForm";
 import { LanguagesForm } from "./form/LanguagesForm";
 import { LinksForm } from "./form/LinksForm";
@@ -56,6 +56,7 @@ export function CVForm({
 
   const [focused, setFocused] = useState(false);
 
+  console.log(focused);
   return (
     <FormProvider form={form}>
       <form style={{ width: "100%" }}>
@@ -63,12 +64,12 @@ export function CVForm({
           <Flex justify="center" direction="column" gap="0">
             <Flex justify="center">
               {!focused ? (
-                <UnstyledButton onClick={() => setFocused(true)}>
+                <Button variant="light" onClick={() => setFocused(true)}>
                   <Group>
                     <Title order={3}>{data.title}</Title>
                     <FaEdit />
                   </Group>
-                </UnstyledButton>
+                </Button>
               ) : (
                 <TextInput
                   styles={{
@@ -189,6 +190,22 @@ export function CVForm({
                 {...form.getInputProps("city")}
               />
             </Flex>
+          </Stack>
+
+          <Stack>
+            <Flex direction="column">
+              <Title order={5} fw="500">
+                Professional Summary
+              </Title>
+              <Text c="dimmed" fz="sm">
+                Write 2 to 3 sentences about your overall experience.
+              </Text>
+            </Flex>
+
+            <EditorInput
+              description="Recruiter tip: write 400-600 characters to increase interview chances"
+              {...form.getInputProps("content")}
+            />
           </Stack>
 
           <WorkingExperiencesForm />

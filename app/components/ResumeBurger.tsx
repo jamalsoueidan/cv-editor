@@ -9,8 +9,9 @@ import {
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { Link } from "@remix-run/react";
-import { FaClone, FaHamburger, FaRegFilePdf, FaTrash } from "react-icons/fa";
+import { FaClone, FaRegFilePdf, FaTrash } from "react-icons/fa";
 import { PiReadCvLogo } from "react-icons/pi";
+import { TfiMenu } from "react-icons/tfi";
 
 export function ResumeBurger({
   upload,
@@ -38,7 +39,7 @@ export function ResumeBurger({
     <Menu width={200} shadow="md">
       <Menu.Target>
         <ActionIcon variant="light" size="lg">
-          <FaHamburger />
+          <TfiMenu />
         </ActionIcon>
       </Menu.Target>
 
