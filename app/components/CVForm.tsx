@@ -56,7 +56,6 @@ export function CVForm({
 
   const [focused, setFocused] = useState(false);
 
-  console.log(focused);
   return (
     <FormProvider form={form}>
       <form style={{ width: "100%" }}>

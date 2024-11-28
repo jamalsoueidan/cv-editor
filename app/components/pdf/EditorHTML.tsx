@@ -29,10 +29,13 @@ export function EditorHTML({ content }: { content: string }) {
             </Text>
           );
         },
+        p: ({ children }) => {
+          return <Text>{children}</Text>;
+        },
       }}
     >
       {`<html><body><style>body { font-size: 12px; } ul,ol { margin: 12px 0 6px 12px; } </style>` +
-        content +
+        content.replace("<p></p>", "<br />") +
         "</body></html>"}
     </Html>
   );
