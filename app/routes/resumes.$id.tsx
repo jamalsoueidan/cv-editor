@@ -1,3 +1,4 @@
+import { useAuthToken } from "@convex-dev/auth/react";
 import {
   ActionIcon,
   Button,
@@ -13,23 +14,30 @@ import { useMediaQuery } from "@mantine/hooks";
 import { Outlet, useNavigate, useOutlet, useParams } from "@remix-run/react";
 import { api } from "convex/_generated/api";
 import { Id } from "convex/_generated/dataModel";
+
 import { useAction, useQuery } from "convex/react";
 import { getDocument } from "pdfjs-dist";
 import { TextItem } from "pdfjs-dist/types/src/display/api";
 import { useCallback, useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
-import { pdfjs } from "react-pdf";
 import { ClientOnly } from "remix-utils/client-only";
 import { CVForm } from "~/components/CVForm";
 import { PDFViewer } from "~/components/PDFViewer";
 import { ResumeBurger } from "~/components/ResumeBurger";
 
-//https://github.com/diegomura/react-pdf-site/blob/master/src/components/Repl/PDFViewer.js#L81
-pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.mjs`;
-
 export default function ResumesId() {
-  const isMobile = useMediaQuery("(max-width: 768px)");
   const params = useParams();
+  /*
+  const { preloadedData } = useLoaderData<typeof loader>();
+  console.log(preloadedData);*/
+  const token = useAuthToken();
+  console.log(token);
+  const data = useQuery(api.resumes.get, {
+    id: params.id as Id<"resumes">,
+  });
+
+  const isMobile = useMediaQuery("(max-width: 768px)");
+
   const outlet = !!useOutlet();
   const navigate = useNavigate();
   const destroy = useAction(api.resumes.asyncDestroy);
@@ -39,8 +47,6 @@ export default function ResumesId() {
   const upload = useAction(api.openai.uploadPDF);
 
   const [cloneId, setCloneId] = useState<string | null>(null);
-
-  const data = useQuery(api.resumes.get, { id: params.id as Id<"resumes"> });
 
   const cloneAction = useCallback(async () => {
     const response = await clone({ id: params.id as Id<"resumes"> });

@@ -26,8 +26,12 @@ import { useEffect, useState } from "react";
 import * as CookieConsent from "vanilla-cookieconsent";
 import "vanilla-cookieconsent/dist/cookieconsent.css";
 
+import { pdfjs } from "react-pdf";
 import classes from "./Input.module.css";
 import { configConsent } from "./cookieconsent-config";
+
+//https://github.com/diegomura/react-pdf-site/blob/master/src/components/Repl/PDFViewer.js#L81
+pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.mjs`;
 
 export const links: LinksFunction = () => [];
 

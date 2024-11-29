@@ -15,7 +15,7 @@ import {
   UnstyledButton,
   rem,
 } from "@mantine/core";
-import { useDisclosure, useToggle } from "@mantine/hooks";
+import { useDisclosure, useMediaQuery, useToggle } from "@mantine/hooks";
 import { Link, useParams } from "@remix-run/react";
 import { api } from "convex/_generated/api";
 import { Id } from "convex/_generated/dataModel";
@@ -48,7 +48,7 @@ export default function Templates() {
   const patch = useMutation(api.resumes.updateTemplate);
   const data = useQuery(api.resumes.get, { id: params.id as Id<"resumes"> });
   const [value, toggle] = useToggle();
-
+  const isMobile = useMediaQuery("(max-width: 768px)");
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
 
@@ -164,7 +164,7 @@ export default function Templates() {
                   data={value ? { ...dumbData, template: data.template } : data}
                   withControls={false}
                   withPagning={false}
-                  percentage={0.8}
+                  percentage={isMobile ? 0.6 : 0.8}
                 />
               )}
             </ClientOnly>
