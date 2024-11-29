@@ -1,4 +1,3 @@
-import { useAuthToken } from "@convex-dev/auth/react";
 import {
   ActionIcon,
   Button,
@@ -27,17 +26,12 @@ import { ResumeBurger } from "~/components/ResumeBurger";
 
 export default function ResumesId() {
   const params = useParams();
-  /*
-  const { preloadedData } = useLoaderData<typeof loader>();
-  console.log(preloadedData);*/
-  const token = useAuthToken();
-  console.log(token);
+
   const data = useQuery(api.resumes.get, {
     id: params.id as Id<"resumes">,
   });
 
   const isMobile = useMediaQuery("(max-width: 768px)");
-
   const outlet = !!useOutlet();
   const navigate = useNavigate();
   const destroy = useAction(api.resumes.asyncDestroy);
