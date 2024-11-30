@@ -3,6 +3,7 @@ import { pdf } from "@react-pdf/renderer";
 import { api } from "convex/_generated/api";
 import { FunctionReturnType } from "convex/server";
 import { FaDownload } from "react-icons/fa";
+import { pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 import * as reactUse from "react-use";
@@ -11,7 +12,8 @@ import { LANGUAGES } from "./templates/locales";
 import { TEMPLATES } from "./templates/templates";
 
 const { useAsync } = reactUse;
-
+//https://github.com/diegomura/react-pdf-site/blob/master/src/components/Repl/PDFViewer.js#L81
+pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.mjs`;
 export const DownloadButton = ({
   data,
   template,

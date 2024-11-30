@@ -21,7 +21,7 @@ import {
   FaEye,
   FaThList,
 } from "react-icons/fa";
-import { Document, Page } from "react-pdf";
+import { Document, Page, pdfjs } from "react-pdf";
 import { DocumentCallback } from "react-pdf/dist/esm/shared/types.js";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
@@ -31,6 +31,9 @@ import { Copenhagen } from "./templates/Copenhagen";
 import { LANGUAGES } from "./templates/locales";
 import { TEMPLATES } from "./templates/templates";
 const { useAsync } = reactUse;
+
+//https://github.com/diegomura/react-pdf-site/blob/master/src/components/Repl/PDFViewer.js#L81
+pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.mjs`;
 
 export const PDFViewer = ({
   data,
