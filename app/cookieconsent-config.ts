@@ -56,7 +56,7 @@ export const configConsent: CookieConsentConfig = {
           showPreferencesBtn: "Manage preferences",
           closeIconLabel: "Close",
           footer: `
-            <a href="#link">Privacy Policy</a>
+            <a href="/privacy">Privacy Policy</a>
           `,
         },
         preferencesModal: {
