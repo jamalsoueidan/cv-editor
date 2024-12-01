@@ -169,7 +169,7 @@ export const PDFViewer = ({
             shouldShowPreviousDocument ? classes.renderingDocument : null
           }
           file={render.value}
-          loading={<Loader />}
+          loading={<></>}
           noData={<></>}
           onLoadSuccess={onDocumentLoad}
         >
