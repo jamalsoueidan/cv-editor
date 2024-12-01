@@ -10,11 +10,20 @@ import {
   Text,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import { Outlet, useNavigate, useOutlet, useParams } from "@remix-run/react";
+import {
+  json,
+  Outlet,
+  useLoaderData,
+  useNavigate,
+  useOutlet,
+  useParams,
+} from "@remix-run/react";
 import { api } from "convex/_generated/api";
 import { Id } from "convex/_generated/dataModel";
 
-import { useAction, useQuery } from "convex/react";
+import { LoaderFunctionArgs } from "@remix-run/node";
+import { preloadedQueryResult, preloadQuery } from "convex/nextjs";
+import { useAction } from "convex/react";
 import { getDocument } from "pdfjs-dist";
 import { TextItem } from "pdfjs-dist/types/src/display/api";
 import { useCallback, useState } from "react";
@@ -23,13 +32,31 @@ import { ClientOnly } from "remix-utils/client-only";
 import { CVForm } from "~/components/CVForm";
 import { PDFViewer } from "~/components/PDFViewer";
 import { ResumeBurger } from "~/components/ResumeBurger";
+import { useQueryData } from "~/hooks/useQueryData";
+
+export async function loader({ params }: LoaderFunctionArgs) {
+  const url = process.env["CONVEX_URL"]!;
+  const id = params.id as Id<"resumes">;
+  const data = await preloadQuery(
+    api.resumes.get,
+    { id, secret: process.env["SECRET"] },
+    { url }
+  );
+
+  return json({ data: preloadedQueryResult(data) });
+}
 
 export default function ResumesId() {
   const params = useParams();
+  const loaderData = useLoaderData<typeof loader>();
 
-  const data = useQuery(api.resumes.get, {
-    id: params.id as Id<"resumes">,
-  });
+  const data = useQueryData(
+    api.resumes.get,
+    {
+      id: params.id as Id<"resumes">,
+    },
+    loaderData.data
+  );
 
   const isMobile = useMediaQuery("(max-width: 768px)");
   const outlet = !!useOutlet();

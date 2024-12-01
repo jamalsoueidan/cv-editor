@@ -14,6 +14,7 @@ import { TEMPLATES } from "./templates/templates";
 const { useAsync } = reactUse;
 //https://github.com/diegomura/react-pdf-site/blob/master/src/components/Repl/PDFViewer.js#L81
 pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.mjs`;
+
 export const DownloadButton = ({
   data,
   template,

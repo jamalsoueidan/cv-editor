@@ -46,6 +46,7 @@ export const create = mutation({
 export const get = query({
   args: {
     id: v.id("resumes"),
+    secret: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const data = await ctx.db.get(args.id);
@@ -53,10 +54,12 @@ export const get = query({
       throw new ConvexError("not found");
     }
 
-    if (data.userId) {
-      const user = await getAuthUserId(ctx);
-      if (data.userId != user) {
-        throw new ConvexError("CV belong to a user");
+    if (args.secret !== process.env["SECRET"]) {
+      if (data.userId) {
+        const user = await getAuthUserId(ctx);
+        if (data.userId != user) {
+          throw new ConvexError("CV belong to a user");
+        }
       }
     }
 
