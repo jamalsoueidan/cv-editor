@@ -147,7 +147,14 @@ export const PDFViewer = ({
         <Loader size="xl" />
       </Text>
 
-      <Card radius="md" p="0" withBorder={withBorder} shadow={shadow} flex={1}>
+      <Card
+        radius="md"
+        p="0"
+        withBorder={withBorder}
+        shadow={shadow}
+        flex={1}
+        style={{ userSelect: "none" }}
+      >
         {shouldShowPreviousDocument && previousRenderValue ? (
           <Document
             key={previousRenderValue}
