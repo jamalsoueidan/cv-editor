@@ -1,6 +1,7 @@
 import { ConvexError, v } from "convex/values";
 
 import { getAuthUserId } from "@convex-dev/auth/server";
+import { nanoid } from "nanoid";
 import { internal } from "./_generated/api";
 import { Doc } from "./_generated/dataModel";
 import { action } from "./_generated/server";
@@ -11,6 +12,7 @@ export const dumbData: Omit<
   Data,
   "_id" | "_creationTime" | "photo" | "userId" | "updatedTime" | "title"
 > = {
+  key: nanoid(8),
   position: "Software Engineer",
   firstname: "John",
   lastname: "Doe",

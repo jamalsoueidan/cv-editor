@@ -7,6 +7,7 @@ import {
   customQuery,
 } from "convex-helpers/server/customFunctions";
 import { ConvexError } from "convex/values";
+import { nanoid } from "nanoid";
 import { action, mutation, query } from "./_generated/server";
 import { MutationCtx } from "./_generated/server.d";
 
@@ -44,6 +45,7 @@ export const { auth, signIn, signOut, store } = convexAuth({
             fontFamily: "Arial",
           },
           updatedTime: Date.now(),
+          key: nanoid(8),
         });
       }
     },

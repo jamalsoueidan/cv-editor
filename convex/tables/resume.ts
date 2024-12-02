@@ -109,5 +109,5 @@ export const Resume = Table("resumes", {
   }),
   templateLanguage: v.optional(v.string()),
   userId: v.optional(v.id("users")),
-  key: v.optional(v.string()),
+  key: v.string(),
 });

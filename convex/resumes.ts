@@ -1,6 +1,7 @@
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { asyncMap, omit } from "convex-helpers";
 import { ConvexError, v } from "convex/values";
+import { nanoid } from "nanoid";
 import { api, internal } from "./_generated/api";
 import { Id } from "./_generated/dataModel";
 import { action, internalMutation, mutation, query } from "./_generated/server";
@@ -39,6 +40,7 @@ export const create = mutation({
         fontFamily: "Arial",
       },
       userId: user || undefined,
+      key: nanoid(8),
     });
   },
 });
