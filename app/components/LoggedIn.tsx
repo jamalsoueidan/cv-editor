@@ -38,7 +38,7 @@ export function LoggedIn() {
       <PDFContainer templateElement={<PDFContainer.Template data={resume} />}>
         <Card
           component={Link}
-          to={`/resumes/${resume._id}`}
+          to={`/resume/${resume._id}`}
           withBorder
           pb={rem(40)}
         >

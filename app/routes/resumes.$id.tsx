@@ -120,7 +120,7 @@ export default function ResumesId({ loaderData }: Route.ComponentProps) {
 
   const gotoClone = useCallback(async () => {
     setCloneId(null);
-    navigate(`/resumes/${cloneId}`);
+    navigate(`/resume/${cloneId}`);
   }, [cloneId, navigate]);
 
   return (
