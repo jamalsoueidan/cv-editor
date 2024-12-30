@@ -1,5 +1,4 @@
 import type { Config } from "@react-router/dev/config";
-import "./promisePolyfill";
 
 export default {
   // Config options...
