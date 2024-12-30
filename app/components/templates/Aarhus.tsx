@@ -9,12 +9,12 @@ import {
   View,
 } from "@react-pdf/renderer";
 import { api } from "convex/_generated/api";
-import { FunctionReturnType } from "convex/server";
+import { type FunctionReturnType } from "convex/server";
 import dayjs from "dayjs";
 import React from "react";
 import { EditorHTML } from "../pdf/EditorHTML";
 import { SvgBar } from "../pdf/SvgBar";
-import { TemplateLocale } from "./locales";
+import type { TemplateLocale } from "./locales";
 
 const styles = StyleSheet.create({
   page: {

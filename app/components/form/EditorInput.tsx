@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Input, rem, Text, TextInputProps } from "@mantine/core";
+import { Input, rem, Text, type TextInputProps } from "@mantine/core";
 import { RichTextEditor, Link as RTELink } from "@mantine/tiptap";
 
 import { useEditor } from "@tiptap/react";
@@ -28,6 +28,7 @@ export const EditorInput = (
       const content = editor.getHTML();
       onChange && onChange(content as never);
     },
+    immediatelyRender: false,
   });
 
   return (

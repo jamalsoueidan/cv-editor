@@ -1,5 +1,6 @@
 import { Text, View } from "@react-pdf/renderer";
-import { HtmlElement } from "node_modules/react-pdf-html/dist/types/parse";
+import type { HtmlElement } from "node_modules/react-pdf-html/dist/types/parse";
+
 import Html from "react-pdf-html";
 
 export function EditorHTML({ content }: { content: string }) {

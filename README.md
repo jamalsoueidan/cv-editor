@@ -1,13 +1,19 @@
-# CV Editor - Built with Remix and React-PDF
+# CV Editor - Built with React Router V7 and React-PDF
 
 ![Application](screenshots/frontpage.png)
 ![Edit](screenshots/new-cv-editor.png)
 
-This is a browser-based CV Editor powered by [Remix](https://remix.run/) and [react-pdf](https://react-pdf.dev/), enabling users to create, edit, and export CVs in PDF format.
+This is a browser-based CV Editor, enabling users to create, edit, and export CVs in PDF format.
+
+I've moved the code to the new React Router V7, made some improvements to the PDF Reader, so it use context.
+
+Replace:
+@hello-pangea/dnd, > motion (support react 19)
+photoEditor > uppy
 
 ## Getting Started
 
-This project uses Remix for seamless development and deployment, with React-PDF for rendering CVs as PDF documents directly in the browser.
+This project uses React Router v7, with React-PDF for rendering CVs as PDF documents directly in the browser.
 
 ### Prerequisites
 

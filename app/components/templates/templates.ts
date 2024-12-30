@@ -1,10 +1,10 @@
 import { api } from "convex/_generated/api";
-import { FunctionReturnType } from "convex/server";
+import { type FunctionReturnType } from "convex/server";
 
 import { Aarhus } from "./Aarhus";
 
 import { Copenhagen } from "./Copenhagen";
-import { TemplateLocale } from "./locales";
+import { type TemplateLocale } from "./locales";
 
 export const TEMPLATES: Record<
   string,

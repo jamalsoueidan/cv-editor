@@ -1,6 +1,6 @@
 import { useAuthActions } from "@convex-dev/auth/react";
-import { Carousel } from "@mantine/carousel";
 import {
+  Card,
   Container,
   Flex,
   Grid,
@@ -8,20 +8,19 @@ import {
   Stack,
   Text,
   Title,
-  UnstyledButton,
 } from "@mantine/core";
-import { Link } from "@remix-run/react";
+
 import { api } from "convex/_generated/api";
 import { useQuery } from "convex/react";
 import { IoMdLogOut } from "react-icons/io";
 import { PiReadCvLogo } from "react-icons/pi";
-import { ClientOnly } from "remix-utils/client-only";
+import { Link } from "react-router";
 import { useCreateResume } from "~/hooks/useCreateResume";
 import { CardButton } from "./CardButton";
-import classes from "./Login.module.css";
-import { PDFViewer } from "./PDFViewer";
+import classes from "./NotLoggedIn.module.css";
+import { PDFContainer } from "./PDFContainer";
 
-export function FrontPage() {
+export function LoggedIn() {
   const { signOut } = useAuthActions();
   const data = useQuery(api.auth.currentUser);
   const resumes = useQuery(api.resumes.list);
@@ -30,27 +29,36 @@ export function FrontPage() {
   if (!data) return null;
 
   const resumeMarkup = resumes?.map((resume) => (
-    <Carousel.Slide key={resume._id}>
-      <Flex direction="column" align="center" gap="xs">
-        <Title order={4} c="gray.6" fw="500">
-          {resume.title}
-        </Title>
-        <UnstyledButton component={Link} to={`/resumes/${resume._id}`}>
-          <ClientOnly>
-            {() => (
-              <PDFViewer
-                data={resume}
-                height={500}
-                withControls={false}
-                withPagning={false}
-                withBorder={true}
-                shadow="sm"
-              />
-            )}
-          </ClientOnly>
-        </UnstyledButton>
-      </Flex>
-    </Carousel.Slide>
+    <Grid.Col
+      span={{ base: 12, sm: 4 }}
+      display="flex"
+      key={resume._id}
+      style={{ flexDirection: "column" }}
+    >
+      <PDFContainer templateElement={<PDFContainer.Template data={resume} />}>
+        <Card
+          component={Link}
+          to={`/resumes/${resume._id}`}
+          withBorder
+          pb={rem(40)}
+        >
+          <Title order={4} c="gray.6" fw="500" ta="center">
+            {resume.title}
+          </Title>
+
+          <PDFContainer.Viewer />
+          <Flex
+            justify="center"
+            pos="absolute"
+            bottom="15px"
+            right="0"
+            left="0"
+          >
+            <PDFContainer.Download />
+          </Flex>
+        </Card>
+      </PDFContainer>
+    </Grid.Col>
   ));
 
   return (
@@ -87,19 +95,7 @@ export function FrontPage() {
         </Stack>
       </Container>
 
-      <Carousel
-        withIndicators={resumes && resumes.length >= 2}
-        withControls={resumes && resumes.length >= 2}
-        height={600}
-        slideSize={{
-          base: "60%",
-          sm: "40%",
-          md: "25%",
-        }}
-        slideGap={{ base: "sm", sm: "md" }}
-      >
-        {resumeMarkup}
-      </Carousel>
+      <Grid mx="xl">{resumeMarkup}</Grid>
     </Stack>
   );
 }

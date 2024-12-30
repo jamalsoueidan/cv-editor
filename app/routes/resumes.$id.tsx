@@ -3,6 +3,7 @@ import {
   Button,
   Flex,
   Grid,
+  Group,
   LoadingOverlay,
   Modal,
   rem,
@@ -10,31 +11,25 @@ import {
   Text,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import {
-  json,
-  Outlet,
-  useLoaderData,
-  useNavigate,
-  useOutlet,
-  useParams,
-} from "@remix-run/react";
-import { api } from "convex/_generated/api";
-import { Id } from "convex/_generated/dataModel";
 
-import { LoaderFunctionArgs } from "@remix-run/node";
+import { api } from "convex/_generated/api";
+import type { Id } from "convex/_generated/dataModel";
+
 import { preloadedQueryResult, preloadQuery } from "convex/nextjs";
 import { useAction } from "convex/react";
 import { getDocument } from "pdfjs-dist";
-import { TextItem } from "pdfjs-dist/types/src/display/api";
+import type { TextItem } from "pdfjs-dist/types/src/display/api";
 import { useCallback, useState } from "react";
-import { FaArrowLeft } from "react-icons/fa";
-import { ClientOnly } from "remix-utils/client-only";
-import { CVForm } from "~/components/CVForm";
-import { PDFViewer } from "~/components/PDFViewer";
+import { FaArrowLeft, FaEye, FaThList } from "react-icons/fa";
+import { Link, Outlet, useNavigate, useOutlet } from "react-router";
+import { PDFContainer } from "~/components/PDFContainer";
 import { ResumeBurger } from "~/components/ResumeBurger";
-import { useQueryData } from "~/hooks/useQueryData";
 
-export async function loader({ params }: LoaderFunctionArgs) {
+import { CVForm } from "~/components/CVForm";
+import { useQueryData } from "~/hooks/useQueryData";
+import type { Route } from "./+types/resumes.$id";
+
+export async function loader({ params }: Route.LoaderArgs) {
   const url = process.env["CONVEX_URL"]!;
   const id = params.id as Id<"resumes">;
   const data = await preloadQuery(
@@ -43,17 +38,16 @@ export async function loader({ params }: LoaderFunctionArgs) {
     { url }
   );
 
-  return json({ data: preloadedQueryResult(data) });
+  return { data: preloadedQueryResult(data), id };
 }
 
-export default function ResumesId() {
-  const params = useParams();
-  const loaderData = useLoaderData<typeof loader>();
+export default function ResumesId({ loaderData }: Route.ComponentProps) {
+  const { id } = loaderData;
 
   const data = useQueryData(
     api.resumes.get,
     {
-      id: params.id as Id<"resumes">,
+      id,
     },
     loaderData.data
   );
@@ -70,14 +64,14 @@ export default function ResumesId() {
   const [cloneId, setCloneId] = useState<string | null>(null);
 
   const cloneAction = useCallback(async () => {
-    const response = await clone({ id: params.id as Id<"resumes"> });
+    const response = await clone({ id });
     setCloneId(response);
-  }, [clone, params.id]);
+  }, [clone, id]);
 
   const destroyAction = useCallback(async () => {
-    await destroy({ id: params.id as Id<"resumes"> });
+    await destroy({ id });
     navigate("../");
-  }, [destroy, navigate, params.id]);
+  }, [destroy, navigate, id]);
 
   const uploadAction = useCallback(
     async (payload: File | File[] | null) => {
@@ -113,7 +107,7 @@ export default function ResumesId() {
       try {
         await upload({
           content: extractedText,
-          id: params.id as Id<"resumes">,
+          id,
         });
       } catch (e) {
         setLoadingPDF("Error");
@@ -121,17 +115,13 @@ export default function ResumesId() {
 
       window.location.reload();
     },
-    [params.id, upload]
+    [id, upload]
   );
 
   const gotoClone = useCallback(async () => {
     setCloneId(null);
     navigate(`/resumes/${cloneId}`);
   }, [cloneId, navigate]);
-
-  if (!data) {
-    return <>Loading data</>;
-  }
 
   return (
     <>
@@ -164,9 +154,40 @@ export default function ResumesId() {
           pos="sticky"
           top="0"
           visibleFrom="md"
-          p="md"
+          px="md"
         >
-          <ClientOnly>{() => <PDFViewer data={data} />}</ClientOnly>
+          <PDFContainer templateElement={<PDFContainer.Template data={data} />}>
+            <Flex h="100vh" align="center" direction="column" gap="0" mt="lg">
+              <Flex direction="row" justify="space-between" w="100%" mb="lg">
+                <Button
+                  variant="white"
+                  component={Link}
+                  to={`/resume/${data._id}/templates`}
+                  leftSection={<FaThList />}
+                >
+                  Select template
+                </Button>
+                <Group gap="xs" align="flex-start">
+                  <Button
+                    component={Link}
+                    to={`/view/${data._id}`}
+                    size="xs"
+                    leftSection={<FaEye />}
+                  >
+                    View PDF
+                  </Button>
+                  <PDFContainer.Download />
+                </Group>
+              </Flex>
+
+              <Flex h="82%" w="100%" justify="center" mb="sm">
+                <PDFContainer.Viewer fit="height" />
+              </Flex>
+              <Flex w="100%" justify="center">
+                <PDFContainer.Pagination />
+              </Flex>
+            </Flex>
+          </PDFContainer>
         </Grid.Col>
       </Grid>
 

@@ -1,9 +1,10 @@
-import { useParams } from "@remix-run/react";
+import { PDFViewer } from "@react-pdf/renderer";
 import { api } from "convex/_generated/api";
-import { Id } from "convex/_generated/dataModel";
+import type { Id } from "convex/_generated/dataModel";
 import { useQuery } from "convex/react";
+import { useParams } from "react-router";
 import { ClientOnly } from "remix-utils/client-only";
-import { PDFViewer } from "~/components/PDFViewer";
+import { PDFContainer } from "~/components/PDFContainer";
 
 export default function ResumesId() {
   const params = useParams();
@@ -15,6 +16,12 @@ export default function ResumesId() {
   }
 
   return (
-    <ClientOnly>{() => <PDFViewer data={data} height={500} />}</ClientOnly>
+    <ClientOnly>
+      {() => (
+        <PDFViewer height="100%" width="100%">
+          <PDFContainer.Template data={data} />
+        </PDFViewer>
+      )}
+    </ClientOnly>
   );
 }

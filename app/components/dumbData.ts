@@ -1,9 +1,10 @@
-import { Doc } from "convex/_generated/dataModel";
+import type { Doc } from "convex/_generated/dataModel";
 
 type Data = Doc<"resumes"> & { photoUrl: string };
 
 export const dumbData: Data = {
   _id: "" as any,
+  key: "",
   title: "",
   _creationTime: 0,
   updatedTime: 0,

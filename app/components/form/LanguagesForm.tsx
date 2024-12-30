@@ -1,4 +1,3 @@
-import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
 import {
   Accordion,
   Button,
@@ -12,89 +11,21 @@ import {
   TextInput,
 } from "@mantine/core";
 import { randomId } from "@mantine/hooks";
+import type { api } from "convex/_generated/api";
+import type { FunctionReturnType } from "convex/server";
+import { Reorder, useDragControls, useMotionValue } from "framer-motion";
 import { FaPlus } from "react-icons/fa";
-import { useFormContext } from "~/providers/CVFormProvider";
+
+import { useRaisedShadow } from "~/hooks/useRaisedShadow";
+import { useFormContext } from "../providers/CVFormProvider";
 import { AccordionControlDrag } from "./AccordionControlDrag";
-import { DraggableItem } from "./DraggableItem";
 import { TitleHover } from "./TitleHover";
 
 export function LanguagesForm() {
   const form = useFormContext();
 
   const languages = form.getValues().languages.map((item, index) => {
-    return (
-      <Draggable key={item.key} index={index} draggableId={item.key}>
-        {(provided, snapshot) => (
-          <DraggableItem
-            isDragging={snapshot.isDragging}
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-          >
-            <Accordion.Item key={item.key} value={item.key}>
-              <AccordionControlDrag
-                dragHandleProps={provided.dragHandleProps}
-                onDestroy={() => form.removeListItem("languages", index)}
-              >
-                {item.language ? item.language : "(ikke angivet)"}
-              </AccordionControlDrag>
-              <Accordion.Panel>
-                <Stack>
-                  <Flex gap="xl">
-                    <TextInput
-                      withAsterisk
-                      label="Language"
-                      variant="filled"
-                      w="100%"
-                      style={{ flex: 1 }}
-                      {...form.getInputProps(`languages.${index}.language`)}
-                    />
-                    <Input.Wrapper
-                      label="Level - from 1 to 5"
-                      description="5 is best"
-                      inputWrapperOrder={[
-                        "label",
-                        "error",
-                        "input",
-                        "description",
-                      ]}
-                      w="50%"
-                    >
-                      <div style={{ display: "block" }}>
-                        <SegmentedControl
-                          {...form.getInputProps(`languages.${index}.level`)}
-                          data={[
-                            {
-                              label: <Center miw={rem(15)}>1</Center>,
-                              value: "1",
-                            },
-                            {
-                              label: <Center miw={rem(15)}>2</Center>,
-                              value: "2",
-                            },
-                            {
-                              label: <Center miw={rem(15)}>3</Center>,
-                              value: "3",
-                            },
-                            {
-                              label: <Center miw={rem(15)}>4</Center>,
-                              value: "4",
-                            },
-                            {
-                              label: <Center miw={rem(15)}>5</Center>,
-                              value: "5",
-                            },
-                          ]}
-                        />
-                      </div>
-                    </Input.Wrapper>
-                  </Flex>
-                </Stack>
-              </Accordion.Panel>
-            </Accordion.Item>
-          </DraggableItem>
-        )}
-      </Draggable>
-    );
+    return <Item item={item} key={item.key} index={index} />;
   });
 
   return (
@@ -110,38 +41,20 @@ export function LanguagesForm() {
         </Text>
       </Flex>
       {languages.length > 0 && (
-        <DragDropContext
-          onDragEnd={({ destination, source }) => {
-            if (!destination) return;
-            const sourceIndex = source.index;
-            const destinationIndex = destination.index;
-            console.log(form.getValues().workExperiences[sourceIndex]);
-
-            const items = [...form.getValues().languages];
-
-            // Remove the item from the source index and insert it at the destination index
-            const [movedItem] = items.splice(sourceIndex, 1);
-            items.splice(destinationIndex, 0, movedItem);
-
-            items.forEach((item, index) => {
-              item.order = index + 1;
-            });
-
+        <Reorder.Group
+          axis="y"
+          values={form.getValues().languages}
+          onReorder={(items) => {
             form.setValues({ languages: items });
           }}
+          as="div"
         >
-          <Droppable droppableId="languages" direction="vertical">
-            {(provided) => (
-              <div {...provided.droppableProps} ref={provided.innerRef}>
-                <Accordion variant="separated" chevronPosition="left">
-                  {languages}
-                </Accordion>
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
+          <Accordion variant="separated" chevronPosition="left">
+            {languages}
+          </Accordion>
+        </Reorder.Group>
       )}
+
       <Flex>
         <Button
           variant="transparent"
@@ -158,5 +71,86 @@ export function LanguagesForm() {
         </Button>
       </Flex>
     </Stack>
+  );
+}
+
+function Item({
+  item,
+  index,
+}: {
+  item: FunctionReturnType<typeof api.resumes.get>["languages"][0];
+  index: number;
+}) {
+  const form = useFormContext();
+  const controls = useDragControls();
+  const y = useMotionValue(0);
+  const boxShadow = useRaisedShadow(y);
+
+  return (
+    <Reorder.Item
+      value={item}
+      id={item}
+      dragListener={false}
+      dragControls={controls}
+      style={{ boxShadow, y }}
+      as="div"
+    >
+      <Accordion.Item value={item.key}>
+        <AccordionControlDrag
+          dragControls={controls}
+          onDestroy={() => form.removeListItem("language", index)}
+        >
+          {item.language ? item.language : "(ikke angivet)"}
+        </AccordionControlDrag>
+        <Accordion.Panel>
+          <Stack>
+            <Flex gap="xl">
+              <TextInput
+                withAsterisk
+                label="Language"
+                variant="filled"
+                w="100%"
+                style={{ flex: 1 }}
+                {...form.getInputProps(`languages.${index}.language`)}
+              />
+              <Input.Wrapper
+                label="Level - from 1 to 5"
+                description="5 is best"
+                inputWrapperOrder={["label", "error", "input", "description"]}
+                w="50%"
+              >
+                <div style={{ display: "block" }}>
+                  <SegmentedControl
+                    {...form.getInputProps(`languages.${index}.level`)}
+                    data={[
+                      {
+                        label: <Center miw={rem(15)}>1</Center>,
+                        value: "1",
+                      },
+                      {
+                        label: <Center miw={rem(15)}>2</Center>,
+                        value: "2",
+                      },
+                      {
+                        label: <Center miw={rem(15)}>3</Center>,
+                        value: "3",
+                      },
+                      {
+                        label: <Center miw={rem(15)}>4</Center>,
+                        value: "4",
+                      },
+                      {
+                        label: <Center miw={rem(15)}>5</Center>,
+                        value: "5",
+                      },
+                    ]}
+                  />
+                </div>
+              </Input.Wrapper>
+            </Flex>
+          </Stack>
+        </Accordion.Panel>
+      </Accordion.Item>
+    </Reorder.Item>
   );
 }

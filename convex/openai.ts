@@ -10,9 +10,8 @@ type Data = Doc<"resumes">;
 
 export const dumbData: Omit<
   Data,
-  "_id" | "_creationTime" | "photo" | "userId" | "updatedTime" | "title"
+  "_id" | "_creationTime" | "photo" | "userId" | "updatedTime" | "title" | "key"
 > = {
-  key: nanoid(8),
   position: "Software Engineer",
   firstname: "John",
   lastname: "Doe",
@@ -420,6 +419,7 @@ export const uploadPDF = action({
 
     const user = await getAuthUserId(ctx);
     await ctx.runMutation(internal.resumes.updateInternal, {
+      key: nanoid(8),
       workExperiences: [],
       educations: [],
       socialProfiles: [],

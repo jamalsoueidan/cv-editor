@@ -1,17 +1,18 @@
 import { Box } from "@mantine/core";
 import { Authenticated, Unauthenticated } from "convex/react";
-import { FrontPage } from "~/components/Frontpage";
-import { Login } from "~/components/Login";
+import { LoggedIn } from "~/components/LoggedIn";
+
+import { NotLoggedIn } from "~/components/NotLoggedIn";
 
 export default function Index() {
   return (
     <Box py="xl">
       <Authenticated>
-        <FrontPage />
+        <LoggedIn />
       </Authenticated>
 
       <Unauthenticated>
-        <Login />
+        <NotLoggedIn />
       </Unauthenticated>
     </Box>
   );
