@@ -1,6 +1,7 @@
 import { createRequestHandler } from "@react-router/express";
 import express from "express";
 import "react-router";
+import "../promisePolyfill";
 
 declare module "react-router" {
   export interface AppLoadContext {
