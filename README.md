@@ -1,5 +1,8 @@
 # CV Editor - Built with React Router V7 and React-PDF
 
+![Application](screenshots/frontpage.png)
+![Edit](screenshots/new-cv-editor.png)
+
 This is a browser-based CV Editor, enabling users to create, edit, and export CVs in PDF format.
 
 I've moved the code to the new React Router V7, made some improvements to the PDF Reader, so it use context.
