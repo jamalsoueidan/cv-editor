@@ -1,5 +1,5 @@
-import { OptionalRestArgsOrSkip, useQuery } from "convex/react";
-import { FunctionReference } from "convex/server";
+import { type OptionalRestArgsOrSkip, useQuery } from "convex/react";
+import { type FunctionReference } from "convex/server";
 
 export function useQueryData<Query extends FunctionReference<"query">>(
   query: Query,

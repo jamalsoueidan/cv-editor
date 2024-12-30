@@ -1,7 +1,11 @@
-node_modules
+.DS_Store
+/node_modules/
 
-/.cache
-/build
-.env
+# React Router
+/.react-router/
+/build/
+
+# Vercel
+/.vercel/
 
 .env.local

@@ -11,13 +11,14 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useDebouncedCallback } from "@mantine/hooks";
-import { Link } from "@remix-run/react";
+
 import { api } from "convex/_generated/api";
 import { useMutation } from "convex/react";
-import { FunctionReturnType } from "convex/server";
+import type { FunctionReturnType } from "convex/server";
 import { useState } from "react";
 import { FaEdit, FaLanguage, FaLink, FaSchool } from "react-icons/fa";
-import { FormProvider } from "../providers/CVFormProvider";
+
+import { Link } from "react-router";
 import { EditorInput } from "./form/EditorInput";
 import { EducationsForm } from "./form/EducationsForm";
 import { LanguagesForm } from "./form/LanguagesForm";
@@ -25,6 +26,7 @@ import { LinksForm } from "./form/LinksForm";
 import { SkillsForm } from "./form/SkillsForm";
 import { WorkingExperiencesForm } from "./form/WorkingExperiencesForm";
 import { LangSelect } from "./LangSelect";
+import { FormProvider } from "./providers/CVFormProvider";
 
 export function CVForm({
   data,
@@ -209,6 +211,7 @@ export function CVForm({
 
           <WorkingExperiencesForm />
           <EducationsForm />
+
           {data.skillsVisible && <SkillsForm />}
           {data.socialProfilesVisible && <LinksForm />}
           {data.languagesVisible && <LanguagesForm />}

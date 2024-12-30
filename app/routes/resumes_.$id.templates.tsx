@@ -2,7 +2,6 @@ import {
   Box,
   Burger,
   Button,
-  Card,
   Checkbox,
   Container,
   Divider,
@@ -16,16 +15,17 @@ import {
   rem,
 } from "@mantine/core";
 import { useDisclosure, useMediaQuery, useToggle } from "@mantine/hooks";
-import { Link, useParams } from "@remix-run/react";
+
 import { api } from "convex/_generated/api";
-import { Id } from "convex/_generated/dataModel";
+import type { Id } from "convex/_generated/dataModel";
+
 import { useMutation, useQuery } from "convex/react";
 import { useMemo } from "react";
 import { FaArrowLeft, FaCheckCircle } from "react-icons/fa";
-import { ClientOnly } from "remix-utils/client-only";
-import { DownloadButton } from "~/components/DownloadPDF";
+import { Link, useParams } from "react-router";
 import { dumbData } from "~/components/dumbData";
-import { PDFViewer } from "~/components/PDFViewer";
+
+import { PDFContainer } from "~/components/PDFContainer";
 
 const TemplateList = [
   {
@@ -56,42 +56,39 @@ export default function Templates() {
     () =>
       data &&
       TemplateList?.map((template) => (
-        <UnstyledButton
-          key={template.name}
-          onClick={() => {
-            patch({ _id: data._id, template });
-          }}
-          variant="outline"
-        >
-          <Flex justify="center">
-            <Title order={4} fw="400">
+        <Grid.Col span={6} p="xl" visibleFrom="md">
+          <UnstyledButton
+            key={template.name}
+            onClick={() => {
+              patch({ _id: data._id, template });
+            }}
+            variant="outline"
+            w="100%"
+          >
+            <Title order={4} fw="400" ta="center" mb="xs">
               {template.name.charAt(0).toUpperCase() + template.name.slice(1)}
             </Title>
-          </Flex>
-          <Card
-            pos="relative"
-            style={{
-              boxSizing: "border-box",
-              outline:
-                data.template.name === template.name
-                  ? "3px solid #228be6"
-                  : "none",
-            }}
-            withBorder
-            radius="md"
-            p="0"
-          >
-            <ClientOnly>
-              {() => (
-                <PDFViewer
+
+            <PDFContainer
+              templateElement={
+                <PDFContainer.Template
                   data={{ ...dumbData, template: template }}
-                  withControls={false}
-                  withPagning={false}
-                  height={300}
                   template={template.name}
                 />
-              )}
-            </ClientOnly>
+              }
+            >
+              <PDFContainer.Viewer
+                withBorder
+                style={{
+                  boxSizing: "border-box",
+                  outline:
+                    data.template.name === template.name
+                      ? "3px solid #228be6"
+                      : "none",
+                }}
+              />
+            </PDFContainer>
+
             {data.template.name === template.name && (
               <Box
                 pos="absolute"
@@ -104,8 +101,8 @@ export default function Templates() {
                 <FaCheckCircle size={rem(10)} opacity=".5" color="#228be6" />
               </Box>
             )}
-          </Card>
-        </UnstyledButton>
+          </UnstyledButton>
+        </Grid.Col>
       )),
     [data, patch]
   );
@@ -115,13 +112,19 @@ export default function Templates() {
   }
 
   return (
-    <>
+    <PDFContainer
+      templateElement={
+        <PDFContainer.Template
+          data={value ? { ...dumbData, template: data.template } : data}
+        />
+      }
+    >
       <Container fluid>
         <Group justify="space-between" mih={rem(60)}>
           <Button
             variant="transparent"
             component={Link}
-            to={`/resumes/${params.id}`}
+            to={`/resume/${params.id}`}
             leftSection={<FaArrowLeft />}
           >
             Back to editor
@@ -130,7 +133,7 @@ export default function Templates() {
           <Group h="100%" gap={0} visibleFrom="sm"></Group>
 
           <Group visibleFrom="sm">
-            <DownloadButton data={data} />
+            <PDFContainer.Download />
           </Group>
 
           <Burger
@@ -145,9 +148,7 @@ export default function Templates() {
 
       <Grid gutter="0">
         <Grid.Col span={5} p="xl" visibleFrom="md">
-          <Flex gap="xl" justify="center" wrap="wrap">
-            {markup}
-          </Flex>
+          <Grid gutter="0">{markup}</Grid>
         </Grid.Col>
         <Grid.Col
           span={{ base: 12, md: 7 }}
@@ -157,25 +158,16 @@ export default function Templates() {
           p="xl"
           h="calc(100vh - 61px)"
         >
-          <Flex direction="column" justify="center">
-            <ClientOnly>
-              {() => (
-                <PDFViewer
-                  data={value ? { ...dumbData, template: data.template } : data}
-                  withControls={false}
-                  withPagning={false}
-                  percentage={isMobile ? 0.6 : 0.8}
-                />
-              )}
-            </ClientOnly>
-            <Flex align="center" gap="xs" justify="center" mt="xs">
-              <Checkbox
-                checked={value}
-                onChange={(event) => toggle(event.currentTarget.checked)}
-                label="Preview data"
-                labelPosition="left"
-              />
-            </Flex>
+          <Flex h="96%" w="100%" justify="center" mb="sm">
+            <PDFContainer.Viewer fit="height" />
+          </Flex>
+          <Flex w="100%" justify="center">
+            <Checkbox
+              checked={value}
+              onChange={(event) => toggle(event.currentTarget.checked)}
+              label="Preview data"
+              labelPosition="left"
+            />
           </Flex>
         </Grid.Col>
       </Grid>
@@ -194,6 +186,6 @@ export default function Templates() {
           </Flex>
         </ScrollArea>
       </Drawer>
-    </>
+    </PDFContainer>
   );
 }

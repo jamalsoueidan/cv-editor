@@ -1,6 +1,7 @@
 import { ActionIcon, Container, Flex, Text, Title } from "@mantine/core";
-import { Link } from "@remix-run/react";
+
 import { FaArrowLeft } from "react-icons/fa";
+import { Link } from "react-router";
 
 export default function PrivacyPolicy() {
   return (

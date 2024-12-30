@@ -8,10 +8,11 @@ import {
   Text,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import { Link } from "@remix-run/react";
+
 import { FaClone, FaRegFilePdf, FaTrash } from "react-icons/fa";
 import { PiReadCvLogo } from "react-icons/pi";
 import { TfiMenu } from "react-icons/tfi";
+import { Link } from "react-router";
 
 export function ResumeBurger({
   upload,

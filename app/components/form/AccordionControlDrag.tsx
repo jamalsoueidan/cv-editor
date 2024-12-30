@@ -1,19 +1,19 @@
-import { DraggableProvidedDragHandleProps } from "@hello-pangea/dnd";
 import {
   Accordion,
-  AccordionControlProps,
   ActionIcon,
   Center,
+  type AccordionControlProps,
 } from "@mantine/core";
+import { DragControls } from "framer-motion";
 import { FaGripHorizontal, FaTrash } from "react-icons/fa";
-import classes from "./AccordionControlDrag.module.css";
 
 export function AccordionControlDrag({
   onDestroy,
-  dragHandleProps,
+  dragControls,
   ...props
-}: AccordionControlProps & { onDestroy: () => void } & {
-  dragHandleProps: DraggableProvidedDragHandleProps | null;
+}: AccordionControlProps & {
+  onDestroy: () => void;
+  dragControls: DragControls;
 }) {
   return (
     <Center>
@@ -27,9 +27,15 @@ export function AccordionControlDrag({
       >
         <FaTrash size="1rem" />
       </ActionIcon>
-      <div {...dragHandleProps} className={classes.dragHandle}>
+      <ActionIcon
+        size="lg"
+        variant="subtle"
+        color="gray"
+        onPointerDown={(event) => dragControls.start(event)}
+        mr="sm"
+      >
         <FaGripHorizontal size="1rem" />
-      </div>
+      </ActionIcon>
     </Center>
   );
 }

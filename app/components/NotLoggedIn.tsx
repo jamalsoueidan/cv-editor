@@ -11,15 +11,14 @@ import {
   Title,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import { useMemo } from "react";
 import { FaHeart, FaLinkedin } from "react-icons/fa";
 import { PiReadCvLogo } from "react-icons/pi";
-import { ClientOnly } from "remix-utils/client-only";
 import { useCreateResume } from "~/hooks/useCreateResume";
-import { CardButton } from "./CardButton";
-import classes from "./Login.module.css";
-import { PDFViewer } from "./PDFViewer";
-import { dumbData } from "./dumbData";
+
+import { CardButton } from "~/components/CardButton";
+import { dumbData } from "~/components/dumbData";
+import { PDFContainer } from "~/components/PDFContainer";
+import classes from "./NotLoggedIn.module.css";
 
 const resumes = [
   {
@@ -61,37 +60,10 @@ const resumes = [
   },
 ];
 
-export function Login() {
+export function NotLoggedIn() {
   const isMobile = useMediaQuery("(max-width: 768px)");
   const { create, loading } = useCreateResume();
   const { signIn } = useAuthActions();
-
-  const resumeMarkup = useMemo(
-    () =>
-      resumes?.map((resume, index) => (
-        <Carousel.Slide key={index}>
-          <Flex direction="column" align="center" gap="xs">
-            <Title order={4} c="gray.6" fw="500">
-              {resume.title}
-            </Title>
-
-            <ClientOnly>
-              {() => (
-                <PDFViewer
-                  data={resume}
-                  height={400}
-                  withControls={false}
-                  withPagning={false}
-                  withBorder={true}
-                  shadow="sm"
-                />
-              )}
-            </ClientOnly>
-          </Flex>
-        </Carousel.Slide>
-      )),
-    []
-  );
 
   return (
     <Stack gap={rem(40)}>
@@ -140,7 +112,6 @@ export function Login() {
       <Carousel
         withIndicators={resumes && resumes.length >= 2}
         withControls={resumes && resumes.length >= 2}
-        height={420}
         slideSize={{
           base: "80%",
           sm: "40%",
@@ -149,7 +120,15 @@ export function Login() {
         slideGap={{ base: "sm", sm: "md" }}
         loop={!isMobile}
       >
-        {resumeMarkup}
+        {resumes?.map((resume, index) => (
+          <Carousel.Slide key={index}>
+            <PDFContainer
+              templateElement={<PDFContainer.Template data={resume} />}
+            >
+              <PDFContainer.Viewer withBorder />
+            </PDFContainer>
+          </Carousel.Slide>
+        ))}
       </Carousel>
 
       <Flex justify="center">

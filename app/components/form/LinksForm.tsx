@@ -1,59 +1,19 @@
-import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
 import { Accordion, Button, Flex, Stack, Text, TextInput } from "@mantine/core";
 import { randomId } from "@mantine/hooks";
+import type { api } from "convex/_generated/api";
+import type { FunctionReturnType } from "convex/server";
+import { Reorder, useDragControls, useMotionValue } from "framer-motion";
 import { FaPlus } from "react-icons/fa";
-import { useFormContext } from "~/providers/CVFormProvider";
+import { useRaisedShadow } from "~/hooks/useRaisedShadow";
+import { useFormContext } from "../providers/CVFormProvider";
 import { AccordionControlDrag } from "./AccordionControlDrag";
-import { DraggableItem } from "./DraggableItem";
 import { TitleHover } from "./TitleHover";
 
 export function LinksForm() {
   const form = useFormContext();
 
   const socialProfiles = form.getValues().socialProfiles.map((item, index) => {
-    return (
-      <Draggable key={item.key} index={index} draggableId={item.key}>
-        {(provided, snapshot) => (
-          <DraggableItem
-            isDragging={snapshot.isDragging}
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-          >
-            <Accordion.Item key={item.key} value={item.key}>
-              <AccordionControlDrag
-                dragHandleProps={provided.dragHandleProps}
-                onDestroy={() => form.removeListItem("socialProfiles", index)}
-              >
-                {item.label ? item.label : "(ikke angivet)"}
-              </AccordionControlDrag>
-              <Accordion.Panel>
-                <Stack>
-                  <Flex gap="xl">
-                    <TextInput
-                      withAsterisk
-                      label="Label"
-                      variant="filled"
-                      w="100%"
-                      style={{ flex: 1 }}
-                      {...form.getInputProps(`socialProfiles.${index}.label`)}
-                    />
-                    <TextInput
-                      withAsterisk
-                      label="Link"
-                      variant="filled"
-                      placeholder="https://example.com"
-                      w="100%"
-                      style={{ flex: 1 }}
-                      {...form.getInputProps(`socialProfiles.${index}.url`)}
-                    />
-                  </Flex>
-                </Stack>
-              </Accordion.Panel>
-            </Accordion.Item>
-          </DraggableItem>
-        )}
-      </Draggable>
-    );
+    return <Item item={item} key={item.key} index={index} />;
   });
 
   return (
@@ -114,38 +74,75 @@ export function LinksForm() {
         </Flex>
       </Flex>
       {socialProfiles.length > 0 && (
-        <DragDropContext
-          onDragEnd={({ destination, source }) => {
-            if (!destination) return;
-            const sourceIndex = source.index;
-            const destinationIndex = destination.index;
-            console.log(form.getValues().workExperiences[sourceIndex]);
-
-            const items = [...form.getValues().socialProfiles];
-
-            // Remove the item from the source index and insert it at the destination index
-            const [movedItem] = items.splice(sourceIndex, 1);
-            items.splice(destinationIndex, 0, movedItem);
-
-            items.forEach((item, index) => {
-              item.order = index + 1;
-            });
-
+        <Reorder.Group
+          axis="y"
+          values={form.getValues().socialProfiles}
+          onReorder={(items) => {
             form.setValues({ socialProfiles: items });
           }}
+          as="div"
         >
-          <Droppable droppableId="socialProfiles" direction="vertical">
-            {(provided) => (
-              <div {...provided.droppableProps} ref={provided.innerRef}>
-                <Accordion variant="separated" chevronPosition="left">
-                  {socialProfiles}
-                </Accordion>
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
+          <Accordion variant="separated" chevronPosition="left">
+            {socialProfiles}
+          </Accordion>
+        </Reorder.Group>
       )}
     </Stack>
+  );
+}
+
+function Item({
+  item,
+  index,
+}: {
+  item: FunctionReturnType<typeof api.resumes.get>["socialProfiles"][0];
+  index: number;
+}) {
+  const form = useFormContext();
+  const controls = useDragControls();
+  const y = useMotionValue(0);
+  const boxShadow = useRaisedShadow(y);
+
+  return (
+    <Reorder.Item
+      value={item}
+      id={item}
+      dragListener={false}
+      dragControls={controls}
+      style={{ boxShadow, y }}
+      as="div"
+    >
+      <Accordion.Item value={item.key}>
+        <AccordionControlDrag
+          dragControls={controls}
+          onDestroy={() => form.removeListItem("socialProfiles", index)}
+        >
+          {item.label ? item.label : "(ikke angivet)"}
+        </AccordionControlDrag>
+        <Accordion.Panel>
+          <Stack>
+            <Flex gap="xl">
+              <TextInput
+                withAsterisk
+                label="Label"
+                variant="filled"
+                w="100%"
+                style={{ flex: 1 }}
+                {...form.getInputProps(`socialProfiles.${index}.label`)}
+              />
+              <TextInput
+                withAsterisk
+                label="Link"
+                variant="filled"
+                placeholder="https://example.com"
+                w="100%"
+                style={{ flex: 1 }}
+                {...form.getInputProps(`socialProfiles.${index}.url`)}
+              />
+            </Flex>
+          </Stack>
+        </Accordion.Panel>
+      </Accordion.Item>
+    </Reorder.Item>
   );
 }

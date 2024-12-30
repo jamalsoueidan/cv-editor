@@ -88,7 +88,7 @@ export declare const components: {
         "mutation",
         "internal",
         { before?: number },
-        any
+        null
       >;
       getStatus: FunctionReference<
         "query",

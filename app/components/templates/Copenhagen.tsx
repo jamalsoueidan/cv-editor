@@ -9,11 +9,11 @@ import {
   View,
 } from "@react-pdf/renderer";
 import { api } from "convex/_generated/api";
-import { FunctionReturnType } from "convex/server";
+import { type FunctionReturnType } from "convex/server";
 import dayjs from "dayjs";
 import { EditorHTML } from "../pdf/EditorHTML";
 import { SvgBar } from "../pdf/SvgBar";
-import { TemplateLocale } from "./locales";
+import { type TemplateLocale } from "./locales";
 
 Font.register({
   family: "Open Sans",
@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
   },
   headerImage: {
     width: 150,
+    borderTopLeftRadius: 15,
   },
   title: {
     fontSize: 14,
@@ -87,6 +88,7 @@ export const Copenhagen = ({
             style={{
               backgroundColor: data.template.color,
               width: "100%",
+              borderTopRightRadius: 15,
               ...(data.photoUrl ? { marginLeft: 4 } : {}),
             }}
           >
