@@ -73,11 +73,16 @@ export function NotLoggedIn() {
             <Title ta="center" mb="md">
               Gratis CV Online
             </Title>
-            <Text className={classes.description} ta="center">
-              Create a CV quickly. Start by entering your details or uploading
-              an existing PDF, then select a template that fits your style.
-              Customize it to showcase your skills and personality, and download
-              your CV as PDF!
+            <Text
+              className={classes.description}
+              maw={600}
+              ta="center"
+              m="auto"
+            >
+              Create a CV quickly, and download it for <strong>FREE</strong>.
+              Start by entering your details or uploading an existing PDF, then
+              select a template that fits your style. Customize it to showcase
+              your skills and personality, and download your CV as PDF!
             </Text>
           </div>
 

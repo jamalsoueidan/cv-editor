@@ -31,7 +31,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   // avoid TS errors below
   const languages = resources!;
 
-  const lng = url.searchParams.get("lng") || "en";
+  const lng = url.searchParams.get("lng") || "da";
 
   const namespaces = languages[lng as never];
 
