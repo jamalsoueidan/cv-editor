@@ -1,7 +1,7 @@
 .footer {
   margin-top: calc(var(--mantine-spacing-xl) * 2);
   padding-top: calc(var(--mantine-spacing-xl) * 2);
-  padding-bottom: calc(var(--mantine-spacing-xl) * 2);
+
   background-color: light-dark(
     var(--mantine-color-gray-0),
     var(--mantine-color-dark-6)
@@ -34,19 +34,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: var(--mantine-spacing-md);
-  padding-top: var(--mantine-spacing-xl);
+  margin-top: var(--mantine-spacing-xl);
+  padding-top: var(--mantine-spacing-md);
   padding-bottom: var(--mantine-spacing-xl);
   border-top: 1px solid
     light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-4));
 
   @media (max-width: $mantine-breakpoint-sm) {
     flex-direction: column;
-  }
-}
-
-.social {
-  @media (max-width: $mantine-breakpoint-sm) {
-    margin-top: var(--mantine-spacing-xs);
   }
 }
