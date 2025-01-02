@@ -13,7 +13,9 @@ import { ModalsProvider } from "@mantine/modals";
 import "@mantine/tiptap/styles.css";
 import { ConvexReactClient } from "convex/react";
 import { useEffect, useState } from "react";
+import type { LoaderFunctionArgs } from "react-router";
 import {
+  data,
   isRouteErrorResponse,
   Links,
   Meta,
@@ -22,11 +24,13 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from "react-router";
+import { useChangeLanguage } from "remix-i18next/react";
 import * as CookieConsent from "vanilla-cookieconsent";
 import "vanilla-cookieconsent/dist/cookieconsent.css";
 import type { Route } from "./+types/root";
 import stylesheet from "./app.css?url";
 import { configConsent } from "./cookieconsent.config";
+import i18nServer, { localeCookie } from "./i18n/server";
 import classes from "./Input.module.css";
 
 export const links: Route.LinksFunction = () => [
@@ -59,21 +63,33 @@ const theme = createTheme({
   },
 });
 
-export async function loader() {
+export const handle = { i18n: ["translation"] };
+
+export async function loader({ request }: LoaderFunctionArgs) {
   const CONVEX_URL = process.env["CONVEX_URL"]!;
-  return { ENV: { CONVEX_URL } };
+  const locale = await i18nServer.getLocale(request);
+  return data(
+    { ENV: { CONVEX_URL }, locale },
+    { headers: { "Set-Cookie": await localeCookie.serialize(locale) } }
+  );
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const { ENV } = useLoaderData<typeof loader>();
+  const { ENV, locale } = useLoaderData<typeof loader>();
   const [convex] = useState(() => new ConvexReactClient(ENV.CONVEX_URL));
+
+  // This hook will change the i18n instance language to the current locale
+  // detected by the loader, this way, when we do something to change the
+  // language, this locale will change and i18next will load the correct
+  // translation files
+  useChangeLanguage(locale);
 
   useEffect(() => {
     CookieConsent.run(configConsent);
   }, []);
 
   return (
-    <html lang="en" {...mantineHtmlProps}>
+    <html lang={locale ?? "en"} {...mantineHtmlProps}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />

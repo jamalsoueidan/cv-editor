@@ -30,7 +30,7 @@ export function LoggedIn() {
 
   const resumeMarkup = resumes?.map((resume) => (
     <Grid.Col
-      span={{ base: 12, sm: 4 }}
+      span={{ base: 12, sm: 6, md: 4 }}
       display="flex"
       key={resume._id}
       style={{ flexDirection: "column" }}
