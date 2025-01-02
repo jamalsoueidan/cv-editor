@@ -7,7 +7,6 @@ import {
   Grid,
   rem,
   Stack,
-  Text,
   Title,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
@@ -15,10 +14,10 @@ import { FaHeart, FaLinkedin } from "react-icons/fa";
 import { PiReadCvLogo } from "react-icons/pi";
 import { useCreateResume } from "~/hooks/useCreateResume";
 
+import { useTranslation } from "react-i18next";
 import { CardButton } from "~/components/CardButton";
 import { dumbData } from "~/components/dumbData";
 import { PDFContainer } from "~/components/PDFContainer";
-import classes from "./NotLoggedIn.module.css";
 
 const resumes = [
   {
@@ -61,6 +60,7 @@ const resumes = [
 ];
 
 export function NotLoggedIn() {
+  const { t } = useTranslation();
   const isMobile = useMediaQuery("(max-width: 768px)");
   const { create, loading } = useCreateResume();
   const { signIn } = useAuthActions();
@@ -68,23 +68,20 @@ export function NotLoggedIn() {
   return (
     <Stack gap={rem(40)}>
       <Container size="lg">
-        <Stack gap={rem(40)} mt={rem(20)}>
-          <div>
-            <Title ta="center" mb="md">
-              Gratis CV Online
+        <Stack gap={rem(40)} mt={rem(20)} maw={700} m="auto">
+          <Stack gap="md">
+            <div>
+              <Title order={1} ta="center" fz={rem(14)} fw="400" lts={1.5}>
+                GRATIS ONLINE CV
+              </Title>
+              <Title order={2} ta="center" fz={rem(36)} mb="md">
+                {t("title")}
+              </Title>
+            </div>
+            <Title order={3} ta="center" fw="400" fz={rem(20)}>
+              {t("description")}
             </Title>
-            <Text
-              className={classes.description}
-              maw={600}
-              ta="center"
-              m="auto"
-            >
-              Create a CV quickly, and download it for <strong>FREE</strong>.
-              Start by entering your details or uploading an existing PDF, then
-              select a template that fits your style. Customize it to showcase
-              your skills and personality, and download your CV as PDF!
-            </Text>
-          </div>
+          </Stack>
 
           <Grid>
             <Grid.Col span={{ base: 12, md: 6 }}>

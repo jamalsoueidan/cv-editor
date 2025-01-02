@@ -3,8 +3,9 @@ export default {
     da: "dk",
     en: "us",
   },
-  title: "remix-i18next (es)",
-  description: "Un ejemplo de Remix + Vite + remix-i18next",
+  title: "Opret dit CV med vores online CV-redigeringsprogram – helt gratis!",
+  description:
+    "Begynd med at indtaste dine oplysninger eller upload din eksisterende cv, og derefter vælg en skabelon, der passer til din stil. Tilpas dit CV, og download dit nye CV.",
   footer: {
     modal: {
       title: "Vælg dit sprog",

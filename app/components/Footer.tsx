@@ -14,7 +14,7 @@ import {
 
 import { useDisclosure } from "@mantine/hooks";
 import { useTranslation } from "react-i18next";
-import { FaYoutube } from "react-icons/fa";
+import { FaGithub, FaYoutube } from "react-icons/fa";
 import { Form } from "react-router";
 import { supportedLngs } from "../i18n/config";
 import classes from "./Footer.module.css";
@@ -84,7 +84,6 @@ export function Footer() {
               variant="subtle"
               color="black"
               onClick={open}
-              px="0"
               leftSection={
                 <Image
                   w={25}
@@ -111,6 +110,9 @@ export function Footer() {
         <Group gap={0} justify="flex-end" wrap="nowrap">
           <ActionIcon size="lg" color="gray" variant="subtle">
             <FaYoutube size={18} />
+          </ActionIcon>
+          <ActionIcon size="lg" color="gray" variant="subtle">
+            <FaGithub size={18} />
           </ActionIcon>
         </Group>
       </Container>
