@@ -1,6 +1,7 @@
 import { reactRouter } from "@react-router/dev/vite";
 import autoprefixer from "autoprefixer";
 import { defineConfig } from "vite";
+import { envOnlyMacros } from "vite-env-only";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig(({ isSsrBuild, command }) => ({
@@ -19,5 +20,5 @@ export default defineConfig(({ isSsrBuild, command }) => ({
   ssr: {
     noExternal: command === "build" ? true : undefined,
   },
-  plugins: [reactRouter(), tsconfigPaths()],
+  plugins: [envOnlyMacros(), reactRouter(), tsconfigPaths()],
 }));
