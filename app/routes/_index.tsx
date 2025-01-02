@@ -17,25 +17,25 @@ export default function Index({ loaderData }: Route.ComponentProps) {
   return (
     <>
       <Box pos="relative" py={rem(40)}>
+        <Box
+          pos="absolute"
+          top="0"
+          w="100%"
+          h="80vh"
+          style={{
+            background: getGradient(
+              { deg: 180, from: "blue.1", to: "white" },
+              theme
+            ),
+            zIndex: -1,
+          }}
+          py="xl"
+        />
         <Authenticated>
           <LoggedIn />
         </Authenticated>
 
         <Unauthenticated>
-          <Box
-            pos="absolute"
-            top="0"
-            w="100%"
-            h="80vh"
-            style={{
-              background: getGradient(
-                { deg: 180, from: "blue.1", to: "white" },
-                theme
-              ),
-              zIndex: -1,
-            }}
-            py="xl"
-          />
           <NotLoggedIn />
         </Unauthenticated>
       </Box>
