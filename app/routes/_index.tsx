@@ -2,6 +2,7 @@ import { Box, getGradient, rem, useMantineTheme } from "@mantine/core";
 import { Authenticated, Unauthenticated } from "convex/react";
 import { LoggedIn } from "~/components/LoggedIn";
 
+import { Header } from "~/components/Header";
 import { NotLoggedIn } from "~/components/NotLoggedIn";
 import i18nServer from "~/i18n/server";
 import type { Route } from "../routes/+types/_index";
@@ -16,7 +17,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
 
   return (
     <>
-      <Box pos="relative" py={rem(40)}>
+      <Box pos="relative">
         <Box
           pos="absolute"
           top="0"
@@ -29,14 +30,19 @@ export default function Index({ loaderData }: Route.ComponentProps) {
             ),
             zIndex: -1,
           }}
-          py="xl"
+          pb="xl"
         />
         <Authenticated>
-          <LoggedIn />
+          <Box pb={rem(40)} pt={rem(10)}>
+            <Header />
+            <LoggedIn />
+          </Box>
         </Authenticated>
 
         <Unauthenticated>
-          <NotLoggedIn />
+          <Box py={rem(40)}>
+            <NotLoggedIn />
+          </Box>
         </Unauthenticated>
       </Box>
     </>

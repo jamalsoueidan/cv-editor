@@ -14,7 +14,6 @@ import {
 import { api } from "convex/_generated/api";
 import { useQuery } from "convex/react";
 import { useTranslation } from "react-i18next";
-import { IoMdLogOut } from "react-icons/io";
 import { PiReadCvLogo } from "react-icons/pi";
 import { Link } from "react-router";
 import { useCreateResume } from "~/hooks/useCreateResume";
@@ -34,7 +33,7 @@ export function LoggedIn() {
   return (
     <>
       <Container size="lg">
-        <Stack gap={rem(40)} mt={rem(20)}>
+        <Stack gap={rem(20)} mt={rem(20)}>
           <Text className={classes.description} ta="center">
             You are now logged in as <strong>{data?.name}</strong>
           </Text>
@@ -47,17 +46,6 @@ export function LoggedIn() {
                 loading={loading}
                 icon={
                   <PiReadCvLogo style={{ width: rem(24), height: rem(24) }} />
-                }
-              />
-            </Grid.Col>
-            <Grid.Col span={{ base: 12, md: 4 }}>
-              <CardButton
-                title="Log out"
-                text="Log out of your account"
-                onClick={signOut}
-                loading={loading}
-                icon={
-                  <IoMdLogOut style={{ width: rem(24), height: rem(24) }} />
                 }
               />
             </Grid.Col>
