@@ -26,3 +26,11 @@ Run the dev server:
 ```bash
 npm run dev
 ```
+
+## AI Images
+
+Create image:
+https://deepai.org/machine-learning-model/kawaii-emoji-generator
+
+Uncrop Image:
+https://www.pixelcut.ai/t/uncrop

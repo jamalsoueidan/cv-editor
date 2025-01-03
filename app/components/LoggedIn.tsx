@@ -1,4 +1,3 @@
-import { useAuthActions } from "@convex-dev/auth/react";
 import {
   Box,
   Card,
@@ -23,7 +22,6 @@ import { PDFContainer } from "./PDFContainer";
 
 export function LoggedIn() {
   const { i18n } = useTranslation();
-  const { signOut } = useAuthActions();
   const data = useQuery(api.auth.currentUser);
   const resumes = useQuery(api.resumes.list);
   const { create, loading } = useCreateResume();
