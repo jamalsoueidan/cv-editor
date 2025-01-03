@@ -18,6 +18,7 @@ import { useTranslation } from "react-i18next";
 import { CardButton } from "~/components/CardButton";
 import { dumbData } from "~/components/dumbData";
 import { PDFContainer } from "~/components/PDFContainer";
+import { Logo } from "./Logo";
 
 const resumes = [
   {
@@ -67,13 +68,13 @@ export function NotLoggedIn() {
 
   return (
     <Stack gap={rem(40)}>
-      <Container size="lg">
-        <Stack gap={rem(40)} mt={rem(20)} maw={700} m="auto">
+      <Container size="lg" mb={rem(40)}>
+        <Stack gap={rem(40)} maw={700} m="auto">
           <Stack gap="md">
             <div>
-              <Title order={1} ta="center" fz={rem(14)} fw="400" lts={1.5}>
-                GRATIS ONLINE CV
-              </Title>
+              <Flex justify="center" align="center" mb={rem(20)}>
+                <Logo />
+              </Flex>
               <Title order={2} ta="center" fz={rem(36)} mb="md">
                 {t("title")}
               </Title>

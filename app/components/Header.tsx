@@ -14,9 +14,8 @@ import { useQuery } from "convex/react";
 import { useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import { IoMdLogOut } from "react-icons/io";
-import { TbFileCv } from "react-icons/tb";
-import { Link } from "react-router";
 import classes from "./Header.module.css";
+import { Logo } from "./Logo";
 
 export function Header() {
   const { signOut } = useAuthActions();
@@ -26,26 +25,7 @@ export function Header() {
   return (
     <Container size="xl">
       <Group justify="space-between">
-        <UnstyledButton component={Link} to="/">
-          <Group gap="0">
-            <Text fz="xl" tt="uppercase">
-              Gratis
-            </Text>
-            <TbFileCv
-              size={48}
-              style={{
-                strokeWidth: 1,
-                stroke: "var(--mantine-color-blue-6)",
-                marginLeft: "-4px",
-                marginRight: "-4px",
-                marginBottom: "5.4px",
-              }}
-            />
-            <Text fz="xl" tt="uppercase">
-              Online
-            </Text>
-          </Group>
-        </UnstyledButton>
+        <Logo />
 
         <Menu
           width={260}

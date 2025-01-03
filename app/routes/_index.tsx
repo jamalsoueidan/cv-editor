@@ -17,7 +17,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
 
   return (
     <>
-      <Box pos="relative">
+      <Box pos="relative" pb={rem(40)} pt={rem(20)}>
         <Box
           pos="absolute"
           top="0"
@@ -33,16 +33,12 @@ export default function Index({ loaderData }: Route.ComponentProps) {
           pb="xl"
         />
         <Authenticated>
-          <Box pb={rem(40)} pt={rem(10)}>
-            <Header />
-            <LoggedIn />
-          </Box>
+          <Header />
+          <LoggedIn />
         </Authenticated>
 
         <Unauthenticated>
-          <Box py={rem(40)}>
-            <NotLoggedIn />
-          </Box>
+          <NotLoggedIn />
         </Unauthenticated>
       </Box>
     </>
