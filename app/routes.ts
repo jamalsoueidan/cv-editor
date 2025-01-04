@@ -3,6 +3,8 @@ import { type RouteConfig, index, route } from "@react-router/dev/routes";
 export default [
   index("./routes/_index.tsx"),
   route("api/locales", "./routes/api.locales.ts"),
+  route("robots.txt", "./routes/robots.ts"),
+  route("sitemap.xml", "./routes/sitemap.ts"),
   route("canvas", "./routes/canvas.tsx"),
   route("privacy", "./routes/privacy.tsx"),
   route("prices", "./routes/prices.tsx"),
