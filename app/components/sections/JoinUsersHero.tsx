@@ -20,7 +20,7 @@ export function JoinUsersHero() {
       <Divider />
       <Container size="xl" my={rem(100)}>
         <Stack gap={rem(24)}>
-          <Title ta="center" fw="800" c="blue" size={rem(50)}>
+          <Title ta="center" fw="800" c="blue" fz={rem(50)}>
             <Trans
               i18nKey="joinusershero.title"
               components={[

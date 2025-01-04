@@ -35,11 +35,11 @@ export function NotLoggedIn() {
                 <Flex justify="center" align="center" mb={rem(20)}>
                   <Logo />
                 </Flex>
-                <Title order={2} ta="center" fz={rem(36)} mb="md">
+                <Title order={2} ta="center" fz={rem(44)} mb="md">
                   {t("title")}
                 </Title>
               </div>
-              <Title order={3} ta="center" fw="400" fz={rem(20)}>
+              <Title order={3} ta="center" fw="400" fz={rem(18)}>
                 {t("description")}
               </Title>
             </Stack>
@@ -73,6 +73,7 @@ export function NotLoggedIn() {
         </Container>
 
         <CVCarousel />
+
         <WhyChooseUs />
         <JoinUsersHero />
 

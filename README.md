@@ -29,8 +29,11 @@ npm run dev
 
 ## AI Images
 
-Create image:
-https://deepai.org/machine-learning-model/kawaii-emoji-generator
+1. Ask chat.com about explain a image
+   https://chatgpt.com/
 
-Uncrop Image:
-https://www.pixelcut.ai/t/uncrop
+2. Use DeepAI to create image (remember to enchance the image for free)
+   https://deepai.org/machine-learning-model/kawaii-emoji-generator
+
+3. Uncrop Image to (extend the image wider)
+   https://www.pixelcut.ai/t/uncrop
