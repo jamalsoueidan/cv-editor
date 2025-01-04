@@ -12,6 +12,7 @@ import { FaHeart, FaLinkedin } from "react-icons/fa";
 import { PiReadCvLogo } from "react-icons/pi";
 import { useCreateResume } from "~/hooks/useCreateResume";
 
+import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { CardButton } from "~/components/CardButton";
 import { Logo } from "./Logo";
@@ -33,40 +34,72 @@ export function NotLoggedIn() {
             <Stack gap="md">
               <div>
                 <Flex justify="center" align="center" mb={rem(20)}>
-                  <Logo />
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <Logo />
+                  </motion.div>
                 </Flex>
-                <Title order={2} ta="center" fz={rem(44)} mb="md">
-                  {t("title")}
-                </Title>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 0.5 }}
+                >
+                  <Title order={2} ta="center" fz={rem(44)} mb="md">
+                    {t("title")}
+                  </Title>
+                </motion.div>
               </div>
-              <Title order={3} ta="center" fw="400" fz={rem(18)}>
-                {t("description")}
-              </Title>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 1 }}
+              >
+                <Title order={3} ta="center" fw="400" fz={rem(18)}>
+                  {t("description")}
+                </Title>
+              </motion.div>
             </Stack>
 
-            <Grid>
+            <Grid gutter={rem(50)}>
               <Grid.Col span={{ base: 12, md: 6 }}>
-                <CardButton
-                  title="Login with LinkedIn"
-                  text=" Save, organize, and access multiple CVs."
-                  onClick={() => {
-                    signIn("linkedin");
-                  }}
-                  icon={
-                    <FaLinkedin style={{ width: rem(24), height: rem(24) }} />
-                  }
-                />
+                <motion.div
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 1.5 }}
+                >
+                  <CardButton
+                    title="Login with LinkedIn"
+                    text=" Save, organize, and access multiple CVs."
+                    onClick={() => {
+                      signIn("linkedin");
+                    }}
+                    icon={
+                      <FaLinkedin style={{ width: rem(24), height: rem(24) }} />
+                    }
+                  />
+                </motion.div>
               </Grid.Col>
               <Grid.Col span={{ base: 12, md: 6 }}>
-                <CardButton
-                  title="Create CV without Login"
-                  text="Unique link to your CV to edit it anytime."
-                  onClick={create}
-                  loading={loading}
-                  icon={
-                    <PiReadCvLogo style={{ width: rem(24), height: rem(24) }} />
-                  }
-                />
+                <motion.div
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 1.5 }}
+                >
+                  <CardButton
+                    title="Create CV without Login"
+                    text="Unique link to your CV to edit it anytime."
+                    onClick={create}
+                    loading={loading}
+                    icon={
+                      <PiReadCvLogo
+                        style={{ width: rem(24), height: rem(24) }}
+                      />
+                    }
+                  />
+                </motion.div>
               </Grid.Col>
             </Grid>
           </Stack>
