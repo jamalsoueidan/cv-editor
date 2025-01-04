@@ -12,7 +12,7 @@ import {
 } from "@mantine/core";
 import { FaCheck } from "react-icons/fa";
 import { Header } from "~/components/Header";
-import PriceSVG from "~/components/PriceSVG";
+import PriceSVG from "~/components/images/PriceSVG";
 
 export default function PrivacyPolicy() {
   return (

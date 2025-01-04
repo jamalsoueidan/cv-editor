@@ -16,7 +16,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { useTranslation } from "react-i18next";
 import { FaGithub, FaYoutube } from "react-icons/fa";
 import { Form } from "react-router";
-import { supportedLngs } from "../i18n/config";
+import { supportedLngs } from "../../i18n/config";
 import classes from "./Footer.module.css";
 
 const data = [
