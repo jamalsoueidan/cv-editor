@@ -20,7 +20,6 @@ export function CardButton({
       <UnstyledButton
         onClick={onClick}
         className={classes.button}
-        miw="350px"
         disabled={loading}
       >
         <div>

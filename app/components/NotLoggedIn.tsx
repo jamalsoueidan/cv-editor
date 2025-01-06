@@ -1,9 +1,11 @@
 import { useAuthActions } from "@convex-dev/auth/react";
 import {
+  Box,
   Button,
   Container,
   Flex,
   Grid,
+  Overlay,
   rem,
   Stack,
   Title,
@@ -14,23 +16,35 @@ import { useCreateResume } from "~/hooks/useCreateResume";
 
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { Document, Page } from "react-pdf";
 import { CardButton } from "~/components/CardButton";
 import { Logo } from "./Logo";
-import { CVCarousel } from "./sections/CVCarousel";
 import { JoinUsersHero } from "./sections/JoinUsersHero";
 import { WhyChooseUs } from "./sections/WhyChooseUs";
 
-export function NotLoggedIn() {
+function base64ToBlob(base64: string, type = "application/octet-stream") {
+  const binaryString = atob(base64);
+  const len = binaryString.length;
+  const bytes = new Uint8Array(len);
+  for (let i = 0; i < len; i++) {
+    bytes[i] = binaryString.charCodeAt(i);
+  }
+  return new Blob([bytes], { type });
+}
+
+export function NotLoggedIn({ pdf }: { pdf: string }) {
   const { t } = useTranslation();
 
   const { create, loading } = useCreateResume();
   const { signIn } = useAuthActions();
+  const pdfBlob = base64ToBlob(pdf);
+  const pdfUrl = URL.createObjectURL(pdfBlob);
 
   return (
     <>
       <Stack gap={rem(40)}>
         <Container size="lg" mb={rem(40)}>
-          <Stack gap={rem(40)} maw={700} m="auto">
+          <Stack gap={rem(40)}>
             <Stack gap="md">
               <div>
                 <Flex justify="center" align="center" mb={rem(20)}>
@@ -47,7 +61,14 @@ export function NotLoggedIn() {
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.5, delay: 0.5 }}
                 >
-                  <Title order={2} ta="center" fz={rem(44)} mb="md">
+                  <Title
+                    order={2}
+                    ta="center"
+                    fz={rem(44)}
+                    mb="md"
+                    maw={760}
+                    m="auto"
+                  >
                     {t("title")}
                   </Title>
                 </motion.div>
@@ -57,14 +78,21 @@ export function NotLoggedIn() {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5, delay: 1 }}
               >
-                <Title order={3} ta="center" fw="400" fz={rem(18)}>
+                <Title
+                  order={3}
+                  ta="center"
+                  fw="400"
+                  fz={rem(18)}
+                  maw={650}
+                  m="auto"
+                >
                   {t("description")}
                 </Title>
               </motion.div>
             </Stack>
 
-            <Grid gutter={rem(50)}>
-              <Grid.Col span={{ base: 12, md: 6 }}>
+            <Grid gutter={rem(30)}>
+              <Grid.Col span={{ base: 12, sm: 6 }}>
                 <motion.div
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -82,7 +110,7 @@ export function NotLoggedIn() {
                   />
                 </motion.div>
               </Grid.Col>
-              <Grid.Col span={{ base: 12, md: 6 }}>
+              <Grid.Col span={{ base: 12, sm: 6 }}>
                 <motion.div
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -103,9 +131,28 @@ export function NotLoggedIn() {
               </Grid.Col>
             </Grid>
           </Stack>
+          <Flex justify="center" align="center" mt={rem(40)}>
+            <Box
+              pos="relative"
+              mih={400}
+              w={{ base: 600, md: 800 }}
+              style={{ overflow: "hidden", borderRadius: rem(24) }}
+            >
+              <motion.div
+                initial={{ y: 400, scale: 1 }}
+                animate={{ y: 0, scale: 0.8 }}
+                transition={{ duration: 0.5, delay: 1.5 }}
+              >
+                <Box pos="absolute" top={0} left={0} right={0} bottom={0}>
+                  <Document file={pdfUrl}>
+                    <Page pageNumber={1} width={800} />
+                  </Document>
+                </Box>
+              </motion.div>
+              <Overlay color="#000" backgroundOpacity={0} />
+            </Box>
+          </Flex>
         </Container>
-
-        <CVCarousel />
 
         <WhyChooseUs />
         <JoinUsersHero />

@@ -5,7 +5,7 @@ import { memo } from "react";
 import { dumbData } from "~/components/dumbData";
 import { PDFContainer } from "~/components/PDFContainer";
 
-const resumes = [
+export const resumes = [
   {
     ...dumbData,
     firstname: "Steve",
