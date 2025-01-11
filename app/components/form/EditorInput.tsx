@@ -35,7 +35,10 @@ export const EditorInput = (
     <Input.Wrapper label={rest.label}>
       <RichTextEditor
         editor={editor}
-        style={{ marginBottom: rem(8), marginTop: rem(2) }}
+        style={{
+          marginBottom: rem(8),
+          marginTop: rem(2),
+        }}
       >
         <RichTextEditor.Toolbar sticky stickyOffset={60}>
           <RichTextEditor.ControlsGroup>
