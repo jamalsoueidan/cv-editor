@@ -8,14 +8,14 @@ import {
   Stack,
   Stepper,
   Text,
-  Title,
   useMantineColorScheme,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { modals } from "@mantine/modals";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
 import { preloadedQueryResult, preloadQuery } from "convex/nextjs";
-import { FaMoon, FaStarAndCrescent, FaSun } from "react-icons/fa";
+import { FaEye, FaMoon, FaStarAndCrescent, FaSun } from "react-icons/fa";
 import { GoHome } from "react-icons/go";
 import { PiBook, PiBookOpen } from "react-icons/pi";
 import { Outlet, useLocation, useNavigate } from "react-router";
@@ -75,6 +75,10 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
     ? 4
     : 0;
 
+  const onNextStep = () => {
+    onStepClick(active + 1);
+  };
+
   const { setColorScheme, colorScheme } = useMantineColorScheme();
   const isDark = colorScheme === "dark";
 
@@ -82,7 +86,7 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
     <AppShell
       layout="alt"
       header={{ height: 60 }}
-      footer={{ height: 80 }}
+      footer={{ height: 60 }}
       navbar={{
         width: 250,
         breakpoint: "sm",
@@ -110,20 +114,37 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
             </ActionIcon>
           ) : null}
 
-          <Group justify="space-between" style={{ flex: 1 }}>
-            <Title order={3}>CV Title</Title>
-            <ActionIcon
-              variant="outline"
-              color={isDark ? "white" : "black"}
-              onClick={() => setColorScheme(isDark ? "light" : "dark")}
-              title="Toggle color scheme"
-            >
-              {isDark ? (
-                <FaSun style={{ width: 18, height: 18 }} />
-              ) : (
-                <FaMoon style={{ width: 18, height: 18 }} />
-              )}
-            </ActionIcon>
+          <Group justify="flex-end" style={{ flex: 1 }}>
+            <Group gap="xs">
+              <ActionIcon
+                variant="outline"
+                color={isDark ? "white" : "black"}
+                onClick={() =>
+                  modals.openContextModal({
+                    size: "lg",
+                    fullScreen: true,
+                    modal: "pdfModal",
+                    innerProps: data,
+                  })
+                }
+                hiddenFrom="md"
+                title="Show pdf"
+              >
+                <FaEye />
+              </ActionIcon>
+              <ActionIcon
+                variant="outline"
+                color={isDark ? "white" : "black"}
+                onClick={() => setColorScheme(isDark ? "light" : "dark")}
+                title="Toggle colors"
+              >
+                {isDark ? (
+                  <FaSun style={{ width: 18, height: 18 }} />
+                ) : (
+                  <FaMoon style={{ width: 18, height: 18 }} />
+                )}
+              </ActionIcon>
+            </Group>
           </Group>
         </Group>
       </AppShell.Header>
@@ -203,7 +224,7 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
           </Group>
         </AppShell.Section>
       </AppShell.Navbar>
-      <Outlet context={{ data, id }} />
+      <Outlet context={{ data, id, onNextStep }} />
     </AppShell>
   );
 }

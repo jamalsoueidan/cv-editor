@@ -3,9 +3,9 @@ import "@mantine/carousel/styles.css";
 import {
   ColorSchemeScript,
   createTheme,
-  Input,
   mantineHtmlProps,
   MantineProvider,
+  TextInput,
 } from "@mantine/core";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
@@ -29,9 +29,9 @@ import * as CookieConsent from "vanilla-cookieconsent";
 import "vanilla-cookieconsent/dist/cookieconsent.css";
 import type { Route } from "./+types/root";
 import stylesheet from "./app.css?url";
+import { PDFModal } from "./components/modals/PDFModal";
 import { configConsent } from "./cookieconsent.config";
 import i18nServer, { localeCookie } from "./i18n/server";
-import classes from "./Input.module.css";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -49,15 +49,9 @@ export const links: Route.LinksFunction = () => [
 
 const theme = createTheme({
   components: {
-    Input: Input.extend({
-      classNames: {
-        input: classes.input,
-      },
-    }),
-
-    InputWrapper: Input.Wrapper.extend({
-      classNames: {
-        label: classes.label,
+    TextInput: TextInput.extend({
+      defaultProps: {
+        size: "lg",
       },
     }),
   },
@@ -98,8 +92,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <ColorSchemeScript />
       </head>
       <body>
-        <MantineProvider>
-          <ModalsProvider>
+        <MantineProvider theme={theme}>
+          <ModalsProvider modals={{ pdfModal: PDFModal }}>
             <ConvexAuthProvider client={convex}>{children}</ConvexAuthProvider>
           </ModalsProvider>
         </MantineProvider>

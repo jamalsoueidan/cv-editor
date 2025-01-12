@@ -40,7 +40,7 @@ export default function DashboardIndex() {
     <>
       <AppShell.Main>
         <Grid>
-          <Grid.Col span="auto">
+          <Grid.Col span="auto" pr="md">
             <FormProvider form={form}>
               <form style={{ width: "100%" }}>
                 <WorkingExperiencesForm />
