@@ -95,50 +95,8 @@ export default function DashboardIndex() {
                     )}
                     <Flex mt="md" gap="xs" wrap="wrap">
                       <Button
-                        size="xs"
-                        variant="light"
-                        onClick={() =>
-                          form.insertListItem("skills", {
-                            key: randomId(),
-                            title: "Teamwork Skills",
-                            level: "3",
-                          })
-                        }
-                        rightSection={<FaPlus />}
-                      >
-                        Teamwork Skills
-                      </Button>
-                      <Button
-                        size="xs"
-                        variant="light"
-                        onClick={() =>
-                          form.insertListItem("skills", {
-                            key: randomId(),
-                            title: "Critical Thinking",
-                            level: "3",
-                          })
-                        }
-                        rightSection={<FaPlus />}
-                      >
-                        Critical Thinking
-                      </Button>
-                      <Button
-                        size="xs"
-                        variant="light"
-                        onClick={() =>
-                          form.insertListItem("skills", {
-                            key: randomId(),
-                            title: "Customer Service",
-                            level: "3",
-                          })
-                        }
-                        rightSection={<FaPlus />}
-                      >
-                        Customer Service
-                      </Button>
-                      <Button
-                        size="xs"
-                        variant="light"
+                        size="lg"
+                        variant="outline"
                         onClick={() =>
                           form.insertListItem("skills", {
                             key: randomId(),
@@ -146,6 +104,7 @@ export default function DashboardIndex() {
                             level: "3",
                           })
                         }
+                        fullWidth
                         rightSection={<FaPlus />}
                       >
                         Add one more skill

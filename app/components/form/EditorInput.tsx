@@ -16,7 +16,8 @@ interface CustomInputProps {
 }
 
 export const EditorInput = (
-  props: CustomInputProps & Pick<TextInputProps, "description" | "label">
+  props: CustomInputProps &
+    Pick<TextInputProps, "description" | "label" | "size">
 ) => {
   const { value, defaultValue, onChange, onFocus, onBlur, error, ...rest } =
     props;
@@ -32,7 +33,7 @@ export const EditorInput = (
   });
 
   return (
-    <Input.Wrapper label={rest.label}>
+    <Input.Wrapper label={rest.label} size={rest.size}>
       <RichTextEditor
         editor={editor}
         style={{
@@ -61,7 +62,7 @@ export const EditorInput = (
         <RichTextEditor.Content />
       </RichTextEditor>
       {rest.description ? (
-        <Text size="sm" c="dimmed">
+        <Text size={"sm"} c="dimmed">
           {rest.description}
         </Text>
       ) : null}
