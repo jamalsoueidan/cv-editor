@@ -15,10 +15,11 @@ import { modals } from "@mantine/modals";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
 import { preloadedQueryResult, preloadQuery } from "convex/nextjs";
+import { useTranslation } from "react-i18next";
 import { FaEye, FaMoon, FaStarAndCrescent, FaSun } from "react-icons/fa";
-import { GoHome } from "react-icons/go";
 import { PiBook, PiBookOpen } from "react-icons/pi";
 import { Outlet, useLocation, useNavigate } from "react-router";
+import { PDFContainer } from "~/components/PDFContainer";
 import { useQueryData } from "~/hooks/useQueryData";
 import type { Route } from "./+types/dashboard.$id";
 
@@ -36,7 +37,7 @@ export async function loader({ params }: Route.LoaderArgs) {
 
 export default function Dashboard({ loaderData }: Route.ComponentProps) {
   const { id } = loaderData;
-
+  const { t } = useTranslation();
   const data = useQueryData(
     api.resumes.get,
     {
@@ -62,6 +63,12 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
       navigate("educations");
     } else if (nextStep === 4) {
       navigate("skills");
+    } else if (nextStep === 5) {
+      navigate("languages");
+    } else if (nextStep === 6) {
+      navigate("links");
+    } else if (nextStep === 7) {
+      navigate("finalize");
     }
   };
 
@@ -73,6 +80,12 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
     ? 3
     : location.pathname.includes("skills")
     ? 4
+    : location.pathname.includes("languages")
+    ? 5
+    : location.pathname.includes("links")
+    ? 6
+    : location.pathname.includes("finalize")
+    ? 7
     : 0;
 
   const onNextStep = () => {
@@ -109,13 +122,32 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
               onClick={toggleDesktop}
               visibleFrom="sm"
               size="md"
+              title="Show sidebar"
             >
-              <PiBookOpen size={rem(28)} color="black" />
+              <PiBook size={rem(28)} color="black" />
             </ActionIcon>
-          ) : null}
+          ) : (
+            <ActionIcon
+              onClick={toggleDesktop}
+              visibleFrom="sm"
+              variant="transparent"
+              title="Hide sidebar"
+            >
+              <PiBookOpen size={rem(32)} color={isDark ? "white" : "black"} />
+            </ActionIcon>
+          )}
 
           <Group justify="flex-end" style={{ flex: 1 }}>
             <Group gap="xs">
+              <PDFContainer
+                templateElement={<PDFContainer.Template data={data} />}
+              >
+                <PDFContainer.DownloadIcon
+                  variant="outline"
+                  color={isDark ? "white" : "black"}
+                  title={t("makecv.header.downloadcv")}
+                />
+              </PDFContainer>
               <ActionIcon
                 variant="outline"
                 color={isDark ? "white" : "black"}
@@ -128,7 +160,7 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
                   })
                 }
                 hiddenFrom="md"
-                title="Show pdf"
+                title={t("makecv.header.previewcv")}
               >
                 <FaEye />
               </ActionIcon>
@@ -136,7 +168,7 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
                 variant="outline"
                 color={isDark ? "white" : "black"}
                 onClick={() => setColorScheme(isDark ? "light" : "dark")}
-                title="Toggle colors"
+                title={t("makecv.header.colorschema")}
               >
                 {isDark ? (
                   <FaSun style={{ width: 18, height: 18 }} />
@@ -157,19 +189,9 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
               hiddenFrom="sm"
               size="md"
             />
-            <ActionIcon
-              onClick={toggleDesktop}
-              visibleFrom="sm"
-              variant="transparent"
-            >
-              <PiBook size={rem(32)} color={isDark ? "white" : "black"} />
-            </ActionIcon>
-            <ActionIcon visibleFrom="sm" variant="transparent">
-              <GoHome size={rem(32)} color={isDark ? "white" : "black"} />
-            </ActionIcon>
           </Group>
         </AppShell.Section>
-        <AppShell.Section grow py={rem(22)} px={rem(6)} component={ScrollArea}>
+        <AppShell.Section grow py={rem(40)} px={rem(6)} component={ScrollArea}>
           <Stepper
             active={active}
             onStepClick={onStepClick}
@@ -198,11 +220,14 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
             }}
             size="xs"
           >
-            <Stepper.Step label="Personlig information" />
-            <Stepper.Step label="Om dig selv" />
-            <Stepper.Step label="Work history" />
-            <Stepper.Step label="Education" />
-            <Stepper.Step label="Skills" />
+            <Stepper.Step label={t("makecv.navbar.personal")} />
+            <Stepper.Step label={t("makecv.navbar.profile")} />
+            <Stepper.Step label={t("makecv.navbar.experience")} />
+            <Stepper.Step label={t("makecv.navbar.education")} />
+            <Stepper.Step label={t("makecv.navbar.skills")} />
+            <Stepper.Step label={t("makecv.navbar.language")} />
+            <Stepper.Step label={t("makecv.navbar.links")} />
+            <Stepper.Step label={t("makecv.navbar.finalize")} />
           </Stepper>
         </AppShell.Section>
         <AppShell.Section pl="xs" pb={rem(6)}>

@@ -4,6 +4,23 @@ export default {
     description: "Prøv vores CV-bygger idag -- helt gratis!",
     action: "Byg dit CV",
   },
+  makecv: {
+    menu: {
+      personal: "Personlig",
+      profile: "Profil",
+      education: "Uddannelse og kvalifikationer",
+      experience: "Erhvervserfaring",
+      skills: "Færdigheder",
+      language: "Sprog",
+      links: "Links",
+      finalize: "Færdig",
+    },
+    header: {
+      downloadcv: "Download dit cv",
+      previewcv: "Forhåndsvis dit cv",
+      colorschema: "Skift farveskema",
+    },
+  },
   whychooseus: {
     title: "Opret dit CV med vores online CV-redigeringsprogram",
     1: {

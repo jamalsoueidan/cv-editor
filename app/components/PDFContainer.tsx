@@ -4,6 +4,7 @@ import {
   Button,
   Flex,
   Text,
+  type ActionIconProps,
   type ButtonProps,
 } from "@mantine/core";
 import { useViewportSize } from "@mantine/hooks";
@@ -230,6 +231,25 @@ function Download(props: ButtonProps) {
   );
 }
 
+function DownloadIcon(props: ActionIconProps & { title: string }) {
+  const ctx = use(PDFContainerContext);
+  if (!ctx) {
+    throw new Error("PDFContainer.Viewer must be used inside PDFContainer");
+  }
+
+  return (
+    <ActionIcon
+      href={ctx.renderValue}
+      component="a"
+      download={`cv.pdf`}
+      size="md"
+      {...props}
+    >
+      <FaDownload />
+    </ActionIcon>
+  );
+}
+
 function Pagination() {
   const ctx = use(PDFContainerContext);
   if (!ctx) {
@@ -265,3 +285,4 @@ PDFContainer.Pagination = Pagination;
 PDFContainer.Template = Template;
 PDFContainer.Viewer = Viewer;
 PDFContainer.Download = Download;
+PDFContainer.DownloadIcon = DownloadIcon;

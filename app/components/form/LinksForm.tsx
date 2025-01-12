@@ -63,7 +63,7 @@ export function LinksForm() {
             onClick={() =>
               form.insertListItem("socialProfiles", {
                 key: randomId(),
-                title: "",
+                label: "",
                 url: "",
               })
             }

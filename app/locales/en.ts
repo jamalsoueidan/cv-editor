@@ -4,6 +4,23 @@ export default {
     description: "Try our CV builder today — completely free!",
     action: "Write your CV today",
   },
+  makecv: {
+    navbar: {
+      personal: "CV heading",
+      profile: "Proffesional summary",
+      education: "Education",
+      experience: "Work history",
+      skills: "Skills",
+      language: "Languages",
+      links: "Links",
+      finalize: "Finalize",
+    },
+    header: {
+      downloadcv: "Download  Cv",
+      previewcv: "View Cv",
+      colorschema: "Change to colorschema",
+    },
+  },
   whychooseus: {
     title: "Create your CV with our online CV editor",
     "1": {
