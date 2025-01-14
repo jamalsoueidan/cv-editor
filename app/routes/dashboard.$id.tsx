@@ -2,6 +2,7 @@ import {
   ActionIcon,
   AppShell,
   Burger,
+  Flex,
   Group,
   rem,
   ScrollArea,
@@ -17,7 +18,7 @@ import type { Id } from "convex/_generated/dataModel";
 import { preloadedQueryResult, preloadQuery } from "convex/nextjs";
 import { useTranslation } from "react-i18next";
 import { FaEye, FaMoon, FaStarAndCrescent, FaSun } from "react-icons/fa";
-import { PiBook, PiBookOpen } from "react-icons/pi";
+import { PiArrowLineLeft, PiArrowLineRight } from "react-icons/pi";
 import { Outlet, useLocation, useNavigate } from "react-router";
 import { PDFContainer } from "~/components/PDFContainer";
 import { useQueryData } from "~/hooks/useQueryData";
@@ -86,7 +87,9 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
     ? 6
     : location.pathname.includes("finalize")
     ? 7
-    : 0;
+    : location.pathname.includes("personal")
+    ? 0
+    : -1;
 
   const onNextStep = () => {
     onStepClick(active + 1);
@@ -103,7 +106,10 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
       navbar={{
         width: 250,
         breakpoint: "sm",
-        collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
+        collapsed: {
+          mobile: active < 0 || !mobileOpened,
+          desktop: active < 0 || !desktopOpened,
+        },
       }}
       padding="md"
     >
@@ -118,24 +124,18 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
 
           {!desktopOpened ? (
             <ActionIcon
-              variant="white"
+              variant="transparent"
               onClick={toggleDesktop}
               visibleFrom="sm"
               size="md"
               title="Show sidebar"
             >
-              <PiBook size={rem(28)} color="black" />
+              <PiArrowLineRight
+                size={rem(28)}
+                color={isDark ? "white" : "black"}
+              />
             </ActionIcon>
-          ) : (
-            <ActionIcon
-              onClick={toggleDesktop}
-              visibleFrom="sm"
-              variant="transparent"
-              title="Hide sidebar"
-            >
-              <PiBookOpen size={rem(32)} color={isDark ? "white" : "black"} />
-            </ActionIcon>
-          )}
+          ) : null}
 
           <Group justify="flex-end" style={{ flex: 1 }}>
             <Group gap="xs">
@@ -182,41 +182,43 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
       </AppShell.Header>
       <AppShell.Navbar p="md">
         <AppShell.Section>
-          <Group justify="space-between">
-            <Burger
-              opened={mobileOpened}
-              onClick={toggleMobile}
-              hiddenFrom="sm"
-              size="md"
-            />
+          <Group hiddenFrom="sm">
+            <Burger opened={mobileOpened} onClick={toggleMobile} size="md" />
           </Group>
+          <Flex visibleFrom="sm" justify="flex-end">
+            <ActionIcon
+              onClick={toggleDesktop}
+              variant="transparent"
+              title="Hide sidebar"
+            >
+              <PiArrowLineLeft
+                size={rem(32)}
+                color={isDark ? "white" : "black"}
+              />
+            </ActionIcon>
+          </Flex>
         </AppShell.Section>
-        <AppShell.Section grow py={rem(40)} px={rem(6)} component={ScrollArea}>
+        <AppShell.Section grow py={rem(30)} px={rem(6)} component={ScrollArea}>
           <Stepper
-            active={active}
+            active={active!}
             onStepClick={onStepClick}
             orientation="vertical"
             color="black"
             styles={{
               step: {
-                minHeight: rem(40),
+                minHeight: rem(50),
               },
               stepBody: {
-                marginTop: rem(4),
+                marginTop: rem(6),
               },
               verticalSeparator: {
-                top: rem(24 + 5),
-                insetInlineStart: rem(10),
+                top: rem(40),
+                insetInlineStart: rem(16),
               },
               stepLabel: {
                 fontSize: "var(--mantine-font-size-md)",
               },
-              stepIcon: {
-                width: rem(24),
-                height: rem(24),
-                minHeight: "unset",
-                minWidth: "unset",
-              },
+              stepIcon: { fontSize: "var(--mantine-font-size-md)" },
             }}
             size="xs"
           >

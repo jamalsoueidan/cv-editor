@@ -11,6 +11,7 @@ export function PDFGridViewer({
 }) {
   const { colorScheme } = useMantineColorScheme();
   const isDark = colorScheme === "dark";
+
   return (
     <Grid.Col
       span={4}

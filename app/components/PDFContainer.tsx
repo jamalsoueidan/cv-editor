@@ -7,11 +7,11 @@ import {
   type ActionIconProps,
   type ButtonProps,
 } from "@mantine/core";
-import { useViewportSize } from "@mantine/hooks";
+import { useElementSize, useViewportSize } from "@mantine/hooks";
 import { pdf, type DocumentProps } from "@react-pdf/renderer";
 import type { api } from "convex/_generated/api";
 import type { FunctionReturnType } from "convex/server";
-import { createContext, use, useEffect, useRef, useState } from "react";
+import { createContext, use, useEffect, useState } from "react";
 import { FaArrowLeft, FaArrowRight, FaDownload } from "react-icons/fa";
 import { Document, Page, pdfjs } from "react-pdf";
 import type { DocumentCallback } from "react-pdf/dist/esm/shared/types.js";
@@ -101,8 +101,9 @@ function Viewer({
     throw new Error("PDFContainer.Viewer must be used inside PDFContainer");
   }
 
-  const { width, height } = useViewportSize();
-  const ref = useRef<HTMLDivElement>(null);
+  const { ref, width: elWidth, height: elHeight } = useElementSize();
+  const { width: viewWidth, height: viewHeight } = useViewportSize();
+
   const [size, setSize] = useState(0);
   const [canvases, setCanvases] = useState<
     Array<{ renderValue: string; isRendering: boolean }>
@@ -112,10 +113,12 @@ function Viewer({
     if (!ref.current) {
       return;
     }
-    const { width, height } = ref.current.getBoundingClientRect();
 
-    setSize(fit === "width" ? width : height);
-  }, [width, height]);
+    const { width, height } = ref.current.getBoundingClientRect();
+    if (size !== width) {
+      setSize(fit === "width" ? width : height);
+    }
+  }, [viewWidth, viewHeight]);
 
   useEffect(() => {
     const renderValue = ctx.renderValue;
@@ -161,7 +164,7 @@ function Viewer({
     >
       {canvases.map(({ renderValue, isRendering }, index) => (
         <Box
-          key={renderValue}
+          key={renderValue + index}
           pos={index > 0 ? "absolute" : undefined}
           top={0}
           left={0}
