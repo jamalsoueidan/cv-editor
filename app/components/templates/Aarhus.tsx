@@ -282,7 +282,7 @@ export const Aarhus = ({
               <View style={{ marginBottom: 25 }} />
             </>
           ) : null}
-          {data.socialProfilesVisible && data.socialProfiles?.length > 0 ? (
+          {data.socialProfiles?.length > 0 ? (
             <View style={{ marginBottom: 25 }}>
               <Text
                 style={{
@@ -314,7 +314,7 @@ export const Aarhus = ({
               ))}
             </View>
           ) : null}
-          {data.languagesVisible && data.languages?.length > 0 ? (
+          {data.languages?.length > 0 ? (
             <View style={{ marginBottom: 25 }}>
               <Text
                 style={{
@@ -335,7 +335,7 @@ export const Aarhus = ({
               ))}
             </View>
           ) : null}
-          {data.skillsVisible && data.skills?.length > 0 ? (
+          {data.skills?.length > 0 ? (
             <View style={{ marginBottom: 25 }}>
               <Text
                 style={{
