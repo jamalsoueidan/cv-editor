@@ -253,12 +253,13 @@ function DownloadIcon(props: ActionIconProps & { title: string }) {
   );
 }
 
-function Pagination() {
+function Pagination(props: ActionIconProps) {
   const ctx = use(PDFContainerContext);
   if (!ctx) {
     throw new Error("PDFContainer.Viewer must be used inside PDFContainer");
   }
 
+  const size = props.size || "sm";
   return (
     <Flex direction="row" gap="sm" align="center">
       <ActionIcon
@@ -266,10 +267,11 @@ function Pagination() {
         c="gray.4"
         disabled={ctx.currentPage <= 1}
         onClick={ctx.gotoPreviousPage}
+        size={size}
       >
         <FaArrowLeft />
       </ActionIcon>
-      <Text ta="center" c="white" fz="sm">
+      <Text ta="center" c="white" fz={size}>
         {ctx.currentPage || (ctx.numPages ? 1 : "--")} / {ctx.numPages || "--"}
       </Text>
       <ActionIcon
@@ -277,6 +279,7 @@ function Pagination() {
         c="gray.4"
         disabled={ctx.currentPage >= ctx.numPages}
         onClick={ctx.gotoNextPage}
+        size={size}
       >
         <FaArrowRight />
       </ActionIcon>

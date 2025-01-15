@@ -9,6 +9,7 @@ import {
   Stack,
   Stepper,
   Text,
+  Title,
   useMantineColorScheme,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
@@ -35,6 +36,17 @@ export async function loader({ params }: Route.LoaderArgs) {
 
   return { data: preloadedQueryResult(data), id };
 }
+
+const steps = [
+  "personal",
+  "summary",
+  "experiences",
+  "educations",
+  "skills",
+  "languages",
+  "links",
+  "finalize",
+];
 
 export default function Dashboard({ loaderData }: Route.ComponentProps) {
   const { id } = loaderData;
@@ -73,26 +85,14 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
     }
   };
 
-  const active = location.pathname.includes("summary")
-    ? 1
-    : location.pathname.includes("experiences")
-    ? 2
-    : location.pathname.includes("educations")
-    ? 3
-    : location.pathname.includes("skills")
-    ? 4
-    : location.pathname.includes("languages")
-    ? 5
-    : location.pathname.includes("links")
-    ? 6
-    : location.pathname.includes("finalize")
-    ? 7
-    : location.pathname.includes("personal")
-    ? 0
-    : -1;
+  const active = steps.findIndex((s) => location.pathname.includes(s));
 
   const onNextStep = () => {
     onStepClick(active + 1);
+  };
+
+  const onPrevStep = () => {
+    onStepClick(active - 1);
   };
 
   const { setColorScheme, colorScheme } = useMantineColorScheme();
@@ -137,6 +137,11 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
             </ActionIcon>
           ) : null}
 
+          <Group justify="center" align="center" gap="sm">
+            <Title order={2} fw="600">
+              {t(`makecv.navbar.${steps[active]}` as any)}
+            </Title>
+          </Group>
           <Group justify="flex-end" style={{ flex: 1 }}>
             <Group gap="xs">
               <PDFContainer
@@ -223,11 +228,11 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
             size="xs"
           >
             <Stepper.Step label={t("makecv.navbar.personal")} />
-            <Stepper.Step label={t("makecv.navbar.profile")} />
-            <Stepper.Step label={t("makecv.navbar.experience")} />
-            <Stepper.Step label={t("makecv.navbar.education")} />
+            <Stepper.Step label={t("makecv.navbar.summary")} />
+            <Stepper.Step label={t("makecv.navbar.experiences")} />
+            <Stepper.Step label={t("makecv.navbar.educations")} />
             <Stepper.Step label={t("makecv.navbar.skills")} />
-            <Stepper.Step label={t("makecv.navbar.language")} />
+            <Stepper.Step label={t("makecv.navbar.languages")} />
             <Stepper.Step label={t("makecv.navbar.links")} />
             <Stepper.Step label={t("makecv.navbar.finalize")} />
           </Stepper>
@@ -251,7 +256,7 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
           </Group>
         </AppShell.Section>
       </AppShell.Navbar>
-      <Outlet context={{ data, id, onNextStep }} />
+      <Outlet context={{ data, id, onNextStep, onPrevStep }} />
     </AppShell>
   );
 }

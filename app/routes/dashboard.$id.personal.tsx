@@ -13,12 +13,14 @@ import { useDebouncedCallback } from "@mantine/hooks";
 import { api } from "convex/_generated/api";
 import { useMutation } from "convex/react";
 import type { FunctionReturnType } from "convex/server";
+import { useTranslation } from "react-i18next";
 import { Link, useOutletContext } from "react-router";
 import { PDFGridViewer } from "~/components/PDFGridViewer";
 import { FormProvider } from "~/components/providers/CVFormProvider";
 import type { Route } from "./+types/dashboard.$id";
 
 export default function DashboardIndex() {
+  const { t } = useTranslation();
   const { data, onNextStep } =
     useOutletContext() as Route.ComponentProps["loaderData"] & {
       onNextStep: () => void;
@@ -176,7 +178,8 @@ export default function DashboardIndex() {
                           visibleFrom="md"
                         >
                           <Button size="md" onClick={onNextStep}>
-                            Næste: Om dig selv
+                            {t("makecv.footer.next")}:{" "}
+                            {t("makecv.navbar.summary")}
                           </Button>
                         </Flex>
                       </Grid.Col>
@@ -193,7 +196,7 @@ export default function DashboardIndex() {
       <AppShell.Footer p="xs" hiddenFrom="md">
         <Flex justify="flex-end" align="center">
           <Button size="md" onClick={onNextStep}>
-            Næste: Om dig selv
+            {t("makecv.footer.next")}: {t("makecv.navbar.summary")}
           </Button>
         </Flex>
       </AppShell.Footer>

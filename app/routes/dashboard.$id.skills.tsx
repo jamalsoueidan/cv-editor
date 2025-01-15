@@ -21,6 +21,7 @@ import { useOutletContext } from "react-router";
 import type { Route } from "./+types/dashboard.$id";
 
 import { Reorder, useDragControls, useMotionValue } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { FaGripHorizontal, FaPlus, FaTrash } from "react-icons/fa";
 import { PDFGridViewer } from "~/components/PDFGridViewer";
 import {
@@ -30,9 +31,11 @@ import {
 import { useRaisedShadow } from "~/hooks/useRaisedShadow";
 
 export default function DashboardIndex() {
-  const { data, onNextStep } =
+  const { t } = useTranslation();
+  const { data, onNextStep, onPrevStep } =
     useOutletContext() as Route.ComponentProps["loaderData"] & {
       onNextStep: () => void;
+      onPrevStep: () => void;
     };
 
   const patch = useMutation(api.resumes.update);
@@ -116,7 +119,7 @@ export default function DashboardIndex() {
               <Grid.Col span={12}>
                 <Flex justify="flex-end" align="center" visibleFrom="md">
                   <Button size="md" onClick={onNextStep}>
-                    Næste: Om dig selv
+                    {t("makecv.footer.next")}: {t("makecv.navbar.languages")}
                   </Button>
                 </Flex>
               </Grid.Col>
@@ -126,9 +129,12 @@ export default function DashboardIndex() {
         </Grid>
       </AppShell.Main>
       <AppShell.Footer p="xs" hiddenFrom="md">
-        <Flex justify="flex-end" align="center">
+        <Flex justify="space-between" align="center">
+          <Button variant="default" size="md" onClick={onPrevStep}>
+            {t("makecv.footer.back")}
+          </Button>
           <Button size="md" onClick={onNextStep}>
-            Næste: Om dig selv
+            {t("makecv.footer.next")}: {t("makecv.navbar.languages")}
           </Button>
         </Flex>
       </AppShell.Footer>

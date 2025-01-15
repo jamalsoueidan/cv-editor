@@ -5,13 +5,17 @@ export default {
     action: "Write your CV today",
   },
   makecv: {
+    footer: {
+      next: "Next",
+      back: "Back",
+    },
     navbar: {
       personal: "CV heading",
-      profile: "Proffesional summary",
-      education: "Education",
-      experience: "Work history",
+      summary: "Proffesional summary",
+      educations: "Education",
+      experiences: "Work history",
       skills: "Skills",
-      language: "Languages",
+      languages: "Languages",
       links: "Links",
       finalize: "Finalize",
     },

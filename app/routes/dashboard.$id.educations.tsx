@@ -25,6 +25,7 @@ import { MonthPickerInput } from "@mantine/dates";
 import { Reorder, useDragControls, useMotionValue } from "framer-motion";
 import { useRaisedShadow } from "~/hooks/useRaisedShadow";
 
+import { useTranslation } from "react-i18next";
 import { FaGripHorizontal, FaPlus, FaTrash } from "react-icons/fa";
 import { PDFGridViewer } from "~/components/PDFGridViewer";
 import {
@@ -33,9 +34,11 @@ import {
 } from "~/components/providers/CVFormProvider";
 
 export default function DashboardIndex() {
-  const { data, onNextStep } =
+  const { t } = useTranslation();
+  const { data, onNextStep, onPrevStep } =
     useOutletContext() as Route.ComponentProps["loaderData"] & {
       onNextStep: () => void;
+      onPrevStep: () => void;
     };
 
   const patch = useMutation(api.resumes.update);
@@ -112,7 +115,13 @@ export default function DashboardIndex() {
                       </Button>
                     </Stack>
                   </Grid.Col>
-                  <Grid.Col span={12}></Grid.Col>
+                  <Grid.Col span={12}>
+                    <Flex justify="flex-end" align="center" visibleFrom="md">
+                      <Button size="md" onClick={onNextStep}>
+                        {t("makecv.footer.next")}: {t("makecv.navbar.skills")}
+                      </Button>
+                    </Flex>
+                  </Grid.Col>
                 </Grid>
               </form>
             </FormProvider>
@@ -122,9 +131,12 @@ export default function DashboardIndex() {
       </AppShell.Main>
 
       <AppShell.Footer p="xs" hiddenFrom="md">
-        <Flex justify="flex-end" align="center">
+        <Flex justify="space-between" align="center">
+          <Button variant="default" size="md" onClick={onPrevStep}>
+            {t("makecv.footer.back")}
+          </Button>
           <Button size="md" onClick={onNextStep}>
-            Næste: Om dig selv
+            {t("makecv.footer.next")}: {t("makecv.navbar.skills")}
           </Button>
         </Flex>
       </AppShell.Footer>

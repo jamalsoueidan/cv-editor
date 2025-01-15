@@ -5,13 +5,17 @@ export default {
     action: "Byg dit CV",
   },
   makecv: {
+    footer: {
+      next: 'Næste',
+      back: 'Tilbage',
+    },
     menu: {
       personal: "Personlig",
-      profile: "Profil",
-      education: "Uddannelse og kvalifikationer",
-      experience: "Erhvervserfaring",
+      summary: "Profil",
+      educations: "Uddannelse og kvalifikationer",
+      experiences: "Erhvervserfaring",
       skills: "Færdigheder",
-      language: "Sprog",
+      languages: "Sprog",
       links: "Links",
       finalize: "Færdig",
     },

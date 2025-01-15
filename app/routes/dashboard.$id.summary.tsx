@@ -7,14 +7,17 @@ import type { FunctionReturnType } from "convex/server";
 import { useOutletContext } from "react-router";
 import type { Route } from "./+types/dashboard.$id";
 
+import { useTranslation } from "react-i18next";
 import { EditorInput } from "~/components/form/EditorInput";
 import { PDFGridViewer } from "~/components/PDFGridViewer";
 import { FormProvider } from "~/components/providers/CVFormProvider";
 
 export default function DashboardIndex() {
-  const { data, onNextStep } =
+  const { t } = useTranslation();
+  const { data, onNextStep, onPrevStep } =
     useOutletContext() as Route.ComponentProps["loaderData"] & {
       onNextStep: () => void;
+      onPrevStep: () => void;
     };
 
   const patch = useMutation(api.resumes.update);
@@ -61,6 +64,14 @@ export default function DashboardIndex() {
                       {...form.getInputProps("content")}
                     />
                   </Grid.Col>
+                  <Grid.Col span={12}>
+                    <Flex justify="flex-end" align="center" visibleFrom="md">
+                      <Button size="md" onClick={onNextStep}>
+                        {t("makecv.footer.next")}:{" "}
+                        {t("makecv.navbar.experiences")}
+                      </Button>
+                    </Flex>
+                  </Grid.Col>
                 </Grid>
               </form>
             </FormProvider>
@@ -69,12 +80,13 @@ export default function DashboardIndex() {
         </Grid>
       </AppShell.Main>
       <AppShell.Footer p="xs" hiddenFrom="md">
-        <Flex justify="flex-end" align="center" gap="sm">
-          <Button variant="default" size="md" onClick={onNextStep}>
-            Back
+        <Flex justify="space-between" align="center" gap="sm">
+          <Button variant="default" size="md" onClick={onPrevStep}>
+            {t("makecv.footer.back")}
           </Button>
+
           <Button size="md" onClick={onNextStep}>
-            Næste: Om dig selv
+            {t("makecv.footer.next")}: {t("makecv.navbar.experiences")}
           </Button>
         </Flex>
       </AppShell.Footer>

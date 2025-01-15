@@ -25,15 +25,18 @@ import {
 } from "~/components/providers/CVFormProvider";
 import { useRaisedShadow } from "~/hooks/useRaisedShadow";
 
+import { useTranslation } from "react-i18next";
 import { AccordionControlDrag } from "~/components/form/AccordionControlDrag";
 import { EditorInput } from "~/components/form/EditorInput";
 import { PDFGridViewer } from "~/components/PDFGridViewer";
 import type { Route } from "./+types/dashboard.$id";
 
 export default function DashboardIndex() {
-  const { data, onNextStep } =
+  const { t } = useTranslation();
+  const { data, onNextStep, onPrevStep } =
     useOutletContext() as Route.ComponentProps["loaderData"] & {
       onNextStep: () => void;
+      onPrevStep: () => void;
     };
 
   const patch = useMutation(api.resumes.update);
@@ -110,6 +113,14 @@ export default function DashboardIndex() {
                       </Button>
                     </Stack>
                   </Grid.Col>
+                  <Grid.Col span={12}>
+                    <Flex justify="flex-end" align="center" visibleFrom="md">
+                      <Button size="md" onClick={onNextStep}>
+                        {t("makecv.footer.next")}:{" "}
+                        {t("makecv.navbar.educations")}
+                      </Button>
+                    </Flex>
+                  </Grid.Col>
                 </Grid>
               </form>
             </FormProvider>
@@ -119,9 +130,12 @@ export default function DashboardIndex() {
       </AppShell.Main>
 
       <AppShell.Footer p="xs" hiddenFrom="md">
-        <Flex justify="flex-end" align="center">
+        <Flex justify="space-between" align="center">
+          <Button variant="default" size="md" onClick={onPrevStep}>
+            {t("makecv.footer.back")}
+          </Button>
           <Button size="md" onClick={onNextStep}>
-            Næste: Om dig selv
+            {t("makecv.footer.next")}: {t("makecv.navbar.educations")}
           </Button>
         </Flex>
       </AppShell.Footer>

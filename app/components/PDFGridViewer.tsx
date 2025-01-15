@@ -1,4 +1,9 @@
-import { Grid, UnstyledButton, useMantineColorScheme } from "@mantine/core";
+import {
+  Flex,
+  Grid,
+  UnstyledButton,
+  useMantineColorScheme,
+} from "@mantine/core";
 import { modals } from "@mantine/modals";
 import type { api } from "convex/_generated/api";
 import type { FunctionReturnType } from "convex/server";
@@ -28,7 +33,7 @@ export function PDFGridViewer({
           style={{ userSelect: "none" }}
           onClick={() =>
             modals.openContextModal({
-              size: "lg",
+              size: "90%",
               modal: "pdfModal",
               innerProps: data,
             })
@@ -36,6 +41,9 @@ export function PDFGridViewer({
         >
           <PDFContainer.Viewer />
         </UnstyledButton>
+        <Flex justify="center">
+          <PDFContainer.Pagination />
+        </Flex>
       </PDFContainer>
     </Grid.Col>
   );
