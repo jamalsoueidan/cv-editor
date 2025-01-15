@@ -277,7 +277,7 @@ export const Copenhagen = ({
               ))}
             </View>
           ) : null}
-          {data.socialProfilesVisible && data.socialProfiles?.length > 0 ? (
+          {data.socialProfiles?.length > 0 ? (
             <View style={{ marginBottom: 25 }}>
               <View style={{ flexDirection: "row" }}>
                 <Text
@@ -312,7 +312,7 @@ export const Copenhagen = ({
               ))}
             </View>
           ) : null}
-          {data.languagesVisible && data.languages?.length > 0 ? (
+          {data.languages?.length > 0 ? (
             <View style={{ marginBottom: 25 }}>
               <View style={{ flexDirection: "row" }}>
                 <Text
@@ -336,7 +336,7 @@ export const Copenhagen = ({
               ))}
             </View>
           ) : null}
-          {data.skillsVisible && data.skills?.length > 0 ? (
+          {data.skills?.length > 0 ? (
             <View style={{ marginBottom: 25 }}>
               <View style={{ flexDirection: "row" }}>
                 <Text

@@ -8,6 +8,20 @@ export default [
   route("canvas", "./routes/canvas.tsx"),
   route("privacy", "./routes/privacy.tsx"),
   route("prices", "./routes/prices.tsx"),
+  route("dashboard/:id", "./routes/dashboard.$id.tsx", [
+    index("./routes/dashboard.$id.index.tsx"),
+    route("personal", "./routes/dashboard.$id.personal.tsx", [
+      route("upload", "./routes/dashboard.$id.personal.upload.tsx"),
+    ]),
+    route("summary", "./routes/dashboard.$id.summary.tsx"),
+    route("experiences", "./routes/dashboard.$id.experiences.tsx"),
+    route("educations", "./routes/dashboard.$id.educations.tsx"),
+    route("skills", "./routes/dashboard.$id.skills.tsx"),
+    route("languages", "./routes/dashboard.$id.languages.tsx"),
+    route("links", "./routes/dashboard.$id.links.tsx"),
+    route("finalize", "./routes/dashboard.$id.finalize.tsx"),
+    route("templates", "./routes/dashboard.$id.templates.tsx"),
+  ]),
   route("resume/:id/templates", "./routes/resumes_.$id.templates.tsx"),
   route("resume/:id", "./routes/resumes.$id.tsx", [
     route("upload", "./routes/resumes.$id.upload.tsx"),

@@ -1,6 +1,7 @@
 .ProseMirror {
   background-color: var(--mantine-color-gray-1);
   border: 0px;
+  min-height: 200px;
 
   p {
     font-size: var(--mantine-font-size-md);

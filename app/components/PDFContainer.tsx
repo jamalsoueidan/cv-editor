@@ -4,13 +4,14 @@ import {
   Button,
   Flex,
   Text,
+  type ActionIconProps,
   type ButtonProps,
 } from "@mantine/core";
-import { useViewportSize } from "@mantine/hooks";
+import { useElementSize, useViewportSize } from "@mantine/hooks";
 import { pdf, type DocumentProps } from "@react-pdf/renderer";
 import type { api } from "convex/_generated/api";
 import type { FunctionReturnType } from "convex/server";
-import { createContext, use, useEffect, useRef, useState } from "react";
+import { createContext, use, useEffect, useState } from "react";
 import { FaArrowLeft, FaArrowRight, FaDownload } from "react-icons/fa";
 import { Document, Page, pdfjs } from "react-pdf";
 import type { DocumentCallback } from "react-pdf/dist/esm/shared/types.js";
@@ -100,8 +101,9 @@ function Viewer({
     throw new Error("PDFContainer.Viewer must be used inside PDFContainer");
   }
 
-  const { width, height } = useViewportSize();
-  const ref = useRef<HTMLDivElement>(null);
+  const { ref } = useElementSize();
+  const { width: viewWidth, height: viewHeight } = useViewportSize();
+
   const [size, setSize] = useState(0);
   const [canvases, setCanvases] = useState<
     Array<{ renderValue: string; isRendering: boolean }>
@@ -111,10 +113,12 @@ function Viewer({
     if (!ref.current) {
       return;
     }
-    const { width, height } = ref.current.getBoundingClientRect();
 
-    setSize(fit === "width" ? width : height);
-  }, [width, height]);
+    const { width, height } = ref.current.getBoundingClientRect();
+    if (size !== width) {
+      setSize(fit === "width" ? width : height);
+    }
+  }, [viewWidth, viewHeight]);
 
   useEffect(() => {
     const renderValue = ctx.renderValue;
@@ -160,7 +164,7 @@ function Viewer({
     >
       {canvases.map(({ renderValue, isRendering }, index) => (
         <Box
-          key={renderValue}
+          key={renderValue + index}
           pos={index > 0 ? "absolute" : undefined}
           top={0}
           left={0}
@@ -230,30 +234,57 @@ function Download(props: ButtonProps) {
   );
 }
 
-function Pagination() {
+function DownloadIcon(props: ActionIconProps & { title?: string }) {
   const ctx = use(PDFContainerContext);
   if (!ctx) {
     throw new Error("PDFContainer.Viewer must be used inside PDFContainer");
   }
 
   return (
-    <Flex direction="row" gap="sm" align="center">
+    <ActionIcon
+      href={ctx.renderValue}
+      component="a"
+      download={`cv.pdf`}
+      size="md"
+      {...props}
+    >
+      <FaDownload />
+    </ActionIcon>
+  );
+}
+
+function Pagination(props: ActionIconProps) {
+  const ctx = use(PDFContainerContext);
+  if (!ctx) {
+    throw new Error("PDFContainer.Viewer must be used inside PDFContainer");
+  }
+
+  const size = props.size || "lg";
+
+  if (ctx.numPages === 1) return null;
+
+  return (
+    <Flex direction="row" gap="sm" align="center" justify="center" w="100%">
       <ActionIcon
-        style={{ backgroundColor: "transparent" }}
-        c="gray.4"
+        variant="outline"
         disabled={ctx.currentPage <= 1}
         onClick={ctx.gotoPreviousPage}
+        radius="lg"
+        size={size}
+        title="Gå til forrige side"
       >
         <FaArrowLeft />
       </ActionIcon>
-      <Text ta="center" c="white" fz="sm">
+      <Text ta="center" fz={size} c="white">
         {ctx.currentPage || (ctx.numPages ? 1 : "--")} / {ctx.numPages || "--"}
       </Text>
       <ActionIcon
-        style={{ backgroundColor: "transparent" }}
-        c="gray.4"
+        variant="outline"
         disabled={ctx.currentPage >= ctx.numPages}
         onClick={ctx.gotoNextPage}
+        radius="lg"
+        size={size}
+        title="Gå til næste side"
       >
         <FaArrowRight />
       </ActionIcon>
@@ -265,3 +296,4 @@ PDFContainer.Pagination = Pagination;
 PDFContainer.Template = Template;
 PDFContainer.Viewer = Viewer;
 PDFContainer.Download = Download;
+PDFContainer.DownloadIcon = DownloadIcon;
