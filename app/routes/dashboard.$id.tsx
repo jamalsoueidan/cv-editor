@@ -45,7 +45,6 @@ const steps = [
   "skills",
   "languages",
   "links",
-  "finalize",
 ];
 
 export default function Dashboard({ loaderData }: Route.ComponentProps) {
@@ -102,7 +101,9 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
     <AppShell
       layout="alt"
       header={{ height: 60 }}
-      footer={{ height: 60 }}
+      footer={{
+        height: 60,
+      }}
       navbar={{
         width: 250,
         breakpoint: "sm",
@@ -138,7 +139,7 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
           ) : null}
 
           <Group justify="center" align="center" gap="sm">
-            <Title order={2} fw="600">
+            <Title order={2} fw="600" hidden={active < 0}>
               {t(`makecv.navbar.${steps[active]}` as any)}
             </Title>
           </Group>

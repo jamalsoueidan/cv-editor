@@ -259,26 +259,29 @@ function Pagination(props: ActionIconProps) {
     throw new Error("PDFContainer.Viewer must be used inside PDFContainer");
   }
 
-  const size = props.size || "sm";
+  const size = props.size || "lg";
+
+  if (ctx.numPages === 1) return null;
+
   return (
-    <Flex direction="row" gap="sm" align="center">
+    <Flex direction="row" gap="sm" align="center" justify="center" w="100%">
       <ActionIcon
-        style={{ backgroundColor: "transparent" }}
-        c="gray.4"
+        variant="outline"
         disabled={ctx.currentPage <= 1}
         onClick={ctx.gotoPreviousPage}
+        radius="lg"
         size={size}
       >
         <FaArrowLeft />
       </ActionIcon>
-      <Text ta="center" c="white" fz={size}>
+      <Text ta="center" fz={size} c="white">
         {ctx.currentPage || (ctx.numPages ? 1 : "--")} / {ctx.numPages || "--"}
       </Text>
       <ActionIcon
-        style={{ backgroundColor: "transparent" }}
-        c="gray.4"
+        variant="outline"
         disabled={ctx.currentPage >= ctx.numPages}
         onClick={ctx.gotoNextPage}
+        radius="lg"
         size={size}
       >
         <FaArrowRight />

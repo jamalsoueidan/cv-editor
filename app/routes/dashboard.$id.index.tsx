@@ -52,9 +52,11 @@ export default function DashboardIndex() {
   return (
     <>
       <AppShell.Header>
-        <Group h="100%" px="md">
-          <Logo />
-        </Group>
+        <Container size="xl">
+          <Group mih={70} align="center">
+            <Logo />
+          </Group>
+        </Container>
       </AppShell.Header>
       <AppShell.Main>
         <Container size="xl">

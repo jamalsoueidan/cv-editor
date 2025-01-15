@@ -1,18 +1,78 @@
-import { AppShell, Skeleton } from "@mantine/core";
+import {
+  AppShell,
+  Flex,
+  Grid,
+  Group,
+  Stack,
+  Title,
+  UnstyledButton,
+} from "@mantine/core";
+import { modals } from "@mantine/modals";
+import { useTranslation } from "react-i18next";
+import { useOutletContext } from "react-router";
+import { Logo } from "~/components/Logo";
+import { PDFContainer } from "~/components/PDFContainer";
+import type { Route } from "./+types/dashboard.$id";
 
 export default function DashboardIndex() {
-  return (
-    <>
-      <AppShell.Main>
-        60 links in a scrollable section
-        {Array(60)
-          .fill(0)
-          .map((_, index) => (
-            <Skeleton key={index} h={28} mt="sm" animate={false} />
-          ))}
-      </AppShell.Main>
+  const { t } = useTranslation();
+  const { data } = useOutletContext() as Route.ComponentProps["loaderData"] & {
+    onNextStep: () => void;
+    onPrevStep: () => void;
+  };
 
-      <AppShell.Footer p="md">Footer</AppShell.Footer>
-    </>
+  return (
+    <PDFContainer templateElement={<PDFContainer.Template data={data} />}>
+      <AppShell.Header>
+        <Group mih={64} align="center" px="xl">
+          <Logo />
+        </Group>
+      </AppShell.Header>
+      <AppShell.Main>
+        <Grid>
+          <Grid.Col
+            span={{ base: 12, md: 6 }}
+            py={{ base: "md", md: "lg" }}
+            px={{ base: "sm", md: "xl" }}
+          >
+            <Stack>
+              <Title order={2} fw="500">
+                Looking good! Your resume is optimized and{" "}
+                <strong>READY</strong> for you to download it
+              </Title>
+
+              <PDFContainer.Download
+                variant="gradient"
+                size="lg"
+                visibleFrom="md"
+              />
+            </Stack>
+          </Grid.Col>
+          <Grid.Col span={{ base: 12, md: 6 }}>
+            <UnstyledButton
+              w="100%"
+              style={{ userSelect: "none" }}
+              onClick={() =>
+                modals.openContextModal({
+                  size: "90%",
+                  modal: "pdfModal",
+                  innerProps: data,
+                })
+              }
+            >
+              <PDFContainer.Viewer />
+            </UnstyledButton>
+            <Flex justify="center">
+              <PDFContainer.Pagination />
+            </Flex>
+          </Grid.Col>
+        </Grid>
+      </AppShell.Main>
+      <AppShell.Footer p="xs" hiddenFrom="md">
+        <Flex justify="center">
+          <PDFContainer.Download variant="gradient" size="md" />
+        </Flex>
+      </AppShell.Footer>
+    </PDFContainer>
   );
 }
