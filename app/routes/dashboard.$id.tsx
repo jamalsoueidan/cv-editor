@@ -18,10 +18,15 @@ import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
 import { preloadedQueryResult, preloadQuery } from "convex/nextjs";
 import { useTranslation } from "react-i18next";
-import { FaEye, FaMoon, FaStarAndCrescent, FaSun } from "react-icons/fa";
+import {
+  FaCopy,
+  FaEye,
+  FaMoon,
+  FaStarAndCrescent,
+  FaSun,
+} from "react-icons/fa";
 import { PiArrowLineLeft, PiArrowLineRight } from "react-icons/pi";
 import { Outlet, useLocation, useNavigate } from "react-router";
-import { PDFContainer } from "~/components/PDFContainer";
 import { useQueryData } from "~/hooks/useQueryData";
 import type { Route } from "./+types/dashboard.$id";
 
@@ -145,15 +150,21 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
           </Group>
           <Group justify="flex-end" style={{ flex: 1 }}>
             <Group gap="xs">
-              <PDFContainer
-                templateElement={<PDFContainer.Template data={data} />}
+              <ActionIcon
+                variant="outline"
+                color={isDark ? "white" : "black"}
+                onClick={() =>
+                  modals.openContextModal({
+                    size: "lg",
+                    fullScreen: true,
+                    modal: "pdfModal",
+                    innerProps: data,
+                  })
+                }
+                title={t("makecv.header.previewcv")}
               >
-                <PDFContainer.DownloadIcon
-                  variant="outline"
-                  color={isDark ? "white" : "black"}
-                  title={t("makecv.header.downloadcv")}
-                />
-              </PDFContainer>
+                <FaCopy />
+              </ActionIcon>
               <ActionIcon
                 variant="outline"
                 color={isDark ? "white" : "black"}

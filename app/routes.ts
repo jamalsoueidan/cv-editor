@@ -10,7 +10,9 @@ export default [
   route("prices", "./routes/prices.tsx"),
   route("dashboard/:id", "./routes/dashboard.$id.tsx", [
     index("./routes/dashboard.$id.index.tsx"),
-    route("personal", "./routes/dashboard.$id.personal.tsx"),
+    route("personal", "./routes/dashboard.$id.personal.tsx", [
+      route("upload", "./routes/dashboard.$id.personal.upload.tsx"),
+    ]),
     route("summary", "./routes/dashboard.$id.summary.tsx"),
     route("experiences", "./routes/dashboard.$id.experiences.tsx"),
     route("educations", "./routes/dashboard.$id.educations.tsx"),

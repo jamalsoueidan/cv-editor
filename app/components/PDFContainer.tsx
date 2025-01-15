@@ -101,7 +101,7 @@ function Viewer({
     throw new Error("PDFContainer.Viewer must be used inside PDFContainer");
   }
 
-  const { ref, width: elWidth, height: elHeight } = useElementSize();
+  const { ref } = useElementSize();
   const { width: viewWidth, height: viewHeight } = useViewportSize();
 
   const [size, setSize] = useState(0);
@@ -234,7 +234,7 @@ function Download(props: ButtonProps) {
   );
 }
 
-function DownloadIcon(props: ActionIconProps & { title: string }) {
+function DownloadIcon(props: ActionIconProps & { title?: string }) {
   const ctx = use(PDFContainerContext);
   if (!ctx) {
     throw new Error("PDFContainer.Viewer must be used inside PDFContainer");
@@ -271,6 +271,7 @@ function Pagination(props: ActionIconProps) {
         onClick={ctx.gotoPreviousPage}
         radius="lg"
         size={size}
+        title="Gå til forrige side"
       >
         <FaArrowLeft />
       </ActionIcon>
@@ -283,6 +284,7 @@ function Pagination(props: ActionIconProps) {
         onClick={ctx.gotoNextPage}
         radius="lg"
         size={size}
+        title="Gå til næste side"
       >
         <FaArrowRight />
       </ActionIcon>

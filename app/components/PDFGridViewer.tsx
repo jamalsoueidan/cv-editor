@@ -1,4 +1,5 @@
 import {
+  Button,
   Flex,
   Grid,
   UnstyledButton,
@@ -7,6 +8,7 @@ import {
 import { modals } from "@mantine/modals";
 import type { api } from "convex/_generated/api";
 import type { FunctionReturnType } from "convex/server";
+import { Link } from "react-router";
 import { PDFContainer } from "~/components/PDFContainer";
 
 export function PDFGridViewer({
@@ -19,7 +21,7 @@ export function PDFGridViewer({
 
   return (
     <Grid.Col
-      span={4}
+      span={5}
       visibleFrom="md"
       style={{
         borderLeft: `2px solid ${
@@ -28,6 +30,22 @@ export function PDFGridViewer({
       }}
     >
       <PDFContainer templateElement={<PDFContainer.Template data={data} />}>
+        <Flex justify="space-between" align="center" direction="row" mb="sm">
+          <Button
+            variant="outline"
+            size="xs"
+            component={Link}
+            to="../templates"
+          >
+            Skift skabelon
+          </Button>
+          <PDFContainer.DownloadIcon
+            title="Download PDF"
+            variant="outline"
+            size="md"
+          />
+        </Flex>
+
         <UnstyledButton
           w="100%"
           style={{ userSelect: "none" }}

@@ -4,6 +4,8 @@ import {
   Flex,
   Grid,
   Image,
+  Modal,
+  Stack,
   Text,
   TextInput,
   Title,
@@ -14,18 +16,28 @@ import { api } from "convex/_generated/api";
 import { useMutation } from "convex/react";
 import type { FunctionReturnType } from "convex/server";
 import { useTranslation } from "react-i18next";
-import { Link, useOutletContext } from "react-router";
+import { FaImage, FaTrash } from "react-icons/fa";
+import { TbReplace } from "react-icons/tb";
+import {
+  Link,
+  Outlet,
+  useNavigate,
+  useOutlet,
+  useOutletContext,
+} from "react-router";
 import { PDFGridViewer } from "~/components/PDFGridViewer";
 import { FormProvider } from "~/components/providers/CVFormProvider";
 import type { Route } from "./+types/dashboard.$id";
 
 export default function DashboardIndex() {
   const { t } = useTranslation();
+  const outlet = !!useOutlet();
   const { data, onNextStep } =
     useOutletContext() as Route.ComponentProps["loaderData"] & {
       onNextStep: () => void;
     };
 
+  const navigate = useNavigate();
   const patch = useMutation(api.resumes.update);
   const deleteImage = useMutation(api.resumes.deleteImage);
 
@@ -65,53 +77,57 @@ export default function DashboardIndex() {
                       We suggest including an email and phone number.
                     </Text>
                   </Grid.Col>
-                  <Grid.Col span={{ base: 12, md: "content" }}>
+                  <Grid.Col span={{ base: 12, md: "auto" }}>
                     <Grid>
                       <Grid.Col span={{ base: 6, md: 12 }}>
                         <Image
                           src={data.photoUrl}
                           fallbackSrc="https://placehold.co/60x60?text=IMG"
                           radius="md"
+                          w="100%"
                         />
                       </Grid.Col>
                       <Grid.Col span={{ base: 6, md: 12 }}>
-                        {data.photoUrl ? (
-                          <>
+                        <Stack justify="center" align="center">
+                          {data.photoUrl ? (
+                            <>
+                              <Button
+                                variant="outline"
+                                component={Link}
+                                to="upload"
+                                fullWidth
+                                leftSection={<TbReplace />}
+                              >
+                                Change image
+                              </Button>
+                              <Button
+                                variant="outline"
+                                onClick={() =>
+                                  data.photo &&
+                                  deleteImage({ storageId: data.photo })
+                                }
+                                fullWidth
+                                leftSection={<FaTrash />}
+                              >
+                                Delete image
+                              </Button>
+                            </>
+                          ) : (
                             <Button
                               variant="subtle"
                               component={Link}
                               to="upload"
-                              size="compact-xs"
                               fullWidth
+                              leftSection={<FaImage />}
                             >
-                              Change image
+                              Add image
                             </Button>
-                            <Button
-                              variant="subtle"
-                              onClick={() =>
-                                data.photo &&
-                                deleteImage({ storageId: data.photo })
-                              }
-                              size="compact-xs"
-                              fullWidth
-                            >
-                              Delete image
-                            </Button>
-                          </>
-                        ) : (
-                          <Button
-                            variant="subtle"
-                            component={Link}
-                            to="upload"
-                            fullWidth
-                          >
-                            Add image
-                          </Button>
-                        )}
+                          )}
+                        </Stack>
                       </Grid.Col>
                     </Grid>
                   </Grid.Col>
-                  <Grid.Col span="auto">
+                  <Grid.Col span={{ base: 12, md: 8 }}>
                     <Grid>
                       <Grid.Col span={12}>
                         <TextInput
@@ -188,6 +204,9 @@ export default function DashboardIndex() {
                 </Grid>
               </form>
             </FormProvider>
+            <Modal opened={!!outlet} onClose={() => navigate("./")}>
+              <Outlet context={{ data }} />
+            </Modal>
           </Grid.Col>
           <PDFGridViewer data={data} />
         </Grid>
