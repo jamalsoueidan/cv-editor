@@ -1,11 +1,10 @@
 import {
+  AppShell,
   Button,
   Flex,
-  Grid,
-  UnstyledButton,
+  ScrollArea,
   useMantineColorScheme,
 } from "@mantine/core";
-import { modals } from "@mantine/modals";
 import type { api } from "convex/_generated/api";
 import type { FunctionReturnType } from "convex/server";
 import { Link } from "react-router";
@@ -20,49 +19,27 @@ export function PDFGridViewer({
   const isDark = colorScheme === "dark";
 
   return (
-    <Grid.Col
-      span={5}
-      visibleFrom="md"
-      style={{
-        borderLeft: `2px solid ${
-          isDark ? "var(--mantine-color-dark-4)" : "var(--mantine-color-gray-3)"
-        }`,
-      }}
-    >
-      <PDFContainer templateElement={<PDFContainer.Template data={data} />}>
-        <Flex justify="space-between" align="center" direction="row" mb="sm">
+    <PDFContainer templateElement={<PDFContainer.Template data={data} />}>
+      <AppShell.Section p="sm">
+        <Flex justify="space-between" align="center">
           <Button
             variant="outline"
-            size="xs"
+            size="sm"
             component={Link}
             to="../templates"
           >
             Skift skabelon
           </Button>
-          <PDFContainer.DownloadIcon
-            title="Download PDF"
-            variant="outline"
-            size="md"
-          />
+          <PDFContainer.Download size="sm" variant="outline" />
         </Flex>
+      </AppShell.Section>
 
-        <UnstyledButton
-          w="100%"
-          style={{ userSelect: "none" }}
-          onClick={() =>
-            modals.openContextModal({
-              size: "90%",
-              modal: "pdfModal",
-              innerProps: data,
-            })
-          }
-        >
-          <PDFContainer.Viewer />
-        </UnstyledButton>
-        <Flex justify="center">
-          <PDFContainer.Pagination />
-        </Flex>
-      </PDFContainer>
-    </Grid.Col>
+      <AppShell.Section grow component={ScrollArea} px="sm">
+        <PDFContainer.Viewer />
+      </AppShell.Section>
+      <AppShell.Section p="sm">
+        <PDFContainer.Pagination />
+      </AppShell.Section>
+    </PDFContainer>
   );
 }

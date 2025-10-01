@@ -1,6 +1,7 @@
 import { ConvexAuthProvider } from "@convex-dev/auth/react";
 import "@mantine/carousel/styles.css";
 import {
+  Button,
   ColorSchemeScript,
   createTheme,
   mantineHtmlProps,
@@ -50,6 +51,11 @@ export const links: Route.LinksFunction = () => [
 const theme = createTheme({
   components: {
     TextInput: TextInput.extend({
+      defaultProps: {
+        size: "lg",
+      },
+    }),
+    Button: Button.extend({
       defaultProps: {
         size: "lg",
       },

@@ -10,7 +10,13 @@ export const PDFModal = ({
 }: ContextModalProps<FunctionReturnType<typeof api.resumes.get>>) => (
   <>
     <PDFContainer templateElement={<PDFContainer.Template data={innerProps} />}>
-      <Flex justify="space-between" align="center" direction="row" mb="sm">
+      <Flex
+        justify="space-between"
+        align="center"
+        direction="row"
+        mb="sm"
+        hiddenFrom="md"
+      >
         <Button
           variant="outline"
           size="xs"
@@ -26,7 +32,7 @@ export const PDFModal = ({
         />
       </Flex>
       <PDFContainer.Viewer />
-      <Flex justify="center">
+      <Flex justify="center" mt="sm">
         <PDFContainer.Pagination size="xl" />
       </Flex>
     </PDFContainer>

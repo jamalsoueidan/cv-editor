@@ -5,13 +5,28 @@ export default {
     action: "Write your CV today",
   },
   makecv: {
+    index: {
+      title: "Hvordan vil du begynde?",
+      description:
+        "Man kan begynde på flere måder: Vælg den, der fungere bedst for dig",
+      create: {
+        title: "Opret dit cv",
+        description: "Vælg en tom skabelon, og udfyld felterne selv",
+      },
+      import: {
+        title: "Upload dit cv",
+        description:
+          "Upload dit eksisterende cv og vi hjælper med at udfylde det",
+        change: "Skift fil",
+      },
+    },
     footer: {
       next: "Next",
       back: "Back",
     },
     navbar: {
-      personal: "CV heading",
-      summary: "Proffesional summary",
+      personal: "Personal",
+      summary: "Profile",
       educations: "Education",
       experiences: "Work history",
       skills: "Skills",

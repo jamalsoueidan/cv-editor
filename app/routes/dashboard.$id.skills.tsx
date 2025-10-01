@@ -5,6 +5,7 @@ import {
   Card,
   Flex,
   Grid,
+  Progress,
   Rating,
   rem,
   Stack,
@@ -23,11 +24,11 @@ import type { Route } from "./+types/dashboard.$id";
 import { Reorder, useDragControls, useMotionValue } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { FaGripHorizontal, FaPlus, FaTrash } from "react-icons/fa";
-import { PDFGridViewer } from "~/components/PDFGridViewer";
 import {
   FormProvider,
   useFormContext,
 } from "~/components/providers/CVFormProvider";
+import { ShellFooter } from "~/components/ShellFooter";
 import { useRaisedShadow } from "~/hooks/useRaisedShadow";
 
 export default function DashboardIndex() {
@@ -68,76 +69,69 @@ export default function DashboardIndex() {
   return (
     <>
       <AppShell.Main>
-        <Grid>
-          <Grid.Col span="auto" pr="md">
-            <Grid gutter="xl">
-              <Grid.Col span={12}>
-                <Title order={2} fw="500">
-                  What skills would you like to highlight?
-                </Title>
-                <Text size="lg">
-                  Choose from our pre-written examples below or write your own.
-                </Text>
-              </Grid.Col>
-              <Grid.Col span={12}>
-                <FormProvider form={form}>
-                  <form style={{ width: "100%" }}>
-                    {skills.length > 0 && (
-                      <Card withBorder p="0">
-                        <Reorder.Group
-                          axis="y"
-                          values={form.getValues().skills}
-                          onReorder={(items) => {
-                            form.setValues({ skills: items });
-                          }}
-                          as="div"
-                        >
-                          {skills}
-                        </Reorder.Group>
-                      </Card>
-                    )}
-                    <Flex mt="md" gap="xs" wrap="wrap">
-                      <Button
-                        size="lg"
-                        variant="outline"
-                        onClick={() =>
-                          form.insertListItem("skills", {
-                            key: randomId(),
-                            title: "",
-                            level: "3",
-                          })
-                        }
-                        fullWidth
-                        rightSection={<FaPlus />}
-                      >
-                        Add one more skill
-                      </Button>
-                    </Flex>
-                  </form>
-                </FormProvider>
-              </Grid.Col>
-              <Grid.Col span={12}>
-                <Flex justify="flex-end" align="center" visibleFrom="md">
-                  <Button size="md" onClick={onNextStep}>
-                    {t("makecv.footer.next")}: {t("makecv.navbar.languages")}
+        <Grid gutter="xl">
+          <Grid.Col span={12}>
+            <Title order={2} fw="500">
+              What skills would you like to highlight?
+            </Title>
+            <Text size="lg">
+              Choose from our pre-written examples below or write your own.
+            </Text>
+          </Grid.Col>
+          <Grid.Col span={12}>
+            <FormProvider form={form}>
+              <form style={{ width: "100%" }}>
+                {skills.length > 0 && (
+                  <Card withBorder p="0">
+                    <Reorder.Group
+                      axis="y"
+                      values={form.getValues().skills}
+                      onReorder={(items) => {
+                        form.setValues({ skills: items });
+                      }}
+                      as="div"
+                    >
+                      {skills}
+                    </Reorder.Group>
+                  </Card>
+                )}
+                <Flex mt="md" gap="xs" wrap="wrap">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    onClick={() =>
+                      form.insertListItem("skills", {
+                        key: randomId(),
+                        title: "",
+                        level: "3",
+                      })
+                    }
+                    fullWidth
+                    rightSection={<FaPlus />}
+                  >
+                    Add one more skill
                   </Button>
                 </Flex>
-              </Grid.Col>
-            </Grid>
+              </form>
+            </FormProvider>
           </Grid.Col>
-          <PDFGridViewer data={data} />
+          <Grid.Col span={12}>
+            <Flex justify="flex-end" align="center" visibleFrom="md">
+              <Button onClick={onNextStep}>{t("makecv.footer.next")}</Button>
+            </Flex>
+          </Grid.Col>
         </Grid>
       </AppShell.Main>
-      <AppShell.Footer p="xs" hiddenFrom="md">
-        <Flex justify="space-between" align="center">
-          <Button variant="default" size="md" onClick={onPrevStep}>
-            {t("makecv.footer.back")}
-          </Button>
-          <Button size="md" onClick={onNextStep}>
-            {t("makecv.footer.next")}: {t("makecv.navbar.languages")}
-          </Button>
-        </Flex>
-      </AppShell.Footer>
+      <ShellFooter
+        hiddenFrom="md"
+        upperSection={<Progress radius="0" size="md" value={85} />}
+      >
+        <Button variant="subtle" onClick={onPrevStep}>
+          {t("makecv.footer.back")}
+        </Button>
+
+        <Button onClick={onNextStep}>{t("makecv.footer.next")}</Button>
+      </ShellFooter>
     </>
   );
 }

@@ -6,6 +6,7 @@ import {
   Flex,
   Grid,
   Group,
+  Progress,
   rem,
   Stack,
   Text,
@@ -27,11 +28,11 @@ import { useRaisedShadow } from "~/hooks/useRaisedShadow";
 
 import { useTranslation } from "react-i18next";
 import { FaGripHorizontal, FaPlus, FaTrash } from "react-icons/fa";
-import { PDFGridViewer } from "~/components/PDFGridViewer";
 import {
   FormProvider,
   useFormContext,
 } from "~/components/providers/CVFormProvider";
+import { ShellFooter } from "~/components/ShellFooter";
 
 export default function DashboardIndex() {
   const { t } = useTranslation();
@@ -70,76 +71,71 @@ export default function DashboardIndex() {
   return (
     <>
       <AppShell.Main>
-        <Grid>
-          <Grid.Col span="auto" pr="md">
-            <FormProvider form={form}>
-              <form style={{ width: "100%" }}>
-                <Grid gutter="xl">
-                  <Grid.Col span={12}>
-                    <Title order={2} fw="500">
-                      Tell us about your education
-                    </Title>
-                    <Text size="lg">
-                      Enter your education experience so far, even if you are a
-                      current student or did not graduate.
-                    </Text>
-                  </Grid.Col>
-                  <Grid.Col span={12}>
-                    <Stack>
-                      {educations.length > 0 && (
-                        <Card withBorder p="0">
-                          <Reorder.Group
-                            axis="y"
-                            values={form.getValues().educations}
-                            onReorder={(items) => {
-                              form.setValues({ educations: items });
-                            }}
-                            as="div"
-                          >
-                            {educations}
-                          </Reorder.Group>
-                        </Card>
-                      )}
-                      <Button
-                        variant="outline"
-                        onClick={() =>
-                          form.insertListItem("educations", {
-                            key: randomId(),
-                          })
-                        }
-                        leftSection={<FaPlus />}
-                        size="lg"
-                        fullWidth
+        <FormProvider form={form}>
+          <form style={{ width: "100%" }}>
+            <Grid gutter="xl">
+              <Grid.Col span={12}>
+                <Title order={2} fw="500">
+                  Tell us about your education
+                </Title>
+                <Text size="lg">
+                  Enter your education experience so far, even if you are a
+                  current student or did not graduate.
+                </Text>
+              </Grid.Col>
+              <Grid.Col span={12}>
+                <Stack>
+                  {educations.length > 0 && (
+                    <Card withBorder p="0">
+                      <Reorder.Group
+                        axis="y"
+                        values={form.getValues().educations}
+                        onReorder={(items) => {
+                          form.setValues({ educations: items });
+                        }}
+                        as="div"
                       >
-                        Add education
-                      </Button>
-                    </Stack>
-                  </Grid.Col>
-                  <Grid.Col span={12}>
-                    <Flex justify="flex-end" align="center" visibleFrom="md">
-                      <Button size="md" onClick={onNextStep}>
-                        {t("makecv.footer.next")}: {t("makecv.navbar.skills")}
-                      </Button>
-                    </Flex>
-                  </Grid.Col>
-                </Grid>
-              </form>
-            </FormProvider>
-          </Grid.Col>
-          <PDFGridViewer data={data} />
-        </Grid>
+                        {educations}
+                      </Reorder.Group>
+                    </Card>
+                  )}
+                  <Button
+                    variant="outline"
+                    onClick={() =>
+                      form.insertListItem("educations", {
+                        key: randomId(),
+                      })
+                    }
+                    leftSection={<FaPlus />}
+                    size="lg"
+                    fullWidth
+                  >
+                    Add education
+                  </Button>
+                </Stack>
+              </Grid.Col>
+              <Grid.Col span={12}>
+                <Flex justify="flex-end" align="center" visibleFrom="md">
+                  <Button onClick={onNextStep}>
+                    {t("makecv.footer.next")}
+                  </Button>
+                </Flex>
+              </Grid.Col>
+            </Grid>
+          </form>
+        </FormProvider>
       </AppShell.Main>
 
-      <AppShell.Footer p="xs" hiddenFrom="md">
-        <Flex justify="space-between" align="center">
-          <Button variant="default" size="md" onClick={onPrevStep}>
-            {t("makecv.footer.back")}
-          </Button>
-          <Button size="md" onClick={onNextStep}>
-            {t("makecv.footer.next")}: {t("makecv.navbar.skills")}
-          </Button>
-        </Flex>
-      </AppShell.Footer>
+      <ShellFooter
+        hiddenFrom="md"
+        upperSection={<Progress radius="0" size="md" value={75} />}
+      >
+        <Button variant="subtle" onClick={onPrevStep}>
+          {t("makecv.footer.back")}
+        </Button>
+
+        <Button onClick={onNextStep}>{t("makecv.footer.next")}</Button>
+      </ShellFooter>
     </>
   );
 }
