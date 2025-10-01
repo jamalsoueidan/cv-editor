@@ -5,6 +5,7 @@ import {
   Flex,
   Grid,
   Input,
+  Progress,
   Stack,
   Text,
   TextInput,
@@ -28,7 +29,7 @@ import { useRaisedShadow } from "~/hooks/useRaisedShadow";
 import { useTranslation } from "react-i18next";
 import { AccordionControlDrag } from "~/components/form/AccordionControlDrag";
 import { EditorInput } from "~/components/form/EditorInput";
-import { PDFGridViewer } from "~/components/PDFGridViewer";
+import { ShellFooter } from "~/components/ShellFooter";
 import type { Route } from "./+types/dashboard.$id";
 
 export default function DashboardIndex() {
@@ -70,75 +71,69 @@ export default function DashboardIndex() {
   return (
     <>
       <AppShell.Main>
-        <Grid>
-          <Grid.Col span="auto" pr="md">
-            <FormProvider form={form}>
-              <form style={{ width: "100%" }}>
-                <Grid gutter="xl">
-                  <Grid.Col span={12}>
-                    <Title order={2} fw="500">
-                      Tell us about your most recent job
-                    </Title>
-                    <Text size="lg">We’ll start there and work backward.</Text>
-                  </Grid.Col>
-                  <Grid.Col span={12}>
-                    <Stack>
-                      {workExperiences.length > 0 && (
-                        <Reorder.Group
-                          axis="y"
-                          values={form.getValues().workExperiences}
-                          onReorder={(items) => {
-                            form.setValues({ workExperiences: items });
-                          }}
-                          as="div"
-                        >
-                          <Accordion variant="separated" chevronPosition="left">
-                            {workExperiences}
-                          </Accordion>
-                        </Reorder.Group>
-                      )}
+        <FormProvider form={form}>
+          <form style={{ width: "100%" }}>
+            <Grid gutter="xl">
+              <Grid.Col span={12}>
+                <Title order={2} fw="500">
+                  Tell us about your most recent job
+                </Title>
+                <Text size="lg">We’ll start there and work backward.</Text>
+              </Grid.Col>
+              <Grid.Col span={12}>
+                <Stack>
+                  {workExperiences.length > 0 && (
+                    <Reorder.Group
+                      axis="y"
+                      values={form.getValues().workExperiences}
+                      onReorder={(items) => {
+                        form.setValues({ workExperiences: items });
+                      }}
+                      as="div"
+                    >
+                      <Accordion variant="separated" chevronPosition="left">
+                        {workExperiences}
+                      </Accordion>
+                    </Reorder.Group>
+                  )}
 
-                      <Button
-                        onClick={() =>
-                          form.insertListItem("workExperiences", {
-                            key: randomId(),
-                          })
-                        }
-                        leftSection={<FaPlus />}
-                        fullWidth
-                        size="lg"
-                        variant="outline"
-                      >
-                        Add new position
-                      </Button>
-                    </Stack>
-                  </Grid.Col>
-                  <Grid.Col span={12}>
-                    <Flex justify="flex-end" align="center" visibleFrom="md">
-                      <Button size="md" onClick={onNextStep}>
-                        {t("makecv.footer.next")}:{" "}
-                        {t("makecv.navbar.educations")}
-                      </Button>
-                    </Flex>
-                  </Grid.Col>
-                </Grid>
-              </form>
-            </FormProvider>
-          </Grid.Col>
-          <PDFGridViewer data={data} />
-        </Grid>
+                  <Button
+                    onClick={() =>
+                      form.insertListItem("workExperiences", {
+                        key: randomId(),
+                      })
+                    }
+                    leftSection={<FaPlus />}
+                    fullWidth
+                    size="lg"
+                    variant="outline"
+                  >
+                    Add new position
+                  </Button>
+                </Stack>
+              </Grid.Col>
+              <Grid.Col span={12}>
+                <Flex justify="flex-end" align="center" visibleFrom="md">
+                  <Button onClick={onNextStep}>
+                    {t("makecv.footer.next")}
+                  </Button>
+                </Flex>
+              </Grid.Col>
+            </Grid>
+          </form>
+        </FormProvider>
       </AppShell.Main>
 
-      <AppShell.Footer p="xs" hiddenFrom="md">
-        <Flex justify="space-between" align="center">
-          <Button variant="default" size="md" onClick={onPrevStep}>
-            {t("makecv.footer.back")}
-          </Button>
-          <Button size="md" onClick={onNextStep}>
-            {t("makecv.footer.next")}: {t("makecv.navbar.educations")}
-          </Button>
-        </Flex>
-      </AppShell.Footer>
+      <ShellFooter
+        hiddenFrom="md"
+        upperSection={<Progress radius="0" size="md" value={50} />}
+      >
+        <Button variant="subtle" onClick={onPrevStep}>
+          {t("makecv.footer.back")}
+        </Button>
+
+        <Button onClick={onNextStep}>{t("makecv.footer.next")}</Button>
+      </ShellFooter>
     </>
   );
 }

@@ -1,4 +1,12 @@
-import { AppShell, Button, Flex, Grid, Text, Title } from "@mantine/core";
+import {
+  AppShell,
+  Button,
+  Flex,
+  Grid,
+  Progress,
+  Text,
+  Title,
+} from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useDebouncedCallback } from "@mantine/hooks";
 import { api } from "convex/_generated/api";
@@ -9,8 +17,8 @@ import type { Route } from "./+types/dashboard.$id";
 
 import { useTranslation } from "react-i18next";
 import { EditorInput } from "~/components/form/EditorInput";
-import { PDFGridViewer } from "~/components/PDFGridViewer";
 import { FormProvider } from "~/components/providers/CVFormProvider";
+import { ShellFooter } from "~/components/ShellFooter";
 
 export default function DashboardIndex() {
   const { t } = useTranslation();
@@ -45,51 +53,45 @@ export default function DashboardIndex() {
   return (
     <>
       <AppShell.Main>
-        <Grid>
-          <Grid.Col span="auto" pr="md">
-            <FormProvider form={form}>
-              <form style={{ width: "100%" }}>
-                <Grid gutter="xl">
-                  <Grid.Col span={12}>
-                    <Title order={2} fw="500">
-                      Briefly tell us about your background
-                    </Title>
-                    <Text size="lg">
-                      Write 2 to 3 sentences about your overall experience.
-                    </Text>
-                  </Grid.Col>
-                  <Grid.Col span={12}>
-                    <EditorInput
-                      description="Recruiter tip: write 400-600 characters to increase interview chances"
-                      {...form.getInputProps("content")}
-                    />
-                  </Grid.Col>
-                  <Grid.Col span={12}>
-                    <Flex justify="flex-end" align="center" visibleFrom="md">
-                      <Button size="md" onClick={onNextStep}>
-                        {t("makecv.footer.next")}:{" "}
-                        {t("makecv.navbar.experiences")}
-                      </Button>
-                    </Flex>
-                  </Grid.Col>
-                </Grid>
-              </form>
-            </FormProvider>
-          </Grid.Col>
-          <PDFGridViewer data={data} />
-        </Grid>
+        <FormProvider form={form}>
+          <form style={{ width: "100%" }}>
+            <Grid gutter="xl">
+              <Grid.Col span={12}>
+                <Title order={2} fw="500">
+                  Briefly tell us about your background
+                </Title>
+                <Text size="lg">
+                  Write 2 to 3 sentences about your overall experience.
+                </Text>
+              </Grid.Col>
+              <Grid.Col span={12}>
+                <EditorInput
+                  description="Recruiter tip: write 400-600 characters to increase interview chances"
+                  {...form.getInputProps("content")}
+                />
+              </Grid.Col>
+              <Grid.Col span={12}>
+                <Flex justify="flex-end" align="center" visibleFrom="md">
+                  <Button onClick={onNextStep}>
+                    {t("makecv.footer.next")}
+                  </Button>
+                </Flex>
+              </Grid.Col>
+            </Grid>
+          </form>
+        </FormProvider>
       </AppShell.Main>
-      <AppShell.Footer p="xs" hiddenFrom="md">
-        <Flex justify="space-between" align="center" gap="sm">
-          <Button variant="default" size="md" onClick={onPrevStep}>
-            {t("makecv.footer.back")}
-          </Button>
 
-          <Button size="md" onClick={onNextStep}>
-            {t("makecv.footer.next")}: {t("makecv.navbar.experiences")}
-          </Button>
-        </Flex>
-      </AppShell.Footer>
+      <ShellFooter
+        hiddenFrom="md"
+        upperSection={<Progress radius="0" size="md" value={25} />}
+      >
+        <Button variant="subtle" onClick={onPrevStep}>
+          {t("makecv.footer.back")}
+        </Button>
+
+        <Button onClick={onNextStep}>{t("makecv.footer.next")}</Button>
+      </ShellFooter>
     </>
   );
 }

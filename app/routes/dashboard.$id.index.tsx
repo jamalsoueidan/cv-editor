@@ -21,11 +21,14 @@ import { Logo } from "~/components/Logo";
 
 import { api } from "convex/_generated/api";
 import { useAction } from "convex/react";
+import { useTranslation } from "react-i18next";
 import { FaCheckCircle } from "react-icons/fa";
+import { ShellFooter } from "~/components/ShellFooter";
 import { useFilePDF } from "~/hooks/useFilePDF";
 import type { Route } from "./+types/dashboard.$id";
 
 export default function DashboardIndex() {
+  const { t } = useTranslation();
   const { onNextStep, id } =
     useOutletContext() as Route.ComponentProps["loaderData"] & {
       onNextStep: () => void;
@@ -61,7 +64,7 @@ export default function DashboardIndex() {
       <AppShell.Main>
         <Container size="xl">
           <Title ta="center" mt="xl" mb={rem(50)} fw="500">
-            How do you want to start?
+            {t("makecv.index.title")}
           </Title>
           <Grid justify="center">
             <Grid.Col span={{ base: 12, md: 5 }}>
@@ -95,8 +98,8 @@ export default function DashboardIndex() {
                     }}
                   />
                   <Stack align="center" gap="xs">
-                    <Title fw="600">Create a new CV</Title>
-                    <Text>We will help you create a CV - step by stpe</Text>
+                    <Title fw="600">{t("makecv.index.create.title")}</Title>
+                    <Text>{t("makecv.index.create.description")}</Text>
                   </Stack>
                 </Flex>
               </Card>
@@ -131,17 +134,15 @@ export default function DashboardIndex() {
                         }}
                       />
                       <Stack align="center" gap="xs">
-                        <Title fw="600">I already have a CV</Title>
-                        <Text>
-                          We&apos;ll reformat it and fill in your information.
-                        </Text>
+                        <Title fw="600">{t("makecv.index.import.title")}</Title>
+                        <Text>{t("makecv.index.import.description")}</Text>
                         {file ? (
                           <>
                             <Group gap="xs">
                               <FaCheckCircle size={20} color="green" />
                               <Text>{file.name}</Text>
                               <Button size="compact-sm" variant="light">
-                                Change file
+                                {t("makecv.index.import.change")}
                               </Button>
                             </Group>
                           </>
@@ -155,19 +156,19 @@ export default function DashboardIndex() {
           </Grid>
         </Container>
       </AppShell.Main>
-      <AppShell.Footer p="xs">
-        <Flex justify="flex-end" align="center">
-          {text ? (
-            <Button size="md" onClick={() => startUpload()}>
-              Næste
-            </Button>
-          ) : (
-            <Button size="md" onClick={onNextStep}>
-              Næste
-            </Button>
-          )}
-        </Flex>
-      </AppShell.Footer>
+      <ShellFooter justify="flex-end">
+        <Button
+          onClick={() => {
+            if (text) {
+              startUpload();
+            } else {
+              onNextStep();
+            }
+          }}
+        >
+          {t("makecv.footer.next")}
+        </Button>
+      </ShellFooter>
       {isUploading ? (
         <LoadingOverlay
           visible={isUploading}

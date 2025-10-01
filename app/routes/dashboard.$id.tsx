@@ -18,15 +18,10 @@ import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
 import { preloadedQueryResult, preloadQuery } from "convex/nextjs";
 import { useTranslation } from "react-i18next";
-import {
-  FaCopy,
-  FaEye,
-  FaMoon,
-  FaStarAndCrescent,
-  FaSun,
-} from "react-icons/fa";
+import { FaEye, FaMoon, FaStarAndCrescent, FaSun } from "react-icons/fa";
 import { PiArrowLineLeft, PiArrowLineRight } from "react-icons/pi";
 import { Outlet, useLocation, useNavigate } from "react-router";
+import { PDFGridViewer } from "~/components/PDFGridViewer";
 import { useQueryData } from "~/hooks/useQueryData";
 import type { Route } from "./+types/dashboard.$id";
 
@@ -107,11 +102,19 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
       layout="alt"
       header={{ height: 60 }}
       footer={{
-        height: 60,
+        height: active < 0 ? 76 : 82, //because of the progress at the bottom of the steps
+      }}
+      aside={{
+        width: 500,
+        breakpoint: "md",
+        collapsed: {
+          mobile: true,
+          desktop: active < 0 || false,
+        },
       }}
       navbar={{
         width: 250,
-        breakpoint: "sm",
+        breakpoint: "md",
         collapsed: {
           mobile: active < 0 || !mobileOpened,
           desktop: active < 0 || !desktopOpened,
@@ -124,15 +127,15 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
           <Burger
             opened={mobileOpened}
             onClick={toggleMobile}
-            hiddenFrom="sm"
-            size="sm"
+            hiddenFrom="md"
+            size="md"
           />
 
           {!desktopOpened ? (
             <ActionIcon
               variant="transparent"
               onClick={toggleDesktop}
-              visibleFrom="sm"
+              visibleFrom="md"
               size="md"
               title="Show sidebar"
             >
@@ -150,21 +153,6 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
           </Group>
           <Group justify="flex-end" style={{ flex: 1 }}>
             <Group gap="xs">
-              <ActionIcon
-                variant="outline"
-                color={isDark ? "white" : "black"}
-                onClick={() =>
-                  modals.openContextModal({
-                    size: "lg",
-                    fullScreen: true,
-                    modal: "pdfModal",
-                    innerProps: data,
-                  })
-                }
-                title={t("makecv.header.previewcv")}
-              >
-                <FaCopy />
-              </ActionIcon>
               <ActionIcon
                 variant="outline"
                 color={isDark ? "white" : "black"}
@@ -199,10 +187,10 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
       </AppShell.Header>
       <AppShell.Navbar p="md">
         <AppShell.Section>
-          <Group hiddenFrom="sm">
+          <Group hiddenFrom="md">
             <Burger opened={mobileOpened} onClick={toggleMobile} size="md" />
           </Group>
-          <Flex visibleFrom="sm" justify="flex-end">
+          <Flex visibleFrom="md" justify="flex-end">
             <ActionIcon
               onClick={toggleDesktop}
               variant="transparent"
@@ -268,6 +256,9 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
           </Group>
         </AppShell.Section>
       </AppShell.Navbar>
+      <AppShell.Aside visibleFrom="md">
+        <PDFGridViewer data={data} />
+      </AppShell.Aside>
       <Outlet context={{ data, id, onNextStep, onPrevStep }} />
     </AppShell>
   );
